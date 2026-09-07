@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // User profile documents (strictly own UID)
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Company Settings per user (keyed by user.uid)
+    match /companySettings/{docId} {
+      allow read: if isSignedIn() && (docId == request.auth.uid || resource.data.ownerUid == request.auth.uid);
+      allow create: if isSignedIn() && (docId == request.auth.uid || request.resource.data.ownerUid == request.auth.uid);
+      allow update, delete: if isSignedIn() && (docId == request.auth.uid || resource.data.ownerUid == request.auth.uid);
+    }
+
+    // Strict Zero-Trust data isolation across all ERP collections:
+    // customers, projects, invoices, quotations, payments, products, inventory, expenses,
+    // employees, auditLogs, notifications, accounts, cashInTransactions, cashOutTransactions,
+    // accountTransfers, purchases, purchaseReturns, distributors, serviceTickets, subsidyRecords,
+    // netMeteringRecords, stockLogs
+    match /{collectionName}/{docId} {
+      allow read: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.ownerUid == request.auth.uid;
+      allow update: if isSignedIn() && 
+        resource.data.ownerUid == request.auth.uid && 
+        (!('ownerUid' in request.resource.data) || request.resource.data.ownerUid == request.auth.uid);
+      allow delete: if isSignedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+  }
+}

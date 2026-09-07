@@ -1,0 +1,10 @@
+{
+  "name": "UPSW - Upadhyay Brother Solar Works",
+  "description": "Complete Solar EPC Enterprise ERP Management System with Automatic Cash In / Cash Out Money Flow, Accounting & GST Reconciliation, Product Purchases & Supplier GRN, Real-time Multi-device Firestore Sync, Billing, Quotation Generator, Single-source Inventory, Projects, and Financial Ledgers",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
