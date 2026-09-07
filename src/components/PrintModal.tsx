@@ -36,8 +36,8 @@ export const PrintModal: React.FC = () => {
   // For Tax Invoice / Bill of Supply, use the dedicated professional 100% matched component
   if (type === 'invoice') {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in overflow-y-auto print:p-0 print:bg-white print:static print:h-auto print:overflow-visible">
-        <div className="w-full max-w-5xl h-full sm:h-[95vh] bg-slate-900 rounded-none sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-800 print:border-0 print:shadow-none print:bg-white print:h-auto print:rounded-none">
+      <div id="print-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in overflow-y-auto print:p-0 print:bg-white print:static print:h-auto print:w-auto print:overflow-visible print:block print:!transform-none print:!filter-none">
+        <div id="print-modal-shell" className="w-full max-w-5xl h-full sm:h-[95vh] bg-slate-900 rounded-none sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-800 print:border-0 print:shadow-none print:bg-white print:h-auto print:w-auto print:max-w-none print:rounded-none print:overflow-visible print:block print:!transform-none print:!filter-none">
           <GSTTaxInvoice
             invoice={payload}
             companySettings={companySettings}
@@ -87,7 +87,7 @@ export const PrintModal: React.FC = () => {
         </div>
 
         {/* Printable Canvas (Scrollable) */}
-        <div className="overflow-y-auto flex-1 p-6 print:p-0 print:m-0 print:overflow-visible bg-white text-slate-900 font-sans" id="printable-area">
+        <div className="overflow-y-auto flex-1 p-6 print:p-0 print:m-0 print:overflow-visible bg-white text-slate-900 font-sans" id="printable-container">
 
           {/* 1. TAX INVOICE PRINT LAYOUT */}
           {type === 'invoice' && (
