@@ -121,110 +121,87 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
     const printableElement = document.getElementById('printable-area');
     const content = printableElement ? printableElement.outerHTML : '';
 
+    // Reuse the already-generated application CSS so the standalone print tab
+    // keeps the same bill layout instead of losing Tailwind utility classes.
+    let appCss = '';
+    for (const sheet of Array.from(document.styleSheets)) {
+      try {
+        appCss += Array.from(sheet.cssRules).map((rule) => rule.cssText).join('\n');
+      } catch {
+        // Ignore cross-origin stylesheets that the browser does not expose.
+      }
+    }
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${docTitle} - ${invoice.invoiceNumber || 'UBSW-2026-002'}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>${appCss}</style>
   <style>
-    @page {
-      size: A4 portrait;
-      margin: 4mm 5mm 4mm 5mm;
-    }
-    * {
-      box-sizing: border-box;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
+    * { box-sizing: border-box; }
     html, body {
       margin: 0 !important;
       padding: 0 !important;
-      background: #ffffff !important;
-      color: #000000 !important;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      font-size: 11px;
-      line-height: 1.3;
-      width: 100% !important;
+      background: #fff !important;
+      color: #000 !important;
+      width: 200mm !important;
+      height: 289mm !important;
+      overflow: hidden !important;
+      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     }
-    .offline-toolbar {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      z-index: 9999;
-      display: flex;
-      gap: 8px;
-      background: #0f172a;
-      padding: 8px 14px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      border: 1px solid #334155;
-    }
-    .offline-toolbar button {
-      background: #f59e0b;
-      color: #020617;
-      border: none;
-      padding: 7px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.2s;
-    }
-    .offline-toolbar button:hover {
-      background: #fbbf24;
-    }
-    @media print {
-      .no-print, .offline-toolbar {
-        display: none !important;
-      }
-      html, body {
-        width: 210mm !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      #printable-area {
-        width: 200mm !important;
-        max-width: 200mm !important;
-        margin: 0 auto !important;
-        border: 1px solid #000 !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-    }
+    @page { size: A4 portrait; margin: 4mm 5mm !important; }
     #printable-area {
-      width: 200mm;
-      max-width: 200mm;
-      margin: 10px auto;
-      background: #ffffff;
-      color: #000000;
-      border: 1px solid #000000;
-      box-sizing: border-box;
-      page-break-inside: avoid;
-      break-inside: avoid;
+      width: 200mm !important;
+      height: 289mm !important;
+      max-width: 200mm !important;
+      min-height: 289mm !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 1px solid #000 !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid-page !important;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .bill-top-line { height: 6mm !important; }
+    .bill-header { height: 18mm !important; padding-top: 1mm !important; padding-bottom: 1mm !important; }
+    .bill-invoice-meta { height: 23.5mm !important; }
+    .bill-party { height: 43mm !important; }
+    .bill-items { height: 113mm !important; }
+    .bill-summary { height: 39mm !important; }
+    .bill-bank { height: 17mm !important; }
+    .bill-footer { height: 29.5mm !important; }
+    .bill-header img, .bill-header > div:first-child, .bill-header > div:first-child > img { width: 16mm !important; height: 16mm !important; }
+    .bill-party > div, .bill-footer > div { min-height: 0 !important; height: 100% !important; }
+    .bill-items-table { width: 100% !important; height: 100% !important; table-layout: fixed !important; }
+    .bill-items-table thead { height: 10.5mm !important; }
+    .bill-items-table tbody { height: auto !important; }
+    .bill-items-table th:nth-child(1), .bill-items-table td:nth-child(1) { width: 11mm !important; }
+    .bill-items-table th:nth-child(3), .bill-items-table td:nth-child(3) { width: 21mm !important; }
+    .bill-items-table th:nth-child(4), .bill-items-table td:nth-child(4) { width: 16.5mm !important; }
+    .bill-items-table th:nth-child(5), .bill-items-table td:nth-child(5) { width: 14mm !important; }
+    .bill-items-table th:nth-child(6), .bill-items-table td:nth-child(6) { width: 26mm !important; }
+    .bill-items-table th:nth-child(7), .bill-items-table td:nth-child(7) { width: 31mm !important; }
+    .bill-items-filler { height: auto !important; }
+    .bill-items-count-1 .bill-items-filler,
+    .bill-items-count-2 .bill-items-filler,
+    .bill-items-count-3 .bill-items-filler,
+    .bill-items-count-4 .bill-items-filler,
+    .bill-items-count-5 .bill-items-filler { height: auto !important; }
+    .bill-items-total { height: 7.5mm !important; }
+    .bill-summary table { height: auto !important; table-layout: fixed !important; }
+    .bill-bank img { width: 16mm !important; height: 16mm !important; }
+    @media print {
+      .no-print, .no-print * { display: none !important; visibility: hidden !important; }
+      html, body { width: 200mm !important; height: 289mm !important; overflow: hidden !important; }
+      #printable-area { position: fixed !important; left: 0 !important; top: 0 !important; right: auto !important; bottom: auto !important; }
     }
   </style>
 </head>
 <body>
-  <div class="offline-toolbar no-print">
-    <button onclick="window.print()">
-      🖨️ Print / Save PDF (A4)
-    </button>
-  </div>
-  <div style="display:flex;justify-content:center;padding:12px 0;">
-    ${content}
-  </div>
+  ${content}
 </body>
 </html>`;
   };
@@ -431,7 +408,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
   const logoUrl = companySettings.logoUrl || COMPANY_LOGO_DATA_URI;
 
   return (
-    <div className="flex flex-col h-full bg-slate-900/90 text-slate-100">
+    <div id="print-modal-root" className="flex flex-col h-full bg-slate-900/90 text-slate-100">
       {/* ------------------------------------------------------------- */}
       {/* TOOLBAR CONTROLS (HIDDEN DURING PRINT) */}
       {/* ------------------------------------------------------------- */}
@@ -560,34 +537,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       {/* ------------------------------------------------------------- */}
       {/* 100% EXACT A4 PRINT CANVAS */}
       {/* ------------------------------------------------------------- */}
-      <div className="flex-1 overflow-y-auto p-2 sm:p-6 flex justify-center items-start bg-slate-950/60 print:p-0 print:m-0 print:bg-white">
-        <style>{`
-          @media print {
-            @page {
-              size: A4 portrait;
-              margin: 4mm 5mm 4mm 5mm;
-            }
-            body {
-              -webkit-print-color-adjust: exact !important;
-              print-color-adjust: exact !important;
-              background: #fff !important;
-              color: #000 !important;
-            }
-            .no-print {
-              display: none !important;
-            }
-            #printable-area {
-              width: 200mm !important;
-              max-width: 200mm !important;
-              margin: 0 auto !important;
-              padding: 0 !important;
-              box-shadow: none !important;
-              border: 1px solid #000 !important;
-              page-break-inside: avoid !important;
-              break-inside: avoid !important;
-            }
-          }
-        `}</style>
+      <div id="print-canvas" className="flex-1 overflow-y-auto p-2 sm:p-6 flex justify-center items-start bg-slate-950/60 print:p-0 print:m-0 print:bg-white">
 
         <div
           id="printable-area"
@@ -605,13 +555,13 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           }}
         >
           {/* 1. TOP LINE: GSTIN & ORIGINAL COPY */}
-          <div className="flex justify-between items-center px-3 py-1 text-[11px] font-bold border-b border-black">
+          <div className="bill-top-line flex justify-between items-center px-3 py-1 text-[11px] font-bold border-b border-black">
             <div>GSTIN : {companySettings.gstNumber || '09AEIPU6555N1Z1'}</div>
             <div>{copyType}</div>
           </div>
 
           {/* 2. COMPANY HEADER BOX (LOGO ON LEFT, CENTERED COMPANY DETAILS) */}
-          <div className="relative flex items-center justify-between px-3 py-2.5 border-b border-black">
+          <div className="bill-header relative flex items-center justify-between px-3 py-2.5 border-b border-black">
             {/* Left Circular Logo */}
             <div className="w-16 h-16 shrink-0 flex items-center justify-center">
               {logoUrl ? (
@@ -645,7 +595,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           </div>
 
           {/* 3. INVOICE & DISPATCH DETAILS (TWO COLUMNS DIVIDED BY VERTICAL LINE) */}
-          <div className="grid grid-cols-2 divide-x divide-black border-b border-black text-[10.5px]">
+          <div className="bill-invoice-meta grid grid-cols-2 divide-x divide-black border-b border-black text-[10.5px]">
             {/* Left Column */}
             <div className="px-3 py-1.5 space-y-0.5">
               <div className="flex">
@@ -696,7 +646,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           </div>
 
           {/* 4. BILLED TO & SHIPPED TO (TWO COLUMNS DIVIDED BY VERTICAL LINE) */}
-          <div className="grid grid-cols-2 divide-x divide-black border-b border-black text-[10.5px]">
+          <div className="bill-party grid grid-cols-2 divide-x divide-black border-b border-black text-[10.5px]">
             {/* Left Column: Billed To */}
             <div className="px-3 py-2 flex flex-col justify-between min-h-[96px]">
               <div>
@@ -751,8 +701,8 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           </div>
 
           {/* 5. ITEMS TABLE (DESCRIPTION OF GOODS) WITH PRECISE COLUMNS & BORDERS */}
-          <div className="border-b border-black">
-            <table className="w-full text-left border-collapse text-[10px]">
+          <div className={`bill-items bill-items-count-${Math.min(items.length, 5)} border-b border-black`}>
+            <table className="bill-items-table w-full text-left border-collapse text-[10px]">
               <thead>
                 <tr className="border-b border-black font-bold text-[10px] text-black">
                   <th className="py-1.5 px-2 text-center w-[36px] border-r border-black font-bold">
@@ -830,7 +780,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
 
                 {/* Blank spacing filler rows to preserve the classic look while fitting single A4 */}
                 {items.length <= 2 && (
-                  <tr style={{ height: `${items.length === 1 ? 85 : 40}px` }} className="align-top">
+                  <tr className="bill-items-filler align-top">
                     <td className="border-r border-black">&nbsp;</td>
                     <td className="border-r border-black">&nbsp;</td>
                     <td className="border-r border-black">&nbsp;</td>
@@ -842,7 +792,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
                 )}
 
                 {/* GRAND TOTAL ROW */}
-                <tr className="border-t border-black font-bold text-[10.5px]">
+                <tr className="bill-items-total border-t border-black font-bold text-[10.5px]">
                   <td colSpan={2} className="py-1.5 px-3 text-right border-r border-black">
                     Grand Total
                   </td>
@@ -870,7 +820,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           </div>
 
           {/* 6. HSN/SAC TAX BREAKDOWN TABLE */}
-          <div className="border-b border-black text-[9.5px]">
+          <div className="bill-summary border-b border-black text-[9.5px]">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-black font-bold text-center text-[9.5px]">
@@ -913,7 +863,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           </div>
 
           {/* 7. BANK DETAILS & UPI QR CODE */}
-          <div className="flex justify-between items-center px-3 py-1.5 border-b border-black text-[10px]">
+          <div className="bill-bank flex justify-between items-center px-3 py-1.5 border-b border-black text-[10px]">
             {/* Left Bank Details */}
             <div className="space-y-0.5">
               <div className="font-bold text-[10.5px]">Bank Details</div>
@@ -945,7 +895,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           </div>
 
           {/* 8. TERMS & CONDITIONS AND SIGNATURES (TWO COLUMNS) */}
-          <div className="grid grid-cols-2 divide-x divide-black text-[9.5px]">
+          <div className="bill-footer grid grid-cols-2 divide-x divide-black text-[9.5px]">
             {/* Left: Terms & Conditions */}
             <div className="px-3 py-2 flex flex-col justify-start">
               <div className="font-bold text-[10px]">Terms & Conditions</div>
