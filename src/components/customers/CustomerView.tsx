@@ -95,7 +95,7 @@ export const CustomerView: React.FC = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name?.trim() || !formData.mobile?.trim()) {
       alert('Please fill at least Customer Name and Mobile Number.');
@@ -107,7 +107,7 @@ export const CustomerView: React.FC = () => {
       setToastMessage(`Customer ${formData.name} updated successfully!`);
       setHighlightedId(editingCustomer.id);
     } else {
-      const added = addCustomer(formData);
+      const added = await addCustomer(formData);
       setToastMessage(`Customer ${added.name} (${added.id}) added and saved successfully!`);
       setHighlightedId(added.id);
       // Reset search and filters so the newly created customer is immediately in view

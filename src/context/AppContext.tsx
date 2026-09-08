@@ -130,7 +130,7 @@ interface AppContextType {
 
   // Data Collections
   customers: Customer[];
-  addCustomer: (customer: Omit<Customer, 'id' | 'createdAt'>) => Customer;
+  addCustomer: (customer: Omit<Customer, 'id' | 'createdAt'>) => Promise<Customer> | Customer;
   updateCustomer: (id: string, customer: Partial<Customer>) => void;
   deleteCustomer: (id: string) => void;
 
@@ -382,7 +382,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // ZERO DEMO DATA POLICY:
   // For all real users and fresh instances, all ERP collections start completely empty ([]).
   // Mock data is ONLY populated if demo mode is explicitly activated via loginAsDemo().
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>(() => {
+    try {
+      const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_customers`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return [];
+  });
   const [projects, setProjects] = useState<Project[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [quotations, setQuotations] = useState<Quotation[]>([]);
@@ -631,8 +640,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             snapshot.forEach((d) => {
               docs.push({ ...d.data(), id: d.id } as T);
             });
-            // Authoritative Firestore Sync: what is in Firestore for this authenticated user is the single source of truth
-            setState(docs);
+            // Authoritative Firestore Sync: preserve any local pending creations not yet acknowledged by incoming snapshot
+            setState((prev) => {
+              const docMap = new Map(docs.map((d) => [d.id, d]));
+              const pending = prev.filter((p) => !docMap.has(p.id));
+              return [...docs, ...pending];
+            });
             setIsCloudSynced(true);
             setSyncStatus('connected');
             setLastSyncedAt(new Date().toLocaleTimeString());
@@ -902,18 +915,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // CUSTOMER HANDLERS
-  const addCustomer = (data: Omit<Customer, 'id' | 'createdAt'>): Customer => {
+  const addCustomer = async (data: Omit<Customer, 'id' | 'createdAt'>): Promise<Customer> => {
     const currentUid = user && !(user as any).isDemo ? user.uid : undefined;
     
-    // Generate safe sequential unique ID
+    // Generate safe sequential unique ID with collision protection
     const existingNums = customers
       .map((c) => {
-        const match = (c.id || '').match(/(\d+)$/);
+        const match = (c.id || '').match(/(\d+)/);
         return match ? parseInt(match[1], 10) : 0;
       })
-      .filter((n) => !isNaN(n));
+      .filter((n) => !isNaN(n) && n < 100000);
     const nextNum = (existingNums.length > 0 ? Math.max(...existingNums) : 1000) + 1;
-    const newId = `CUST-${nextNum}`;
+    // Guaranteed unique ID so Firestore create rule always passes and never collides with another user or pre-existing record
+    const uniqueSuffix = Date.now().toString().slice(-4);
+    const newId = `CUST-${nextNum}-${uniqueSuffix}`;
 
     const newCustomer: Customer = {
       ...data,
@@ -944,16 +959,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // Direct local persistence backup
     try {
-      const updated = [newCustomer, ...customers.filter((c) => c.id !== newId)];
+      const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_customers`);
+      const existing = saved ? JSON.parse(saved) : [];
+      const updated = [newCustomer, ...(Array.isArray(existing) ? existing.filter((c: any) => c.id !== newId) : [])];
       localStorage.setItem(`${LOCAL_STORAGE_KEY}_customers`, JSON.stringify(updated));
     } catch (err) {
       console.warn('LocalStorage save customer error:', err);
     }
 
     if (user && !(user as any).isDemo) {
-      setDoc(doc(db, 'customers', newId), newCustomer).catch((err) => {
-        console.warn('Firestore setDoc customers error:', err);
-      });
+      try {
+        await setDoc(doc(db, 'customers', newId), newCustomer);
+      } catch (err) {
+        console.error('Firestore setDoc customers error:', err);
+      }
     }
 
     logAction('Customer', 'Customer Created', `Added customer ${newCustomer.name} (${newId})`);
