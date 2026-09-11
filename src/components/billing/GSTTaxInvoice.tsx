@@ -165,7 +165,8 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       width: 200mm !important;
       max-width: 200mm !important;
       min-width: 200mm !important;
-      min-height: 289mm !important;
+      height: auto !important;
+      min-height: 0 !important;
       margin: 0 auto !important;
       padding: 0 !important;
       border: 1px solid #000 !important;
@@ -177,8 +178,8 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       -webkit-box-decoration-break: clone !important;
     }
     .bill-top-line {
-      height: 6mm !important;
-      min-height: 6mm !important;
+      height: 5.5mm !important;
+      min-height: 5.5mm !important;
       box-sizing: border-box !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
@@ -186,8 +187,8 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
     .bill-header {
       height: 18mm !important;
       min-height: 18mm !important;
-      padding-top: 1.5mm !important;
-      padding-bottom: 1.5mm !important;
+      padding-top: 1mm !important;
+      padding-bottom: 1mm !important;
       box-sizing: border-box !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
@@ -199,42 +200,42 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       height: 16mm !important;
     }
     .bill-invoice-meta {
-      height: 23.5mm !important;
-      min-height: 23.5mm !important;
+      height: 20mm !important;
+      min-height: 20mm !important;
       box-sizing: border-box !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
     .bill-party {
-      height: 43mm !important;
-      min-height: 43mm !important;
+      height: 38mm !important;
+      min-height: 38mm !important;
       box-sizing: border-box !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
     .bill-party > div {
-      min-height: 43mm !important;
-      height: 43mm !important;
+      min-height: 38mm !important;
+      height: 38mm !important;
     }
     #printable-area:not(.multi-page) .bill-items {
-      height: 113mm !important;
-      min-height: 113mm !important;
+      height: 105mm !important;
+      min-height: 105mm !important;
       box-sizing: border-box !important;
     }
     #printable-area:not(.multi-page) .bill-items-table {
-      height: 113mm !important;
-      min-height: 113mm !important;
+      height: 105mm !important;
+      min-height: 105mm !important;
       table-layout: fixed !important;
       border-collapse: collapse !important;
     }
     #printable-area.multi-page .bill-items {
       height: auto !important;
-      min-height: 113mm !important;
+      min-height: 0 !important;
       overflow: visible !important;
     }
     #printable-area.multi-page .bill-items-table {
       height: auto !important;
-      min-height: 113mm !important;
+      min-height: 0 !important;
       table-layout: fixed !important;
       border-collapse: collapse !important;
     }
@@ -281,8 +282,8 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       border-top: 1px solid #000 !important;
     }
     .bill-summary {
-      height: 39mm !important;
-      min-height: 39mm !important;
+      height: auto !important;
+      min-height: 16mm !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
       overflow: visible !important;
@@ -292,8 +293,8 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       border-collapse: collapse !important;
     }
     .bill-bank {
-      height: 17mm !important;
-      min-height: 17mm !important;
+      height: 17.5mm !important;
+      min-height: 17.5mm !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
       overflow: visible !important;
@@ -303,20 +304,20 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       height: 16mm !important;
     }
     .bill-footer {
-      height: 29.5mm !important;
-      min-height: 29.5mm !important;
+      height: 27.5mm !important;
+      min-height: 27.5mm !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
       overflow: visible !important;
     }
     .bill-footer > div {
-      min-height: 29.5mm !important;
-      height: 29.5mm !important;
+      min-height: 27.5mm !important;
+      height: 27.5mm !important;
     }
     @media print {
       .no-print, .no-print * { display: none !important; visibility: hidden !important; }
       html, body { width: 100% !important; height: auto !important; overflow: visible !important; }
-      #printable-area { position: relative !important; left: auto !important; top: auto !important; width: 200mm !important; min-height: 289mm !important; }
+      #printable-area { position: relative !important; left: auto !important; top: auto !important; width: 200mm !important; min-height: 0 !important; height: auto !important; }
     }
   </style>
 </head>
@@ -528,10 +529,20 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
   const logoUrl = companySettings.logoUrl || COMPANY_LOGO_DATA_URI;
 
   // Master Layout Rules:
-  // For 1 to 7 items, the invoice retains the full original 113mm item-table height
+  // For 1 to 7 items, the invoice retains the full original 105mm item-table height
   // and the original balanced A4 page layout with intentional blank filler space.
-  // Only when items cannot fit inside this allocated area (> 7 items) does it dynamically paginate.
-  const isMultiPage = items.length > 7;
+  // The available item area on Page 1 fits up to 7 standard items (or ~88mm total item row height).
+  // Only when items genuinely exceed this available area (> 7 items) does it dynamically paginate.
+  const estimatedItemsHeight = items.reduce((acc, item) => {
+    let h = 11;
+    if (item.description && item.description.length > 40) h += 4;
+    if (item.serialNumbers && item.serialNumbers.trim()) {
+      const snCount = item.serialNumbers.split(/[\n,]+/).length;
+      h += Math.min(snCount * 3.5, 12);
+    }
+    return acc + h;
+  }, 0);
+  const isMultiPage = items.length > 7 || estimatedItemsHeight > 88;
 
   return (
     <div id="print-modal-root" className="flex flex-col h-full bg-slate-900/90 text-slate-100 print:h-auto print:bg-white print:overflow-visible print:block">
@@ -671,7 +682,8 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           style={{
             width: '200mm',
             maxWidth: '200mm',
-            minHeight: '289mm',
+            minHeight: '0',
+            height: 'auto',
             margin: '0 auto',
             padding: '0',
             boxSizing: 'border-box',
@@ -830,11 +842,11 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           {/* 5. ITEMS TABLE (DESCRIPTION OF GOODS) WITH PRECISE COLUMNS & BORDERS */}
           <div
             className={`bill-items bill-items-count-${Math.min(items.length, 5)} border-b border-black`}
-            style={!isMultiPage ? { height: '113mm', minHeight: '113mm' } : { minHeight: '113mm' }}
+            style={!isMultiPage ? { height: '105mm', minHeight: '105mm' } : undefined}
           >
             <table
               className="bill-items-table w-full text-left border-collapse text-[10px]"
-              style={!isMultiPage ? { height: '113mm', minHeight: '113mm' } : { minHeight: '113mm' }}
+              style={!isMultiPage ? { height: '105mm', minHeight: '105mm' } : undefined}
             >
               <thead>
                 <tr className="border-b border-black font-bold text-[10px] text-black">

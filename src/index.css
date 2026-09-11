@@ -43,7 +43,7 @@
   width: 200mm;
   max-width: 200mm;
   min-width: 200mm;
-  min-height: 289mm;
+  min-height: 0;
   margin: 0 auto;
   padding: 0;
   border: 1px solid #000000;
@@ -56,8 +56,8 @@
 }
 
 #printable-area .bill-top-line {
-  height: 6mm;
-  min-height: 6mm;
+  height: 5.5mm;
+  min-height: 5.5mm;
   box-sizing: border-box;
   break-inside: avoid;
   page-break-inside: avoid;
@@ -66,8 +66,8 @@
 #printable-area .bill-header {
   height: 18mm;
   min-height: 18mm;
-  padding-top: 1.5mm;
-  padding-bottom: 1.5mm;
+  padding-top: 1mm;
+  padding-bottom: 1mm;
   box-sizing: border-box;
   break-inside: avoid;
   page-break-inside: avoid;
@@ -81,38 +81,39 @@
 }
 
 #printable-area .bill-invoice-meta {
-  height: 23.5mm;
-  min-height: 23.5mm;
+  height: 20mm;
+  min-height: 20mm;
   box-sizing: border-box;
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
 #printable-area .bill-party {
-  height: 43mm;
-  min-height: 43mm;
+  height: 38mm;
+  min-height: 38mm;
   box-sizing: border-box;
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
 #printable-area .bill-party > div {
-  min-height: 43mm;
+  min-height: 38mm;
+  height: 38mm;
   box-sizing: border-box;
 }
 
-/* Master Allocated Item Table (113mm intentional allocated height for 1 to 7 items) */
+/* Master Allocated Item Table (105mm intentional allocated height for 1 to 7 items) */
 #printable-area .bill-items {
-  min-height: 113mm;
-  height: 113mm;
+  min-height: 105mm;
+  height: 105mm;
   box-sizing: border-box;
   overflow: visible;
 }
 
 #printable-area .bill-items-table {
   width: 100%;
-  min-height: 113mm;
-  height: 113mm;
+  min-height: 105mm;
+  height: 105mm;
   table-layout: fixed;
   border-collapse: collapse;
 }
@@ -180,8 +181,8 @@
 
 /* Summary, Bank Details & Footer Sections */
 #printable-area .bill-summary {
-  height: 39mm;
-  min-height: 39mm;
+  height: auto;
+  min-height: 16mm;
   box-sizing: border-box;
   break-inside: avoid;
   page-break-inside: avoid;
@@ -194,8 +195,8 @@
 }
 
 #printable-area .bill-bank {
-  height: 17mm;
-  min-height: 17mm;
+  height: 17.5mm;
+  min-height: 17.5mm;
   box-sizing: border-box;
   break-inside: avoid;
   page-break-inside: avoid;
@@ -208,8 +209,8 @@
 }
 
 #printable-area .bill-footer {
-  height: 29.5mm;
-  min-height: 29.5mm;
+  height: 27.5mm;
+  min-height: 27.5mm;
   box-sizing: border-box;
   break-inside: avoid;
   page-break-inside: avoid;
@@ -217,19 +218,19 @@
 }
 
 #printable-area .bill-footer > div {
-  min-height: 29.5mm;
-  height: 29.5mm;
+  min-height: 27.5mm;
+  height: 27.5mm;
   box-sizing: border-box;
 }
 
 /* Multi-Page Dynamic Expansion when items exceed page 1 capacity */
 #printable-area.multi-page .bill-items {
-  min-height: 113mm;
+  min-height: 0;
   height: auto;
 }
 
 #printable-area.multi-page .bill-items-table {
-  min-height: 113mm;
+  min-height: 0;
   height: auto;
 }
 
@@ -311,7 +312,8 @@
     width: 200mm !important;
     max-width: 200mm !important;
     min-width: 200mm !important;
-    min-height: 289mm !important;
+    height: auto !important;
+    min-height: 0 !important;
     margin: 0 auto !important;
     padding: 0 !important;
     border: 1px solid #000000 !important;
@@ -331,8 +333,8 @@
 
   /* 3. Document Top Header Sections */
   #printable-area .bill-top-line {
-    height: 6mm !important;
-    min-height: 6mm !important;
+    height: 5.5mm !important;
+    min-height: 5.5mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
@@ -340,8 +342,8 @@
   #printable-area .bill-header {
     height: 18mm !important;
     min-height: 18mm !important;
-    padding-top: 1.5mm !important;
-    padding-bottom: 1.5mm !important;
+    padding-top: 1mm !important;
+    padding-bottom: 1mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
@@ -354,44 +356,44 @@
   }
 
   #printable-area .bill-invoice-meta {
-    height: 23.5mm !important;
-    min-height: 23.5mm !important;
+    height: 20mm !important;
+    min-height: 20mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
   #printable-area .bill-party {
-    height: 43mm !important;
-    min-height: 43mm !important;
+    height: 38mm !important;
+    min-height: 38mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
   #printable-area .bill-party > div {
-    min-height: 43mm !important;
-    height: 43mm !important;
+    min-height: 38mm !important;
+    height: 38mm !important;
   }
 
   /* 4. Master Allocated Items Table */
   #printable-area:not(.multi-page) .bill-items {
-    height: 113mm !important;
-    min-height: 113mm !important;
+    height: 105mm !important;
+    min-height: 105mm !important;
   }
 
   #printable-area:not(.multi-page) .bill-items-table {
-    height: 113mm !important;
-    min-height: 113mm !important;
+    height: 105mm !important;
+    min-height: 105mm !important;
   }
 
   #printable-area.multi-page .bill-items {
     height: auto !important;
-    min-height: 113mm !important;
+    min-height: 0 !important;
     overflow: visible !important;
   }
 
   #printable-area.multi-page .bill-items-table {
     height: auto !important;
-    min-height: 113mm !important;
+    min-height: 0 !important;
   }
 
   #printable-area .bill-items-table thead {
@@ -455,8 +457,8 @@
 
   /* 5. Summary, Bank Details & Footer Sections */
   #printable-area .bill-summary {
-    height: 39mm !important;
-    min-height: 39mm !important;
+    height: auto !important;
+    min-height: 16mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     overflow: visible !important;
@@ -468,8 +470,8 @@
   }
 
   #printable-area .bill-bank {
-    height: 17mm !important;
-    min-height: 17mm !important;
+    height: 17.5mm !important;
+    min-height: 17.5mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     overflow: visible !important;
@@ -481,15 +483,15 @@
   }
 
   #printable-area .bill-footer {
-    height: 29.5mm !important;
-    min-height: 29.5mm !important;
+    height: 27.5mm !important;
+    min-height: 27.5mm !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     overflow: visible !important;
   }
 
   #printable-area .bill-footer > div {
-    min-height: 29.5mm !important;
-    height: 29.5mm !important;
+    min-height: 27.5mm !important;
+    height: 27.5mm !important;
   }
 }
