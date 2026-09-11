@@ -726,11 +726,9 @@ export const BillingView: React.FC = () => {
               <div>
                 <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <span>{editingInvoiceId ? 'Edit GST Tax Invoice' : 'Create Modern Tax Invoice'}</span>
-                  {editingInvoiceId && (
-                    <span className="px-2.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono text-xs font-bold border border-amber-500/20">
-                      ID: {editingInvoiceId}
-                    </span>
-                  )}
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-500 text-[11px] font-bold border border-amber-500/30 uppercase tracking-wider">
+                    GST EPC Compliant
+                  </span>
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Auto calculates subtotal, GST %, discount & remaining balance
@@ -943,12 +941,11 @@ export const BillingView: React.FC = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-amber-500" />
-                        <span>Invoice Line Items & GST Rates</span>
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
+                        Invoice Line Items & GST Rates
                       </h4>
-                      <p className="text-xs text-slate-400">
-                        Configure description, HSN code, quantities, rates, and taxes
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        Line items are automatically synchronized and calculated in real-time
                       </p>
                     </div>
                     <button
@@ -982,56 +979,49 @@ export const BillingView: React.FC = () => {
                         className="p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-4 shadow-xs transition hover:border-slate-300 dark:hover:border-slate-600"
                       >
                         {/* SKU Quick Select Bar */}
-                        <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-slate-200/80 dark:border-slate-700/60">
-                          <div className="flex items-center gap-2.5">
+                        <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-200/80 dark:border-slate-700/60">
+                          <div className="flex items-center gap-2 flex-shrink-0">
                             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider border border-amber-500/20">
                               <Layers className="w-3.5 h-3.5 text-amber-500" />
                               <span>ITEM #{idx + 1}</span>
                             </span>
-                            {item.name ? (
-                              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 hidden md:inline-block max-w-sm truncate" title={item.name}>
-                                {item.name}
-                              </span>
-                            ) : null}
                           </div>
 
-                          <div className="flex items-center gap-2 flex-1 max-w-2xl justify-end">
-                            <div className="flex-1 min-w-[220px] max-w-lg">
-                              <select
-                                id={`item-inventory-select-${idx}`}
-                                className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500 shadow-xs"
-                                onChange={(e) => handleSelectProductForItem(item.id, e.target.value)}
-                                defaultValue=""
-                                title="Choose from Inventory (Auto-fills HSN & Rate)"
-                              >
-                                <option value="" disabled>
-                                  -- Choose from Inventory (Auto-fills HSN & Rate) --
-                                </option>
-                                {products.map((p) => (
-                                  <option key={p.id} value={p.id}>
-                                    [{p.category}] {p.productName || p.name} ({p.make}) • HSN: {p.hsnCode || '8541'} • ₹{p.salePrice?.toLocaleString('en-IN')}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-
-                            <button
-                              type="button"
-                              id={`remove-item-btn-${idx}`}
-                              onClick={() => handleRemoveItem(item.id)}
-                              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-lg transition whitespace-nowrap flex-shrink-0"
-                              title="Delete this item"
+                          <div className="flex-1 min-w-[200px]">
+                            <select
+                              id={`item-inventory-select-${idx}`}
+                              className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500 shadow-xs"
+                              onChange={(e) => handleSelectProductForItem(item.id, e.target.value)}
+                              defaultValue=""
+                              title="Choose from Inventory (Auto-fills HSN & Rate)"
                             >
-                              <Trash2 className="w-3.5 h-3.5" />
-                              <span className="hidden sm:inline">Delete Item</span>
-                            </button>
+                              <option value="" disabled>
+                                -- Choose from Inventory (Auto-fills HSN & Rate) --
+                              </option>
+                              {products.map((p) => (
+                                <option key={p.id} value={p.id}>
+                                  [{p.category}] {p.productName || p.name} ({p.make}) • HSN: {p.hsnCode || '8541'} • ₹{p.salePrice?.toLocaleString('en-IN')}
+                                </option>
+                              ))}
+                            </select>
                           </div>
+
+                          <button
+                            type="button"
+                            id={`remove-item-btn-${idx}`}
+                            onClick={() => handleRemoveItem(item.id)}
+                            className="flex items-center gap-1.5 text-xs font-semibold text-red-500 hover:text-red-400 transition whitespace-nowrap flex-shrink-0 cursor-pointer p-1"
+                            title="Delete this item"
+                          >
+                            <Trash2 className="w-3.5 h-3.5 text-red-500" />
+                            <span>Delete Item</span>
+                          </button>
                         </div>
 
-                        {/* Item Fields: Responsive grid & wrapping */}
-                        <div className="flex flex-wrap items-start gap-3">
+                        {/* Item Fields: Responsive grid & wrapping matching UI */}
+                        <div className="flex flex-wrap items-end gap-3">
                           {/* Description */}
-                          <div className="flex-1 min-w-[260px]">
+                          <div className="flex-1 min-w-[220px]">
                             <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
                               Description of Goods / Services *
                             </label>
@@ -1047,8 +1037,8 @@ export const BillingView: React.FC = () => {
                           </div>
 
                           {/* HSN/SAC Code */}
-                          <div className="w-28 sm:w-32 flex-shrink-0 min-w-[110px]">
-                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                          <div className="w-24 sm:w-28 flex-shrink-0">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap text-center">
                               HSN/SAC Code
                             </label>
                             <input
@@ -1061,8 +1051,8 @@ export const BillingView: React.FC = () => {
                           </div>
 
                           {/* Qty */}
-                          <div className="w-20 sm:w-20 flex-shrink-0 min-w-[70px]">
-                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                          <div className="w-16 sm:w-16 flex-shrink-0">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap text-center">
                               Qty
                             </label>
                             <input
@@ -1075,8 +1065,8 @@ export const BillingView: React.FC = () => {
                           </div>
 
                           {/* Unit */}
-                          <div className="w-20 sm:w-20 flex-shrink-0 min-w-[70px]">
-                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                          <div className="w-16 sm:w-16 flex-shrink-0">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap text-center">
                               Unit
                             </label>
                             <input
@@ -1088,17 +1078,10 @@ export const BillingView: React.FC = () => {
                           </div>
 
                           {/* Rate (₹) */}
-                          <div className="w-36 sm:w-44 flex-shrink-0 min-w-[145px]">
-                            <div className="flex items-center justify-between mb-1.5">
-                              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
-                                Rate (₹)
-                              </label>
-                              {item.rate ? (
-                                <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">
-                                  ₹{Number(item.rate || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                </span>
-                              ) : null}
-                            </div>
+                          <div className="w-28 sm:w-32 flex-shrink-0">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                              Rate (₹)
+                            </label>
                             <input
                               type="number"
                               step="0.01"
@@ -1118,8 +1101,8 @@ export const BillingView: React.FC = () => {
                           </div>
 
                           {/* GST % */}
-                          <div className="w-24 sm:w-24 flex-shrink-0 min-w-[85px]">
-                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                          <div className="w-20 sm:w-24 flex-shrink-0">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap text-center">
                               GST %
                             </label>
                             <select
@@ -1136,18 +1119,13 @@ export const BillingView: React.FC = () => {
                           </div>
 
                           {/* Total (₹) */}
-                          <div className="w-full sm:w-52 flex-shrink-0 min-w-[185px]">
-                            <div className="flex items-center justify-between mb-1.5">
-                              <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
-                                Total (₹)
-                              </label>
-                              <span className="text-[10px] font-semibold text-amber-500 uppercase tracking-wider">
-                                Incl. GST
-                              </span>
-                            </div>
+                          <div className="w-32 sm:w-36 flex-shrink-0">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap text-right">
+                              Total (₹)
+                            </label>
                             <div
                               id={`invoice-item-total-${idx}`}
-                              className="w-full h-10 px-3 py-2 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 font-black font-mono text-xs sm:text-sm text-right whitespace-nowrap flex items-center justify-end select-all shadow-inner tracking-tight"
+                              className="w-full h-10 px-3 py-2 rounded-xl bg-amber-500/10 dark:bg-slate-900 border border-amber-500/40 text-amber-600 dark:text-amber-400 font-bold font-mono text-xs sm:text-sm text-right whitespace-nowrap flex items-center justify-end select-all shadow-inner tracking-tight"
                               title={`Total: ₹${(Number(item.total) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
                             >
                               ₹{(Number(item.total) || 0).toLocaleString('en-IN', {
@@ -1161,10 +1139,10 @@ export const BillingView: React.FC = () => {
                         {/* Product Serial Number(s) */}
                         <div className="pt-2.5 border-t border-slate-200/80 dark:border-slate-700/60">
                           <div className="flex items-center justify-between mb-1.5">
-                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-                              Serial Number(s)
+                            <label className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
+                              SERIAL NUMBER(S)
                             </label>
-                            <span className="text-[11px] text-slate-400">
+                            <span className="text-[11px] text-slate-500">
                               Single or multiple (comma / line break separated)
                             </span>
                           </div>
@@ -1323,26 +1301,25 @@ export const BillingView: React.FC = () => {
                     };
                     triggerPrint('invoice', previewInv);
                   }}
-                  className="px-4 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 flex items-center gap-2 transition whitespace-nowrap text-xs"
+                  className="px-4 py-2.5 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 dark:text-blue-400 font-semibold flex items-center gap-2 text-xs transition shadow-xs"
                 >
                   <Eye className="w-4 h-4" />
-                  <span>Preview A4 Invoice / Print</span>
+                  <span>Preview Single A4 Invoice</span>
                 </button>
 
                 <div className="flex items-center gap-2.5">
                   <button
                     type="button"
                     onClick={() => setModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition whitespace-nowrap text-xs"
+                    className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition whitespace-nowrap text-xs"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition shadow-md shadow-amber-500/20 whitespace-nowrap text-xs flex items-center gap-1.5"
+                    className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition shadow-md shadow-amber-500/20 whitespace-nowrap text-xs"
                   >
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Save & Generate Invoice</span>
+                    Save & Generate Invoice
                   </button>
                 </div>
               </div>

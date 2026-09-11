@@ -26,8 +26,6 @@ import { SettingsView } from './components/settings/SettingsView';
 import { AccountingView } from './components/accounting/AccountingView';
 import { GeminiChatModal } from './components/ai/GeminiChatModal';
 import { GeminiLiveVoiceModal } from './components/ai/GeminiLiveVoiceModal';
-import { Sparkles, Radio } from 'lucide-react';
-
 const AppContent: React.FC = () => {
   const {
     activeTab,
@@ -126,30 +124,6 @@ const AppContent: React.FC = () => {
           onClose={() => setIsVoiceLiveActive(false)}
           onOpenChat={() => setIsAiAssistantOpen(true)}
         />
-
-        {/* Sleek Floating AI Capsule Dock */}
-        <div className="fixed bottom-6 right-6 z-40 flex items-center p-1.5 rounded-full bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md border border-slate-700/60 shadow-xl shadow-slate-950/25 gap-1.5">
-          {/* Live Voice Floating Trigger */}
-          <button
-            onClick={() => setIsVoiceLiveActive(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold transition"
-            title="Launch Real-time Voice with gemini-3.1-flash-live-preview"
-          >
-            <Radio className="w-3.5 h-3.5 text-red-400 animate-pulse" />
-            <span className="hidden sm:inline">Live Voice</span>
-          </button>
-
-          {/* AI Copilot Primary FAB */}
-          <button
-            onClick={() => setIsAiAssistantOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition shadow-xs group"
-            title="Open SolarFlow AI Copilot"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-slate-950 group-hover:rotate-12 transition-transform" />
-            <span>AI Copilot</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-          </button>
-        </div>
       </div>
     </div>
   );
