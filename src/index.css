@@ -46,40 +46,13 @@
   min-height: 0;
   margin: 0 auto;
   padding: 0;
-  border: none;
-  box-sizing: border-box;
-  overflow: visible;
-  background: transparent;
-  color: #000000;
-  font-size: 11px;
-  line-height: 1.3;
-}
-
-.bill-page {
-  display: block;
-  position: relative;
-  width: 200mm;
-  max-width: 200mm;
-  min-width: 200mm;
-  min-height: 0;
-  margin: 0 auto;
-  padding: 0;
   border: 1px solid #000000;
   box-sizing: border-box;
   overflow: visible;
   background: #ffffff;
   color: #000000;
-}
-
-.bill-page:not(:last-child) {
-  margin-bottom: 24px;
-  page-break-after: always;
-  break-after: page;
-}
-
-.bill-page:not(:first-child) {
-  page-break-before: always;
-  break-before: page;
+  font-size: 11px;
+  line-height: 1.3;
 }
 
 #printable-area .bill-top-line {
@@ -332,7 +305,7 @@
     display: none !important;
   }
 
-  /* 2. Master Printable Document Container & Pages */
+  /* 2. Master Printable Document Container */
   #printable-area {
     display: block !important;
     position: relative !important;
@@ -343,10 +316,10 @@
     min-height: 0 !important;
     margin: 0 auto !important;
     padding: 0 !important;
-    border: none !important;
+    border: 1px solid #000000 !important;
     box-sizing: border-box !important;
     overflow: visible !important;
-    background: transparent !important;
+    background: #ffffff !important;
     color: #000000 !important;
     box-shadow: none !important;
     transform: none !important;
@@ -354,37 +327,8 @@
     line-height: 1.3 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-  }
-
-  .bill-page {
-    display: block !important;
-    position: relative !important;
-    width: 200mm !important;
-    max-width: 200mm !important;
-    min-width: 200mm !important;
-    border: 1px solid #000000 !important;
-    box-sizing: border-box !important;
-    background: #ffffff !important;
-    color: #000000 !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    box-shadow: none !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
     box-decoration-break: clone !important;
     -webkit-box-decoration-break: clone !important;
-  }
-
-  .bill-page:not(:last-child) {
-    margin-bottom: 0 !important;
-    page-break-after: always !important;
-    break-after: page !important;
-  }
-
-  .bill-page:not(:first-child) {
-    page-break-before: always !important;
-    break-before: page !important;
   }
 
   /* 3. Document Top Header Sections */
