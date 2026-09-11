@@ -1043,13 +1043,21 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           <div className="bill-footer grid grid-cols-2 divide-x divide-black text-[9.5px]">
             {/* Left: Terms & Conditions */}
             <div className="px-3 py-2 flex flex-col justify-start">
-              <div className="font-bold text-[10px]">Terms & Conditions</div>
-              <div className="pl-2.5 space-y-0.5 text-[9px] mt-0.5 text-black leading-tight">
-                <div>E.& O.E.</div>
-                <div>Goods once sold will not be taken back.</div>
-                <div>Interest @ 18% p.a. will be charged if the payment is not made within the stipulated time.</div>
-                <div>Subject to local jurisdiction only.</div>
-              </div>
+             <div className="font-bold text-[10px]">Terms & Conditions</div>
+<div className="pl-2.5 space-y-0.5 text-[9px] mt-0.5 text-black leading-tight">
+  {invoice.notes && invoice.notes.trim() ? (
+    invoice.notes.split('\n').map((line, index) => (
+      <div key={index}>{line}</div>
+    ))
+  ) : (
+    <>
+      <div>E.& O.E.</div>
+      <div>Goods once sold will not be taken back.</div>
+      <div>Interest @ 18% p.a. will be charged if the payment is not made within the stipulated time.</div>
+      <div>Subject to local jurisdiction only.</div>
+    </>
+  )}
+</div>
             </div>
 
             {/* Right: Receiver's Signature & Authorised Signatory */}
