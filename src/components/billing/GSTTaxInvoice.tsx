@@ -169,13 +169,38 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       min-height: 0 !important;
       margin: 0 auto !important;
       padding: 0 !important;
-      border: 1px solid #000 !important;
+      border: none !important;
       box-sizing: border-box !important;
       overflow: visible !important;
+      background: transparent !important;
+      color: #000 !important;
+    }
+    .bill-page {
+      display: block !important;
+      position: relative !important;
+      width: 200mm !important;
+      max-width: 200mm !important;
+      min-width: 200mm !important;
+      border: 1px solid #000 !important;
+      box-sizing: border-box !important;
       background: #fff !important;
       color: #000 !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+      overflow: visible !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
       box-decoration-break: clone !important;
       -webkit-box-decoration-break: clone !important;
+    }
+    .bill-page:not(:last-child) {
+      margin-bottom: 24px;
+      page-break-after: always !important;
+      break-after: page !important;
+    }
+    .bill-page:not(:first-child) {
+      page-break-before: always !important;
+      break-before: page !important;
     }
     .bill-top-line {
       height: 5.5mm !important;
@@ -317,7 +342,10 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
     @media print {
       .no-print, .no-print * { display: none !important; visibility: hidden !important; }
       html, body { width: 100% !important; height: auto !important; overflow: visible !important; }
-      #printable-area { position: relative !important; left: auto !important; top: auto !important; width: 200mm !important; min-height: 0 !important; height: auto !important; }
+      #printable-area { position: relative !important; left: auto !important; top: auto !important; width: 200mm !important; min-height: 0 !important; height: auto !important; border: none !important; }
+      .bill-page { border: 1px solid #000 !important; }
+      .bill-page:not(:last-child) { margin-bottom: 0 !important; page-break-after: always !important; break-after: page !important; }
+      .bill-page:not(:first-child) { page-break-before: always !important; break-before: page !important; }
     }
   </style>
 </head>
@@ -1044,12 +1072,20 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
             {/* Left: Terms & Conditions */}
             <div className="px-3 py-2 flex flex-col justify-start">
               <div className="font-bold text-[10px]">Terms & Conditions</div>
-              <div className="pl-2.5 space-y-0.5 text-[9px] mt-0.5 text-black leading-tight">
-                <div>E.& O.E.</div>
-                <div>Goods once sold will not be taken back.</div>
-                <div>Interest @ 18% p.a. will be charged if the payment is not made within the stipulated time.</div>
-                <div>Subject to local jurisdiction only.</div>
-              </div>
+<div className="pl-2.5 space-y-0.5 text-[9px] mt-0.5 text-black leading-tight">
+  {invoice.notes
+    ? invoice.notes.split('\n').map((line, index) => (
+        <div key={index}>{line}</div>
+      ))
+    : (
+      <>
+        <div>E.& O.E.</div>
+        <div>Goods once sold will not be taken back.</div>
+        <div>Interest @ 18% p.a. will be charged if the payment is not made within the stipulated time.</div>
+        <div>Subject to local jurisdiction only.</div>
+      </>
+    )}
+</div>
             </div>
 
             {/* Right: Receiver's Signature & Authorised Signatory */}
