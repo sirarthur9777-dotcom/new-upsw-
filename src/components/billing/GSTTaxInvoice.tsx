@@ -157,7 +157,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
     }
     @page {
       size: A4 portrait;
-      margin: 6mm 5mm !important;
+      margin: 4mm 5mm !important;
     }
     #printable-area {
       display: block !important;
@@ -165,9 +165,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       width: 200mm !important;
       max-width: 200mm !important;
       min-width: 200mm !important;
-      height: auto !important;
-      min-height: 0 !important;
-      max-height: none !important;
+      min-height: 289mm !important;
       margin: 0 auto !important;
       padding: 0 !important;
       border: 1px solid #000 !important;
@@ -178,19 +176,21 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       box-decoration-break: clone !important;
       -webkit-box-decoration-break: clone !important;
     }
-    .bill-top-line,
-    .bill-header,
-    .bill-invoice-meta,
-    .bill-party,
-    .bill-summary,
-    .bill-bank,
-    .bill-footer {
-      height: auto !important;
-      min-height: 0 !important;
-      max-height: none !important;
+    .bill-top-line {
+      height: 6mm !important;
+      min-height: 6mm !important;
+      box-sizing: border-box !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
-      overflow: visible !important;
+    }
+    .bill-header {
+      height: 18mm !important;
+      min-height: 18mm !important;
+      padding-top: 1.5mm !important;
+      padding-bottom: 1.5mm !important;
+      box-sizing: border-box !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
     }
     .bill-header img,
     .bill-header > div:first-child,
@@ -198,22 +198,43 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       width: 16mm !important;
       height: 16mm !important;
     }
-    .bill-party > div,
-    .bill-footer > div {
-      min-height: 0 !important;
-      height: auto !important;
+    .bill-invoice-meta {
+      height: 23.5mm !important;
+      min-height: 23.5mm !important;
+      box-sizing: border-box !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
     }
-    .bill-items {
+    .bill-party {
+      height: 43mm !important;
+      min-height: 43mm !important;
+      box-sizing: border-box !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .bill-party > div {
+      min-height: 43mm !important;
+      height: 43mm !important;
+    }
+    #printable-area:not(.multi-page) .bill-items {
+      height: 113mm !important;
+      min-height: 113mm !important;
+      box-sizing: border-box !important;
+    }
+    #printable-area:not(.multi-page) .bill-items-table {
+      height: 113mm !important;
+      min-height: 113mm !important;
+      table-layout: fixed !important;
+      border-collapse: collapse !important;
+    }
+    #printable-area.multi-page .bill-items {
       height: auto !important;
-      min-height: 0 !important;
-      max-height: none !important;
+      min-height: 113mm !important;
       overflow: visible !important;
     }
-    .bill-items-table {
-      width: 100% !important;
+    #printable-area.multi-page .bill-items-table {
       height: auto !important;
-      min-height: 0 !important;
-      max-height: none !important;
+      min-height: 113mm !important;
       table-layout: fixed !important;
       border-collapse: collapse !important;
     }
@@ -222,6 +243,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       height: auto !important;
     }
     .bill-items-table thead tr {
+      height: 7mm !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
       border-top: 1px solid #000 !important;
@@ -229,11 +251,17 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
     }
     .bill-items-table tbody {
       display: table-row-group !important;
-      height: auto !important;
     }
-    .bill-items-table tbody tr {
+    .bill-items-table tbody tr.bill-item-row {
+      height: 1px !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
+    }
+    .bill-items-table tbody tr.bill-items-filler {
+      height: 100% !important;
+    }
+    .bill-items-table tbody tr.bill-items-filler td {
+      height: 100% !important;
     }
     .bill-items-table th,
     .bill-items-table td {
@@ -246,26 +274,49 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
     .bill-items-table th:nth-child(5), .bill-items-table td:nth-child(5) { width: 14mm !important; }
     .bill-items-table th:nth-child(6), .bill-items-table td:nth-child(6) { width: 26mm !important; }
     .bill-items-table th:nth-child(7), .bill-items-table td:nth-child(7) { width: 31mm !important; }
-    .bill-items-filler { height: auto !important; }
     .bill-items-total {
-      height: auto !important;
+      height: 7.5mm !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
       border-top: 1px solid #000 !important;
     }
+    .bill-summary {
+      height: 39mm !important;
+      min-height: 39mm !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      overflow: visible !important;
+    }
     .bill-summary table {
-      height: auto !important;
       table-layout: fixed !important;
       border-collapse: collapse !important;
+    }
+    .bill-bank {
+      height: 17mm !important;
+      min-height: 17mm !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      overflow: visible !important;
     }
     .bill-bank img {
       width: 16mm !important;
       height: 16mm !important;
     }
+    .bill-footer {
+      height: 29.5mm !important;
+      min-height: 29.5mm !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      overflow: visible !important;
+    }
+    .bill-footer > div {
+      min-height: 29.5mm !important;
+      height: 29.5mm !important;
+    }
     @media print {
       .no-print, .no-print * { display: none !important; visibility: hidden !important; }
       html, body { width: 100% !important; height: auto !important; overflow: visible !important; }
-      #printable-area { position: relative !important; left: auto !important; top: auto !important; width: 200mm !important; height: auto !important; }
+      #printable-area { position: relative !important; left: auto !important; top: auto !important; width: 200mm !important; min-height: 289mm !important; }
     }
   </style>
 </head>
@@ -476,6 +527,12 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
   // Logo selection
   const logoUrl = companySettings.logoUrl || COMPANY_LOGO_DATA_URI;
 
+  // Master Layout Rules:
+  // For 1 to 7 items, the invoice retains the full original 113mm item-table height
+  // and the original balanced A4 page layout with intentional blank filler space.
+  // Only when items cannot fit inside this allocated area (> 7 items) does it dynamically paginate.
+  const isMultiPage = items.length > 7;
+
   return (
     <div id="print-modal-root" className="flex flex-col h-full bg-slate-900/90 text-slate-100 print:h-auto print:bg-white print:overflow-visible print:block">
       {/* ------------------------------------------------------------- */}
@@ -610,10 +667,11 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
 
         <div
           id="printable-area"
-          className="bg-white text-black font-sans shadow-2xl border border-black box-border print:border-black"
+          className={`bg-white text-black font-sans shadow-2xl border border-black box-border print:border-black ${isMultiPage ? 'multi-page' : 'single-page'}`}
           style={{
             width: '200mm',
             maxWidth: '200mm',
+            minHeight: '289mm',
             margin: '0 auto',
             padding: '0',
             boxSizing: 'border-box',
@@ -770,8 +828,14 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           </div>
 
           {/* 5. ITEMS TABLE (DESCRIPTION OF GOODS) WITH PRECISE COLUMNS & BORDERS */}
-          <div className={`bill-items bill-items-count-${Math.min(items.length, 5)} border-b border-black`}>
-            <table className="bill-items-table w-full text-left border-collapse text-[10px]">
+          <div
+            className={`bill-items bill-items-count-${Math.min(items.length, 5)} border-b border-black`}
+            style={!isMultiPage ? { height: '113mm', minHeight: '113mm' } : { minHeight: '113mm' }}
+          >
+            <table
+              className="bill-items-table w-full text-left border-collapse text-[10px]"
+              style={!isMultiPage ? { height: '113mm', minHeight: '113mm' } : { minHeight: '113mm' }}
+            >
               <thead>
                 <tr className="border-b border-black font-bold text-[10px] text-black">
                   <th className="py-1.5 px-2 text-center w-[36px] border-r border-black font-bold">
@@ -807,7 +871,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
                       : item.description || `Model: ${item.name}`);
 
                   return (
-                    <tr key={item.id || idx} className="align-top">
+                    <tr key={item.id || idx} className="bill-item-row align-top">
                       <td className="py-2 px-2 text-center border-r border-black">
                         {idx + 1}.
                       </td>
@@ -847,9 +911,9 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
                   );
                 })}
 
-                {/* Blank spacing filler rows to preserve the classic look while fitting single A4 */}
-                {items.length <= 2 && (
-                  <tr className="bill-items-filler align-top">
+                {/* Intentional blank space filler area: preserves the full original item-table height & balanced layout */}
+                {!isMultiPage && (
+                  <tr className="bill-items-filler align-top" style={{ height: '100%' }}>
                     <td className="border-r border-black">&nbsp;</td>
                     <td className="border-r border-black">&nbsp;</td>
                     <td className="border-r border-black">&nbsp;</td>
