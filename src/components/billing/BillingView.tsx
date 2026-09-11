@@ -14,9 +14,19 @@ import {
   Layers,
   Edit2,
   Lock,
+  CheckCircle2,
+  Truck,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Invoice, InvoiceItem, PaymentMode } from '../../types';
+
+// Helper to clean floating-point artifacts for display (e.g., 15400.00000001 -> 15400)
+const cleanRate = (val: any): string | number => {
+  if (val === '' || val === undefined || val === null) return '';
+  const num = Number(val);
+  if (isNaN(num)) return val;
+  return Math.round((num + Number.EPSILON) * 100) / 100;
+};
 
 export const BillingView: React.FC = () => {
   const { invoices, customers, projects, products, companySettings, addInvoice, updateInvoice, deleteInvoice, triggerPrint } = useApp();
@@ -177,10 +187,20 @@ export const BillingView: React.FC = () => {
     setNotes(inv.notes || '');
     setItems(
       (inv.items && inv.items.length > 0)
-        ? inv.items.map((it) => ({
-            ...it,
-            serialNumbers: it.serialNumbers || '',
-          }))
+        ? inv.items.map((it) => {
+            const cleanR = typeof it.rate === 'number' ? Math.round((it.rate + Number.EPSILON) * 100) / 100 : it.rate;
+            const cleanSub = typeof it.subtotal === 'number' ? Math.round((it.subtotal + Number.EPSILON) * 100) / 100 : it.subtotal;
+            const cleanTax = typeof it.tax === 'number' ? Math.round((it.tax + Number.EPSILON) * 100) / 100 : it.tax;
+            const cleanTot = typeof it.total === 'number' ? Math.round((it.total + Number.EPSILON) * 100) / 100 : it.total;
+            return {
+              ...it,
+              rate: cleanR,
+              subtotal: cleanSub,
+              tax: cleanTax,
+              total: cleanTot,
+              serialNumbers: it.serialNumbers || '',
+            };
+          })
         : [
             {
               id: '1',
@@ -340,6 +360,15 @@ export const BillingView: React.FC = () => {
               const isSolarEquip = ['VFD', 'Solar Panel', 'Solar Panels', 'Inverters', 'Batteries'].includes(match.category);
               updated.gstPercent = isSolarEquip ? 12 : 18;
               if (match.hsnCode) updated.hsnCode = match.hsnCode;
+            }
+          }
+
+          if (field === 'rate') {
+            if (value === '' || value === undefined || value === null) {
+              updated.rate = '';
+            } else {
+              const parsed = parseFloat(value);
+              updated.rate = isNaN(parsed) ? 0 : Math.round((parsed + Number.EPSILON) * 100) / 100;
             }
           }
 
@@ -690,469 +719,564 @@ export const BillingView: React.FC = () => {
 
       {/* CREATE / EDIT INVOICE MODAL */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in overflow-y-auto">
-          <div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-6">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in overflow-y-auto">
+          <div className="w-full max-w-6xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-4 sm:my-6 max-h-[92vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex-shrink-0 bg-white dark:bg-slate-900">
               <div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                  {editingInvoiceId ? 'Edit GST Tax Invoice' : 'Create Modern Tax Invoice'}
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <span>{editingInvoiceId ? 'Edit GST Tax Invoice' : 'Create Modern Tax Invoice'}</span>
+                  {editingInvoiceId && (
+                    <span className="px-2.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono text-xs font-bold border border-amber-500/20">
+                      ID: {editingInvoiceId}
+                    </span>
+                  )}
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Auto calculates subtotal, GST %, discount & remaining balance
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                title="Close"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateInvoiceSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto text-xs">
-              {/* Top Details: Customer & Invoice Meta */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
-                <div className="md:col-span-2">
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                    Select Customer (Billed To) *
-                  </label>
-                  <select
-                    value={selectedCustomerId}
-                    onChange={(e) => setSelectedCustomerId(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 font-semibold"
-                  >
-                    {customers.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name} ({c.mobile}) - {c.district || c.address}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                    Invoice Date
-                  </label>
-                  <input
-                    type="date"
-                    value={invoiceDate}
-                    onChange={(e) => setInvoiceDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 font-medium"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                    Payment Due Date
-                  </label>
-                  <input
-                    type="date"
-                    value={dueDate}
-                    onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 font-medium"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                    Place of Supply
-                  </label>
-                  <input
-                    type="text"
-                    value={placeOfSupply}
-                    onChange={(e) => setPlaceOfSupply(e.target.value)}
-                    placeholder="e.g. 09-Uttar Pradesh"
-                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-medium"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                    Reverse Charge
-                  </label>
-                  <select
-                    value={reverseCharge}
-                    onChange={(e) => setReverseCharge(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
-                  >
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                    GR / RR / DC No.
-                  </label>
-                  <input
-                    type="text"
-                    value={grNo}
-                    onChange={(e) => setGrNo(e.target.value)}
-                    placeholder="e.g. GR-9821"
-                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                    Vehicle Number
-                  </label>
-                  <input
-                    type="text"
-                    value={vehicleNo}
-                    onChange={(e) => setVehicleNo(e.target.value)}
-                    placeholder="e.g. UP 62 AB 9988"
-                    className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-mono uppercase"
-                  />
-                </div>
-              </div>
-
-              {/* Shipped To (Consignee) Details Toggle */}
-              <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-900 dark:text-white text-xs">
-                    Consignee / Shipped To Details
-                  </span>
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-600 dark:text-slate-300">
-                    <input
-                      type="checkbox"
-                      checked={sameAsBilling}
-                      onChange={(e) => setSameAsBilling(e.target.checked)}
-                      className="rounded text-amber-500 focus:ring-amber-400"
-                    />
-                    <span>Same as Billed To (Customer Details)</span>
-                  </label>
-                </div>
-
-                {!sameAsBilling && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 border-t border-slate-200 dark:border-slate-700 animate-in fade-in">
-                    <div>
-                      <label className="block text-[11px] font-semibold text-slate-500 mb-1">Consignee Name</label>
-                      <input
-                        type="text"
-                        value={shippingName}
-                        onChange={(e) => setShippingName(e.target.value)}
-                        placeholder="Recipient / Site Contact Name"
-                        className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border dark:border-slate-700 text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-semibold text-slate-500 mb-1">Consignee Mobile</label>
-                      <input
-                        type="text"
-                        value={shippingMobile}
-                        onChange={(e) => setShippingMobile(e.target.value)}
-                        placeholder="Phone Number"
-                        className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border dark:border-slate-700 text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-semibold text-slate-500 mb-1">Consignee GSTIN / PAN</label>
-                      <input
-                        type="text"
-                        value={shippingGst}
-                        onChange={(e) => setShippingGst(e.target.value)}
-                        placeholder="GSTIN or Unregistered"
-                        className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border dark:border-slate-700 text-xs font-mono uppercase"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-[11px] font-semibold text-slate-500 mb-1">Delivery / Site Address</label>
-                      <input
-                        type="text"
-                        value={shippingAddress}
-                        onChange={(e) => setShippingAddress(e.target.value)}
-                        placeholder="Full delivery location address"
-                        className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border dark:border-slate-700 text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-semibold text-slate-500 mb-1">State & State Code</label>
-                      <div className="grid grid-cols-3 gap-1">
-                        <input
-                          type="text"
-                          value={shippingState}
-                          onChange={(e) => setShippingState(e.target.value)}
-                          placeholder="Uttar Pradesh"
-                          className="col-span-2 px-2 py-1.5 rounded-xl bg-white dark:bg-slate-900 border dark:border-slate-700 text-xs"
-                        />
-                        <input
-                          type="text"
-                          value={shippingStateCode}
-                          onChange={(e) => setShippingStateCode(e.target.value)}
-                          placeholder="09"
-                          className="col-span-1 px-1 py-1.5 rounded-xl bg-white dark:bg-slate-900 border dark:border-slate-700 text-xs text-center font-mono"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Dynamic Items Table */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white text-sm">
-                      Invoice Line Items & GST Rates
-                    </h4>
-                    <p className="text-[11px] text-slate-400">Fits strictly in the single-page A4 print table</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleAddItem()}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 font-bold text-xs transition"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Add Item</span>
-                  </button>
-                </div>
-
-                {/* Datalist for autocomplete */}
-                <datalist id="billing-inventory-products">
-                  {products.map((p) => (
-                    <option
-                      key={p.id}
-                      value={`${p.productName || p.name} (${p.make || 'UBSW'})`}
-                    >
-                      HSN: {p.hsnCode || '8541'} | Rate: ₹{p.salePrice} | Unit: {p.unit || 'Nos'}
-                    </option>
-                  ))}
-                </datalist>
-
-                <div className="space-y-3">
-                  {items.map((item, idx) => (
-                    <div
-                      key={item.id}
-                      className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-2.5 shadow-sm"
-                    >
-                      {/* SKU Quick Select Bar */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-200/60 dark:border-slate-700/60">
-                        <div className="flex items-center gap-2 flex-1 min-w-[200px]">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                            <Layers className="w-3 h-3 text-amber-500" />
-                            <span>Item #{idx + 1}:</span>
-                          </span>
-                          <select
-                            className="flex-1 max-w-sm px-2.5 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500"
-                            onChange={(e) => handleSelectProductForItem(item.id, e.target.value)}
-                            defaultValue=""
-                          >
-                            <option value="" disabled>
-                              -- Choose from Inventory (Auto-fills HSN & Rate) --
-                            </option>
-                            {products.map((p) => (
-                              <option key={p.id} value={p.id}>
-                                [{p.category}] {p.productName || p.name} ({p.make}) • HSN: {p.hsnCode || '8541'} • ₹{p.salePrice?.toLocaleString()}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveItem(item.id)}
-                            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition"
-                            title="Remove item"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-12 gap-2 items-center">
-                        <div className="col-span-12 sm:col-span-4">
-                          <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">
-                            Description of Goods / Services *
-                          </label>
-                          <input
-                            type="text"
-                            list="billing-inventory-products"
-                            value={item.name}
-                            onChange={(e) => handleItemChange(item.id, 'name', e.target.value)}
-                            placeholder="Item name & brand"
-                            className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs font-medium focus:outline-none focus:border-amber-500"
-                          />
-                        </div>
-
-                        <div className="col-span-4 sm:col-span-2">
-                          <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">
-                            HSN/SAC Code
-                          </label>
-                          <input
-                            type="text"
-                            value={item.hsnCode || '8541'}
-                            onChange={(e) => handleItemChange(item.id, 'hsnCode', e.target.value)}
-                            placeholder="8541"
-                            className="w-full px-2 py-1.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center font-mono text-xs font-bold focus:outline-none focus:border-amber-500"
-                          />
-                        </div>
-
-                        <div className="col-span-4 sm:col-span-1">
-                          <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">
-                            Qty
-                          </label>
-                          <input
-                            type="number"
-                            min={1}
-                            value={item.quantity}
-                            onChange={(e) => handleItemChange(item.id, 'quantity', e.target.value)}
-                            className="w-full px-2 py-1.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center text-xs font-bold focus:outline-none focus:border-amber-500"
-                          />
-                        </div>
-
-                        <div className="col-span-4 sm:col-span-1">
-                          <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">
-                            Unit
-                          </label>
-                          <input
-                            type="text"
-                            value={item.unit}
-                            onChange={(e) => handleItemChange(item.id, 'unit', e.target.value)}
-                            className="w-full px-1.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center text-xs font-medium focus:outline-none focus:border-amber-500"
-                          />
-                        </div>
-
-                        <div className="col-span-4 sm:col-span-2">
-                          <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">
-                            Rate (₹)
-                          </label>
-                          <input
-                            type="number"
-                            value={item.rate}
-                            onChange={(e) => handleItemChange(item.id, 'rate', e.target.value)}
-                            className="w-full px-2 py-1.5 rounded-xl bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 border border-slate-200 dark:border-slate-700 text-right text-xs font-bold focus:outline-none focus:border-amber-500"
-                          />
-                        </div>
-
-                        <div className="col-span-4 sm:col-span-1">
-                          <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">
-                            GST %
-                          </label>
-                          <select
-                            value={item.gstPercent}
-                            onChange={(e) => handleItemChange(item.id, 'gstPercent', e.target.value)}
-                            className="w-full px-1 py-1.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center text-xs font-bold focus:outline-none focus:border-amber-500"
-                          >
-                            <option value={0}>0%</option>
-                            <option value={5}>5%</option>
-                            <option value={12}>12%</option>
-                            <option value={18}>18%</option>
-                            <option value={28}>28%</option>
-                          </select>
-                        </div>
-
-                        <div className="col-span-4 sm:col-span-1 text-right">
-                          <label className="block text-[10px] text-slate-400 font-semibold mb-0.5">
-                            Total (₹)
-                          </label>
-                          <div className="px-2 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 font-extrabold text-amber-600 dark:text-amber-400 text-xs text-right truncate">
-                            ₹{item.total?.toLocaleString()}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Product Serial Number(s) */}
-                      <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
-                        <div className="flex items-center justify-between mb-1">
-                          <label className="block text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
-                            Serial Number(s)
-                          </label>
-                          <span className="text-[10px] text-slate-400">
-                            Single or multiple (comma / line break separated)
-                          </span>
-                        </div>
-                        <textarea
-                          rows={1}
-                          value={item.serialNumbers || ''}
-                          onChange={(e) => handleItemChange(item.id, 'serialNumbers', e.target.value)}
-                          placeholder="e.g. SN001234, SN001235, SN001236"
-                          className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs font-mono placeholder:font-sans placeholder:text-slate-400 focus:outline-none focus:border-amber-500 min-h-[34px] resize-y"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Total Summary Row */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200 dark:border-slate-800">
-                <div className="space-y-3">
-                  <div>
-                    <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                      Payment Mode
+            {/* Form & Scrollable Content */}
+            <form onSubmit={handleCreateInvoiceSubmit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 text-xs">
+                {/* Top Details: Customer & Invoice Meta */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+                  <div className="sm:col-span-2 lg:col-span-2">
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                      Select Customer (Billed To) *
                     </label>
                     <select
-                      value={paymentMode}
-                      onChange={(e) => setPaymentMode(e.target.value as PaymentMode)}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-semibold"
+                      value={selectedCustomerId}
+                      onChange={(e) => setSelectedCustomerId(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-xs sm:text-sm font-semibold shadow-xs"
                     >
-                      <option value="Cash">Cash</option>
-                      <option value="UPI">UPI / Digital QR</option>
-                      <option value="Bank Transfer">NEFT / RTGS / Bank Transfer</option>
-                      <option value="Cheque">Cheque</option>
+                      {customers.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name} ({c.mobile}) - {c.district || c.address}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                      Advance Received (₹)
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                      Invoice Date
                     </label>
                     <input
-                      type="number"
-                      value={advancePaid}
-                      onChange={(e) => setAdvancePaid(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-bold font-mono"
+                      type="date"
+                      value={invoiceDate}
+                      onChange={(e) => setInvoiceDate(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-xs sm:text-sm font-medium shadow-xs"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
-                      Invoice Notes / Terms
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                      Payment Due Date
                     </label>
-                    <textarea
-                      rows={2}
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
+                    <input
+                      type="date"
+                      value={dueDate}
+                      onChange={(e) => setDueDate(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-xs sm:text-sm font-medium shadow-xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                      Place of Supply
+                    </label>
+                    <input
+                      type="text"
+                      value={placeOfSupply}
+                      onChange={(e) => setPlaceOfSupply(e.target.value)}
+                      placeholder="e.g. 09-Uttar Pradesh"
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-xs sm:text-sm font-medium shadow-xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                      Reverse Charge
+                    </label>
+                    <select
+                      value={reverseCharge}
+                      onChange={(e) => setReverseCharge(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-xs sm:text-sm font-semibold shadow-xs"
+                    >
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                      GR / RR / DC No.
+                    </label>
+                    <input
+                      type="text"
+                      value={grNo}
+                      onChange={(e) => setGrNo(e.target.value)}
+                      placeholder="e.g. GR-9821"
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-xs sm:text-sm font-mono shadow-xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                      Vehicle Number
+                    </label>
+                    <input
+                      type="text"
+                      value={vehicleNo}
+                      onChange={(e) => setVehicleNo(e.target.value)}
+                      placeholder="e.g. UP 62 AB 9988"
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-xs sm:text-sm font-mono uppercase shadow-xs"
                     />
                   </div>
                 </div>
 
-                <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 text-xs">
-                  <div className="flex justify-between text-slate-500">
-                    <span>Taxable Value (Subtotal):</span>
-                    <span className="font-semibold text-slate-800 dark:text-slate-200">₹{subtotal.toLocaleString()}</span>
+                {/* Shipped To (Consignee) Details Toggle */}
+                <div className="p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-bold text-slate-900 dark:text-white text-xs sm:text-sm flex items-center gap-1.5">
+                      <Truck className="w-4 h-4 text-amber-500" />
+                      <span>Consignee / Shipped To Details</span>
+                    </span>
+                    <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-600 dark:text-slate-300">
+                      <input
+                        type="checkbox"
+                        checked={sameAsBilling}
+                        onChange={(e) => setSameAsBilling(e.target.checked)}
+                        className="w-4 h-4 rounded text-amber-500 focus:ring-amber-400 cursor-pointer"
+                      />
+                      <span>Same as Billed To (Customer Details)</span>
+                    </label>
                   </div>
-                  <div className="flex justify-between text-slate-500">
-                    <span>CGST Amount:</span>
-                    <span>₹{cgstTotal.toLocaleString()}</span>
+
+                  {!sameAsBilling && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-3 border-t border-slate-200 dark:border-slate-700 animate-in fade-in">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                          Consignee Name
+                        </label>
+                        <input
+                          type="text"
+                          value={shippingName}
+                          onChange={(e) => setShippingName(e.target.value)}
+                          placeholder="Recipient / Site Contact Name"
+                          className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm shadow-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                          Consignee Mobile
+                        </label>
+                        <input
+                          type="text"
+                          value={shippingMobile}
+                          onChange={(e) => setShippingMobile(e.target.value)}
+                          placeholder="Phone Number"
+                          className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm shadow-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                          Consignee GSTIN / PAN
+                        </label>
+                        <input
+                          type="text"
+                          value={shippingGst}
+                          onChange={(e) => setShippingGst(e.target.value)}
+                          placeholder="GSTIN or Unregistered"
+                          className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono uppercase shadow-xs"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                          Delivery / Site Address
+                        </label>
+                        <input
+                          type="text"
+                          value={shippingAddress}
+                          onChange={(e) => setShippingAddress(e.target.value)}
+                          placeholder="Full delivery location address"
+                          className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm shadow-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                          State & State Code
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                          <input
+                            type="text"
+                            value={shippingState}
+                            onChange={(e) => setShippingState(e.target.value)}
+                            placeholder="Uttar Pradesh"
+                            className="col-span-2 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm shadow-xs"
+                          />
+                          <input
+                            type="text"
+                            value={shippingStateCode}
+                            onChange={(e) => setShippingStateCode(e.target.value)}
+                            placeholder="09"
+                            className="col-span-1 px-2 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-center font-mono shadow-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Dynamic Items Table */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-amber-500" />
+                        <span>Invoice Line Items & GST Rates</span>
+                      </h4>
+                      <p className="text-xs text-slate-400">
+                        Configure description, HSN code, quantities, rates, and taxes
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      id="add-invoice-item-btn"
+                      onClick={() => handleAddItem()}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold text-xs transition shadow-sm whitespace-nowrap"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add Item</span>
+                    </button>
                   </div>
-                  <div className="flex justify-between text-slate-500">
-                    <span>SGST Amount:</span>
-                    <span>₹{sgstTotal.toLocaleString()}</span>
+
+                  {/* Datalist for autocomplete */}
+                  <datalist id="billing-inventory-products">
+                    {products.map((p) => (
+                      <option
+                        key={p.id}
+                        value={`${p.productName || p.name} (${p.make || 'UBSW'})`}
+                      >
+                        HSN: {p.hsnCode || '8541'} | Rate: ₹{p.salePrice} | Unit: {p.unit || 'Nos'}
+                      </option>
+                    ))}
+                  </datalist>
+
+                  <div className="space-y-4">
+                    {items.map((item, idx) => (
+                      <div
+                        key={item.id}
+                        id={`invoice-item-card-${idx}`}
+                        className="p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-4 shadow-xs transition hover:border-slate-300 dark:hover:border-slate-600"
+                      >
+                        {/* SKU Quick Select Bar */}
+                        <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-slate-200/80 dark:border-slate-700/60">
+                          <div className="flex items-center gap-2.5">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider border border-amber-500/20">
+                              <Layers className="w-3.5 h-3.5 text-amber-500" />
+                              <span>ITEM #{idx + 1}</span>
+                            </span>
+                            {item.name ? (
+                              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 hidden md:inline-block max-w-sm truncate" title={item.name}>
+                                {item.name}
+                              </span>
+                            ) : null}
+                          </div>
+
+                          <div className="flex items-center gap-2 flex-1 max-w-2xl justify-end">
+                            <div className="flex-1 min-w-[220px] max-w-lg">
+                              <select
+                                id={`item-inventory-select-${idx}`}
+                                className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500 shadow-xs"
+                                onChange={(e) => handleSelectProductForItem(item.id, e.target.value)}
+                                defaultValue=""
+                                title="Choose from Inventory (Auto-fills HSN & Rate)"
+                              >
+                                <option value="" disabled>
+                                  -- Choose from Inventory (Auto-fills HSN & Rate) --
+                                </option>
+                                {products.map((p) => (
+                                  <option key={p.id} value={p.id}>
+                                    [{p.category}] {p.productName || p.name} ({p.make}) • HSN: {p.hsnCode || '8541'} • ₹{p.salePrice?.toLocaleString('en-IN')}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <button
+                              type="button"
+                              id={`remove-item-btn-${idx}`}
+                              onClick={() => handleRemoveItem(item.id)}
+                              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-lg transition whitespace-nowrap flex-shrink-0"
+                              title="Delete this item"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Delete Item</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Item Fields: Responsive grid & wrapping */}
+                        <div className="flex flex-wrap items-start gap-3">
+                          {/* Description */}
+                          <div className="flex-1 min-w-[260px]">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                              Description of Goods / Services *
+                            </label>
+                            <input
+                              type="text"
+                              list="billing-inventory-products"
+                              value={item.name}
+                              onChange={(e) => handleItemChange(item.id, 'name', e.target.value)}
+                              placeholder="Item name & brand"
+                              title={item.name}
+                              className="w-full h-10 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium focus:outline-none focus:border-amber-500 shadow-xs"
+                            />
+                          </div>
+
+                          {/* HSN/SAC Code */}
+                          <div className="w-28 sm:w-32 flex-shrink-0 min-w-[110px]">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                              HSN/SAC Code
+                            </label>
+                            <input
+                              type="text"
+                              value={item.hsnCode || '8541'}
+                              onChange={(e) => handleItemChange(item.id, 'hsnCode', e.target.value)}
+                              placeholder="8541"
+                              className="w-full h-10 px-2 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center font-mono text-xs sm:text-sm font-bold focus:outline-none focus:border-amber-500 shadow-xs"
+                            />
+                          </div>
+
+                          {/* Qty */}
+                          <div className="w-20 sm:w-20 flex-shrink-0 min-w-[70px]">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                              Qty
+                            </label>
+                            <input
+                              type="number"
+                              min={1}
+                              value={item.quantity}
+                              onChange={(e) => handleItemChange(item.id, 'quantity', e.target.value)}
+                              className="w-full h-10 px-2 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center text-xs sm:text-sm font-bold focus:outline-none focus:border-amber-500 shadow-xs"
+                            />
+                          </div>
+
+                          {/* Unit */}
+                          <div className="w-20 sm:w-20 flex-shrink-0 min-w-[70px]">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                              Unit
+                            </label>
+                            <input
+                              type="text"
+                              value={item.unit}
+                              onChange={(e) => handleItemChange(item.id, 'unit', e.target.value)}
+                              className="w-full h-10 px-2 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center text-xs sm:text-sm font-medium focus:outline-none focus:border-amber-500 shadow-xs"
+                            />
+                          </div>
+
+                          {/* Rate (₹) */}
+                          <div className="w-36 sm:w-44 flex-shrink-0 min-w-[145px]">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
+                                Rate (₹)
+                              </label>
+                              {item.rate ? (
+                                <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">
+                                  ₹{Number(item.rate || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </span>
+                              ) : null}
+                            </div>
+                            <input
+                              type="number"
+                              step="0.01"
+                              value={cleanRate(item.rate)}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                if (val === '') {
+                                  handleItemChange(item.id, 'rate', '');
+                                } else {
+                                  const num = parseFloat(val);
+                                  handleItemChange(item.id, 'rate', isNaN(num) ? 0 : Math.round((num + Number.EPSILON) * 100) / 100);
+                                }
+                              }}
+                              placeholder="0.00"
+                              className="w-full h-10 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 border border-slate-200 dark:border-slate-700 text-right text-xs sm:text-sm font-bold font-mono focus:outline-none focus:border-amber-500 shadow-xs"
+                            />
+                          </div>
+
+                          {/* GST % */}
+                          <div className="w-24 sm:w-24 flex-shrink-0 min-w-[85px]">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                              GST %
+                            </label>
+                            <select
+                              value={item.gstPercent}
+                              onChange={(e) => handleItemChange(item.id, 'gstPercent', e.target.value)}
+                              className="w-full h-10 px-2 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-center text-xs sm:text-sm font-bold focus:outline-none focus:border-amber-500 shadow-xs cursor-pointer"
+                            >
+                              <option value={0}>0%</option>
+                              <option value={5}>5%</option>
+                              <option value={12}>12%</option>
+                              <option value={18}>18%</option>
+                              <option value={28}>28%</option>
+                            </select>
+                          </div>
+
+                          {/* Total (₹) */}
+                          <div className="w-full sm:w-52 flex-shrink-0 min-w-[185px]">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
+                                Total (₹)
+                              </label>
+                              <span className="text-[10px] font-semibold text-amber-500 uppercase tracking-wider">
+                                Incl. GST
+                              </span>
+                            </div>
+                            <div
+                              id={`invoice-item-total-${idx}`}
+                              className="w-full h-10 px-3 py-2 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 font-black font-mono text-xs sm:text-sm text-right whitespace-nowrap flex items-center justify-end select-all shadow-inner tracking-tight"
+                              title={`Total: ₹${(Number(item.total) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                            >
+                              ₹{(Number(item.total) || 0).toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Product Serial Number(s) */}
+                        <div className="pt-2.5 border-t border-slate-200/80 dark:border-slate-700/60">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                              Serial Number(s)
+                            </label>
+                            <span className="text-[11px] text-slate-400">
+                              Single or multiple (comma / line break separated)
+                            </span>
+                          </div>
+                          <textarea
+                            rows={1}
+                            value={item.serialNumbers || ''}
+                            onChange={(e) => handleItemChange(item.id, 'serialNumbers', e.target.value)}
+                            placeholder="e.g. SN001234, SN001235, SN001236"
+                            className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono placeholder:font-sans placeholder:text-slate-400 focus:outline-none focus:border-amber-500 min-h-[38px] resize-y shadow-xs"
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex justify-between text-slate-500 font-semibold border-t border-slate-200/60 dark:border-slate-700/60 pt-1">
-                    <span>Total GST:</span>
-                    <span>₹{taxTotal.toLocaleString()}</span>
+                </div>
+
+                {/* Total Summary Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                        Payment Mode
+                      </label>
+                      <select
+                        value={paymentMode}
+                        onChange={(e) => setPaymentMode(e.target.value as PaymentMode)}
+                        className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-semibold shadow-xs"
+                      >
+                        <option value="Cash">Cash</option>
+                        <option value="UPI">UPI / Digital QR</option>
+                        <option value="Bank Transfer">NEFT / RTGS / Bank Transfer</option>
+                        <option value="Cheque">Cheque</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                        Advance Received (₹)
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={advancePaid === 0 ? '' : advancePaid}
+                        onChange={(e) => setAdvancePaid(e.target.value === '' ? 0 : Number(e.target.value))}
+                        placeholder="0.00"
+                        className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono shadow-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 whitespace-nowrap">
+                        Invoice Notes / Terms
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        placeholder="Delivery terms, warranty details, payment conditions, etc."
+                        className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs sm:text-sm shadow-xs resize-y min-h-[60px]"
+                      />
+                    </div>
                   </div>
-                  <div className="flex justify-between font-extrabold text-sm text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-700">
-                    <span>Invoice Grand Total:</span>
-                    <span className="text-amber-500 font-mono">₹{grandTotal.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between font-bold text-emerald-500">
-                    <span>Advance Received:</span>
-                    <span className="font-mono">₹{advancePaid.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between font-extrabold text-sm text-red-500 pt-2 border-t border-slate-200 dark:border-slate-700">
-                    <span>Balance Amount Due:</span>
-                    <span className="font-mono">₹{remainingBalance.toLocaleString()}</span>
+
+                  <div className="p-5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2.5 text-xs sm:text-sm shadow-sm">
+                    <div className="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                      <span>Taxable Value (Subtotal):</span>
+                      <span className="font-bold font-mono text-slate-900 dark:text-slate-100">
+                        ₹{subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                      <span>CGST Amount:</span>
+                      <span className="font-mono text-slate-800 dark:text-slate-200">
+                        ₹{cgstTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                      <span>SGST Amount:</span>
+                      <span className="font-mono text-slate-800 dark:text-slate-200">
+                        ₹{sgstTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-slate-600 dark:text-slate-400 font-semibold border-t border-slate-200/80 dark:border-slate-700/80 pt-2">
+                      <span>Total GST:</span>
+                      <span className="font-mono text-slate-800 dark:text-slate-200">
+                        ₹{taxTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center font-extrabold text-sm sm:text-base text-slate-900 dark:text-white pt-2.5 border-t border-slate-200 dark:border-slate-700">
+                      <span>Invoice Grand Total:</span>
+                      <span className="text-amber-500 font-mono text-base sm:text-lg">
+                        ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center font-bold text-emerald-600 dark:text-emerald-400 pt-1">
+                      <span>Advance Received:</span>
+                      <span className="font-mono">
+                        ₹{advancePaid.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center font-extrabold text-sm sm:text-base text-red-500 pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span>Balance Amount Due:</span>
+                      <span className="font-mono text-base sm:text-lg">
+                        ₹{remainingBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+              {/* Sticky Bottom Actions Bar */}
+              <div className="px-5 sm:px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur-sm flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
                 <button
                   type="button"
                   onClick={() => {
@@ -1199,25 +1323,26 @@ export const BillingView: React.FC = () => {
                     };
                     triggerPrint('invoice', previewInv);
                   }}
-                  className="px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold border border-blue-200 dark:border-blue-800 hover:bg-blue-100 flex items-center gap-1.5"
+                  className="px-4 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 flex items-center gap-2 transition whitespace-nowrap text-xs"
                 >
                   <Eye className="w-4 h-4" />
-                  <span>Preview Single A4 Invoice</span>
+                  <span>Preview A4 Invoice / Print</span>
                 </button>
 
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2.5">
                   <button
                     type="button"
                     onClick={() => setModalOpen(false)}
-                    className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold"
+                    className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition whitespace-nowrap text-xs"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition shadow-md shadow-amber-500/20"
+                    className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition shadow-md shadow-amber-500/20 whitespace-nowrap text-xs flex items-center gap-1.5"
                   >
-                    Save & Generate Invoice
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>Save & Generate Invoice</span>
                   </button>
                 </div>
               </div>

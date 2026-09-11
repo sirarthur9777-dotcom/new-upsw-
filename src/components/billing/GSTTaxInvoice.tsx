@@ -146,38 +146,100 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
       padding: 0 !important;
       background: #fff !important;
       color: #000 !important;
-      width: 200mm !important;
-      height: 289mm !important;
-      overflow: hidden !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
       font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
-    @page { size: A4 portrait; margin: 4mm 5mm !important; }
+    @page {
+      size: A4 portrait;
+      margin: 6mm 5mm !important;
+    }
     #printable-area {
+      display: block !important;
+      position: relative !important;
       width: 200mm !important;
-      height: 289mm !important;
       max-width: 200mm !important;
-      min-height: 289mm !important;
-      margin: 0 !important;
+      min-width: 200mm !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      margin: 0 auto !important;
       padding: 0 !important;
       border: 1px solid #000 !important;
       box-sizing: border-box !important;
-      overflow: hidden !important;
-      page-break-inside: avoid !important;
-      break-inside: avoid-page !important;
+      overflow: visible !important;
+      background: #fff !important;
+      color: #000 !important;
+      box-decoration-break: clone !important;
+      -webkit-box-decoration-break: clone !important;
     }
-    .bill-top-line { height: 6mm !important; }
-    .bill-header { height: 18mm !important; padding-top: 1mm !important; padding-bottom: 1mm !important; }
-    .bill-invoice-meta { height: 23.5mm !important; }
-    .bill-party { height: 43mm !important; }
-    .bill-items { height: 113mm !important; }
-    .bill-summary { height: 39mm !important; }
-    .bill-bank { height: 17mm !important; }
-    .bill-footer { height: 29.5mm !important; }
-    .bill-header img, .bill-header > div:first-child, .bill-header > div:first-child > img { width: 16mm !important; height: 16mm !important; }
-    .bill-party > div, .bill-footer > div { min-height: 0 !important; height: 100% !important; }
-    .bill-items-table { width: 100% !important; height: 100% !important; table-layout: fixed !important; }
-    .bill-items-table thead { height: 10.5mm !important; }
-    .bill-items-table tbody { height: auto !important; }
+    .bill-top-line,
+    .bill-header,
+    .bill-invoice-meta,
+    .bill-party,
+    .bill-summary,
+    .bill-bank,
+    .bill-footer {
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      overflow: visible !important;
+    }
+    .bill-header img,
+    .bill-header > div:first-child,
+    .bill-header > div:first-child > img {
+      width: 16mm !important;
+      height: 16mm !important;
+    }
+    .bill-party > div,
+    .bill-footer > div {
+      min-height: 0 !important;
+      height: auto !important;
+    }
+    .bill-items {
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    .bill-items-table {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      table-layout: fixed !important;
+      border-collapse: collapse !important;
+    }
+    .bill-items-table thead {
+      display: table-header-group !important;
+      height: auto !important;
+    }
+    .bill-items-table thead tr {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      border-top: 1px solid #000 !important;
+      border-bottom: 1px solid #000 !important;
+    }
+    .bill-items-table tbody {
+      display: table-row-group !important;
+      height: auto !important;
+    }
+    .bill-items-table tbody tr {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .bill-items-table th,
+    .bill-items-table td {
+      box-sizing: border-box !important;
+      vertical-align: top !important;
+    }
     .bill-items-table th:nth-child(1), .bill-items-table td:nth-child(1) { width: 11mm !important; }
     .bill-items-table th:nth-child(3), .bill-items-table td:nth-child(3) { width: 21mm !important; }
     .bill-items-table th:nth-child(4), .bill-items-table td:nth-child(4) { width: 16.5mm !important; }
@@ -185,18 +247,25 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
     .bill-items-table th:nth-child(6), .bill-items-table td:nth-child(6) { width: 26mm !important; }
     .bill-items-table th:nth-child(7), .bill-items-table td:nth-child(7) { width: 31mm !important; }
     .bill-items-filler { height: auto !important; }
-    .bill-items-count-1 .bill-items-filler,
-    .bill-items-count-2 .bill-items-filler,
-    .bill-items-count-3 .bill-items-filler,
-    .bill-items-count-4 .bill-items-filler,
-    .bill-items-count-5 .bill-items-filler { height: auto !important; }
-    .bill-items-total { height: 7.5mm !important; }
-    .bill-summary table { height: auto !important; table-layout: fixed !important; }
-    .bill-bank img { width: 16mm !important; height: 16mm !important; }
+    .bill-items-total {
+      height: auto !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      border-top: 1px solid #000 !important;
+    }
+    .bill-summary table {
+      height: auto !important;
+      table-layout: fixed !important;
+      border-collapse: collapse !important;
+    }
+    .bill-bank img {
+      width: 16mm !important;
+      height: 16mm !important;
+    }
     @media print {
       .no-print, .no-print * { display: none !important; visibility: hidden !important; }
-      html, body { width: 200mm !important; height: 289mm !important; overflow: hidden !important; }
-      #printable-area { position: fixed !important; left: 0 !important; top: 0 !important; right: auto !important; bottom: auto !important; }
+      html, body { width: 100% !important; height: auto !important; overflow: visible !important; }
+      #printable-area { position: relative !important; left: auto !important; top: auto !important; width: 200mm !important; height: auto !important; }
     }
   </style>
 </head>
@@ -408,7 +477,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
   const logoUrl = companySettings.logoUrl || COMPANY_LOGO_DATA_URI;
 
   return (
-    <div id="print-modal-root" className="flex flex-col h-full bg-slate-900/90 text-slate-100">
+    <div id="print-modal-root" className="flex flex-col h-full bg-slate-900/90 text-slate-100 print:h-auto print:bg-white print:overflow-visible print:block">
       {/* ------------------------------------------------------------- */}
       {/* TOOLBAR CONTROLS (HIDDEN DURING PRINT) */}
       {/* ------------------------------------------------------------- */}
@@ -497,7 +566,7 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
           <button
             onClick={handlePrint}
             className="px-4 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-amber-500/20 active:scale-95"
-            title="Print or Save as PDF (A4 Single Page)"
+            title="Print or Save as PDF (A4)"
           >
             <Printer className="w-4 h-4" />
             <span>Print / Save PDF (A4)</span>
