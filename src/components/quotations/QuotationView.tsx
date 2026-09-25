@@ -18,6 +18,7 @@ import {
   ChevronRight,
   FileText,
   Layers,
+  Copy,
 } from 'lucide-react';
 import { useApp, formatINR } from '../../context/AppContext';
 import { Quotation, QuotationItem, SystemType, ProjectType } from '../../types';
@@ -113,9 +114,14 @@ export const QuotationView: React.FC = () => {
     updated[index] = {
       ...updated[index],
       description: `${p.productName || p.name} (${p.make || 'UBSW'})`,
+      name: p.productName || p.name,
+      brand: p.make || p.brand,
+      model: p.model,
+      hsnCode: p.hsnCode || '85044090',
       unit: p.unit || 'Nos',
       rate: rate,
       amount: Math.round(qty * rate),
+      taxRate: p.gstPercent || 12,
     };
     setFormItems(updated);
   };
@@ -203,6 +209,22 @@ export const QuotationView: React.FC = () => {
       customerName: cust.name,
       customerEmail: cust.email || 'customer@gmail.com',
       customerMobile: cust.mobile,
+      customerAddress: (cust as any).address || (cust as any).village || 'Jaunpur, Uttar Pradesh',
+      customerState: (cust as any).state || 'Uttar Pradesh',
+      customerStateCode: (cust as any).stateCode || '09',
+      customerGstin: (cust as any).gstNumber || '',
+      shippingName: cust.name,
+      shippingAddress: (cust as any).address || (cust as any).village || 'Jaunpur, Uttar Pradesh',
+      shippingMobile: cust.mobile,
+      shippingState: (cust as any).state || 'Uttar Pradesh',
+      shippingStateCode: (cust as any).stateCode || '09',
+      shippingGstin: (cust as any).gstNumber || '',
+      placeOfSupply: '09-Uttar Pradesh',
+      reverseCharge: 'No',
+      delivery: 'By Road (Direct Dispatch)',
+      paymentTerms: '50% Advance, 40% on Delivery, 10% on Commissioning',
+      installation: 'Included (as per scope)',
+      warranty: 'As per manufacturer / OEM guidelines',
       projectType,
       systemType,
       capacityKW,
@@ -236,6 +258,16 @@ export const QuotationView: React.FC = () => {
       customerName: cust.name,
       customerMobile: cust.mobile,
       customerEmail: cust.email || selectedQuotation.customerEmail,
+      customerAddress: (cust as any).address || selectedQuotation.customerAddress || 'Jaunpur, Uttar Pradesh',
+      customerState: (cust as any).state || selectedQuotation.customerState || 'Uttar Pradesh',
+      customerStateCode: (cust as any).stateCode || selectedQuotation.customerStateCode || '09',
+      customerGstin: (cust as any).gstNumber || selectedQuotation.customerGstin || '',
+      shippingName: cust.name || selectedQuotation.shippingName,
+      shippingAddress: (cust as any).address || selectedQuotation.shippingAddress || 'Jaunpur, Uttar Pradesh',
+      shippingMobile: cust.mobile || selectedQuotation.shippingMobile,
+      shippingState: (cust as any).state || selectedQuotation.shippingState || 'Uttar Pradesh',
+      shippingStateCode: (cust as any).stateCode || selectedQuotation.shippingStateCode || '09',
+      shippingGstin: (cust as any).gstNumber || selectedQuotation.shippingGstin || '',
       projectType,
       systemType,
       capacityKW,
@@ -512,14 +544,26 @@ export const QuotationView: React.FC = () => {
                       <td className="p-4 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => {
-                              setSelectedQuotation(q);
-                              setViewModalOpen(true);
-                            }}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                            title="View Details"
+                            onClick={() => triggerPrint('quotation', q)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            title="Preview / Print A4 Quotation"
                           >
                             <Eye className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              const { id, quoteNumber, createdAt, ...rest } = q;
+                              const newQ = addQuotation({
+                                ...rest,
+                                status: 'Draft',
+                              });
+                              showToast(`Quotation duplicated as ${newQ.quoteNumber}`, 'success');
+                            }}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            title="Duplicate Quotation"
+                          >
+                            <Copy className="w-4 h-4" />
                           </button>
 
                           <button

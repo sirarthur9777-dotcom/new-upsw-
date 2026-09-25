@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Printer, CheckCircle, ShieldCheck, Save, Zap } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { GSTTaxInvoice } from './billing/GSTTaxInvoice';
+import { GSTQuotationDocument } from './quotations/GSTQuotationDocument';
 
 function numberToWordsINR(num: number): string {
   if (!num || isNaN(num) || num === 0) return 'Rupees Zero Only';
@@ -27,7 +28,7 @@ function numberToWordsINR(num: number): string {
 }
 
 export const PrintModal: React.FC = () => {
-  const { printData, setPrintData, companySettings } = useApp();
+  const { printData, setPrintData, companySettings, customers, convertQuotationToInvoice, addQuotation } = useApp();
 
   if (!printData) return null;
 
@@ -42,6 +43,35 @@ export const PrintModal: React.FC = () => {
             invoice={payload}
             companySettings={companySettings}
             onClose={() => setPrintData(null)}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // For Solar Quotation, use the dedicated A4 professional GST document component
+  if (type === 'quotation') {
+    const cust = customers?.find((c) => c.id === payload.customerId) || null;
+    return (
+      <div id="print-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-slate-950/85 backdrop-blur-sm animate-in fade-in overflow-y-auto print:p-0 print:bg-white print:static print:h-auto print:w-auto print:overflow-visible print:block print:!transform-none print:!filter-none">
+        <div id="print-modal-shell" className="w-full max-w-5xl h-full sm:h-[95vh] bg-slate-900 rounded-none sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-800 print:border-0 print:shadow-none print:bg-white print:h-auto print:w-auto print:max-w-none print:rounded-none print:overflow-visible print:block print:!transform-none print:!filter-none">
+          <GSTQuotationDocument
+            quotation={payload}
+            companySettings={companySettings}
+            customer={cust}
+            onClose={() => setPrintData(null)}
+            onConvert={(q) => {
+              convertQuotationToInvoice(q.id);
+              setPrintData(null);
+            }}
+            onDuplicate={(q) => {
+              const { id, quoteNumber, createdAt, ...rest } = q;
+              const newQ = addQuotation({
+                ...rest,
+                status: 'Draft',
+              });
+              setPrintData({ type: 'quotation', payload: newQ });
+            }}
           />
         </div>
       </div>

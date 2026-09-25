@@ -200,10 +200,16 @@ export interface Invoice {
 export interface QuotationItem {
   id: string;
   description: string;
+  name?: string;
+  brand?: string;
+  model?: string;
+  hsnCode?: string;
   qty: number;
   unit: string;
   rate: number;
   amount: number;
+  discount?: number;
+  taxRate?: number;
 }
 
 export interface Quotation {
@@ -213,6 +219,22 @@ export interface Quotation {
   customerName: string;
   customerEmail: string;
   customerMobile: string;
+  customerAddress?: string;
+  customerState?: string;
+  customerStateCode?: string;
+  customerGstin?: string;
+  shippingName?: string;
+  shippingAddress?: string;
+  shippingMobile?: string;
+  shippingState?: string;
+  shippingStateCode?: string;
+  shippingGstin?: string;
+  placeOfSupply?: string;
+  reverseCharge?: string;
+  delivery?: string;
+  paymentTerms?: string;
+  installation?: string;
+  warranty?: string;
   projectType: ProjectType;
   systemType: SystemType;
   capacityKW: number;
@@ -226,6 +248,7 @@ export interface Quotation {
   status: 'Draft' | 'Sent' | 'Approved' | 'Converted';
   convertedInvoiceId?: string;
   createdAt: string;
+  notes?: string;
 }
 
 export interface Product {
