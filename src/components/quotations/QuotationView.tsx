@@ -74,9 +74,9 @@ export const QuotationView: React.FC = () => {
   );
 
   const [formItems, setFormItems] = useState<Omit<QuotationItem, 'id'>[]>([
-    { description: 'Waaree 540W Mono PERC Solar Panels', qty: 20, unit: 'Nos', rate: 12000, amount: 240000 },
-    { description: 'Growatt 10kW On-Grid Inverter', qty: 1, unit: 'Set', rate: 75000, amount: 75000 },
-    { description: 'HDG High Structure & Cable Kit', qty: 1, unit: 'Lot', rate: 45000, amount: 45000 },
+    { description: 'Waaree 540W Mono PERC Solar Panels', qty: 20, unit: 'Nos', rate: 12000, amount: 240000, serialNumbers: '' },
+    { description: 'Growatt 10kW On-Grid Inverter', qty: 1, unit: 'Set', rate: 75000, amount: 75000, serialNumbers: '' },
+    { description: 'HDG High Structure & Cable Kit', qty: 1, unit: 'Lot', rate: 45000, amount: 45000, serialNumbers: '' },
   ]);
 
   // Realtime Totals Calculation
@@ -95,12 +95,13 @@ export const QuotationView: React.FC = () => {
           unit: product.unit || 'Nos',
           rate: rate,
           amount: rate,
+          serialNumbers: '',
         },
       ]);
     } else {
       setFormItems([
         ...formItems,
-        { description: '', qty: 1, unit: 'Nos', rate: 0, amount: 0 },
+        { description: '', qty: 1, unit: 'Nos', rate: 0, amount: 0, serialNumbers: '' },
       ]);
     }
   };
@@ -168,9 +169,9 @@ export const QuotationView: React.FC = () => {
     setStatus('Sent');
     setTerms('1. 50% Advance with PO. 2. 40% on material delivery. 3. 10% post net metering commissioning.');
     setFormItems([
-      { description: 'Waaree 540W Mono PERC Solar Panels', qty: 20, unit: 'Nos', rate: 12000, amount: 240000 },
-      { description: 'Growatt 10kW On-Grid Inverter', qty: 1, unit: 'Set', rate: 75000, amount: 75000 },
-      { description: 'HDG High Structure & Cable Kit', qty: 1, unit: 'Lot', rate: 45000, amount: 45000 },
+      { description: 'Waaree 540W Mono PERC Solar Panels', qty: 20, unit: 'Nos', rate: 12000, amount: 240000, serialNumbers: '' },
+      { description: 'Growatt 10kW On-Grid Inverter', qty: 1, unit: 'Set', rate: 75000, amount: 75000, serialNumbers: '' },
+      { description: 'HDG High Structure & Cable Kit', qty: 1, unit: 'Lot', rate: 45000, amount: 45000, serialNumbers: '' },
     ]);
     setAddModalOpen(true);
   };
@@ -191,6 +192,12 @@ export const QuotationView: React.FC = () => {
       unit: it.unit,
       rate: it.rate,
       amount: it.amount,
+      serialNumbers: it.serialNumbers || '',
+      name: it.name,
+      brand: it.brand,
+      model: it.model,
+      hsnCode: it.hsnCode,
+      taxRate: it.taxRate,
     })));
     setEditModalOpen(true);
   };
@@ -991,6 +998,25 @@ export const QuotationView: React.FC = () => {
                             ₹{item.amount?.toLocaleString()}
                           </div>
                         </div>
+                      </div>
+
+                      {/* Product Serial Number(s) - same UX as Create Modern Tax Invoice */}
+                      <div className="pt-2.5 border-t border-slate-200/80 dark:border-slate-700/60">
+                        <div className="flex items-center justify-between mb-1.5 gap-2">
+                          <label className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
+                            SERIAL NUMBER(S)
+                          </label>
+                          <span className="text-[11px] text-slate-500 text-right">
+                            Single or multiple (comma / line break separated)
+                          </span>
+                        </div>
+                        <textarea
+                          rows={1}
+                          value={item.serialNumbers || ''}
+                          onChange={(e) => handleItemChange(idx, 'serialNumbers', e.target.value)}
+                          placeholder="e.g. SN001234, SN001235, SN001236"
+                          className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono placeholder:font-sans placeholder:text-slate-400 focus:outline-none focus:border-amber-500 min-h-[38px] resize-y shadow-xs"
+                        />
                       </div>
                     </div>
                   ))}

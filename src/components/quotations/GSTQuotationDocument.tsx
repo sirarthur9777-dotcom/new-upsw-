@@ -142,6 +142,18 @@ export const GSTQuotationDocument: React.FC<GSTQuotationDocumentProps> = ({
     let h = 11;
     if (item.description && item.description.length > 40) h += 4;
     if (item.brand || item.model) h += 4;
+
+    // Serial numbers are rendered inside the description cell and may wrap
+    // to multiple lines. Reserve enough height so they never overlap
+    // subsequent rows/content or get clipped on the first A4 page.
+    const serialCount = item.serialNumbers
+      ? item.serialNumbers.split(/[\n,]+/).map((s) => s.trim()).filter(Boolean).length
+      : 0;
+    const serialTextLength = item.serialNumbers?.trim().length || 0;
+    if (serialCount > 0) {
+      h += 5 + Math.min(24, Math.max(4, Math.ceil(serialTextLength / 48) * 4));
+    }
+
     return acc + h;
   }, 0);
   const isMultiPage = items.length > 7 || estimatedItemsHeight > 88;
@@ -925,8 +937,17 @@ export const GSTQuotationDocument: React.FC<GSTQuotationDocumentProps> = ({
                           </div>
                         )}
                         {item.description && item.description !== title && !item.description.startsWith('Brand :') && (
-                          <div className="text-[9px] text-slate-800 mt-0.5">
+                          <div className="text-[9px] text-slate-800 mt-0.5 break-words">
                             {item.description}
+                          </div>
+                        )}
+                        {item.serialNumbers && item.serialNumbers.trim() && (
+                          <div className="text-[8.5px] text-black mt-1 leading-tight break-words whitespace-normal overflow-wrap-anywhere">
+                            {item.serialNumbers
+                              .split(/[\n,]+/)
+                              .map((s) => s.trim())
+                              .filter(Boolean)
+                              .join(', ')}
                           </div>
                         )}
                       </td>

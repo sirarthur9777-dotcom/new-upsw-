@@ -208,6 +208,8 @@ export interface QuotationItem {
   unit: string;
   rate: number;
   amount: number;
+  /** Product serial number(s), comma or line-break separated. */
+  serialNumbers?: string;
   discount?: number;
   taxRate?: number;
 }

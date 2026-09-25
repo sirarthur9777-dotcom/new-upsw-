@@ -318,7 +318,6 @@
   /* 1. Neutralize Application Shell & Modal Chrome */
   aside,
   nav,
-  main,
   header,
   footer,
   [role="navigation"],
@@ -326,6 +325,11 @@
   .no-print * {
     display: none !important;
     visibility: hidden !important;
+  }
+
+  main {
+    display: block !important;
+    visibility: visible !important;
   }
 
   #root,
@@ -555,6 +559,12 @@
   #printable-area .bill-items-table tbody tr.bill-items-filler td,
   #printable-quotation-area .quote-items-table tbody tr.quote-items-filler td {
     height: 100% !important;
+  }
+
+  #printable-quotation-area .overflow-wrap-anywhere {
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    white-space: normal !important;
   }
 
   #printable-area .bill-items-table th,
