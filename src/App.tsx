@@ -98,7 +98,7 @@ const AppContent: React.FC = () => {
 
         {/* Main View Area */}
         <main
-          className={`pt-20 px-4 sm:px-6 lg:px-8 pb-16 transition-all duration-300 ${
+          className={`pt-20 px-4 sm:px-6 lg:px-8 pb-16 transition-all duration-300 no-print print:hidden ${
             sidebarCollapsed ? 'ml-20' : 'ml-64'
           }`}
         >

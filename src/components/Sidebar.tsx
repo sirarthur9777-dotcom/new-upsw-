@@ -89,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => 
 
   return (
     <aside
-      className={`fixed top-0 left-0 bottom-0 z-30 transition-all duration-300 flex flex-col bg-slate-900 text-slate-200 border-r border-slate-800 ${
+      className={`fixed top-0 left-0 bottom-0 z-30 transition-all duration-300 flex flex-col bg-slate-900 text-slate-200 border-r border-slate-800 no-print print:hidden ${
         collapsed ? 'w-20' : 'w-64'
       }`}
     >

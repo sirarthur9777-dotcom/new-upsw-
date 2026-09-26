@@ -76,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({ sidebarCollapsed }) => {
 
   return (
     <header
-      className={`fixed top-0 right-0 z-20 h-16 transition-all duration-300 flex items-center justify-between px-6 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 ${
+      className={`fixed top-0 right-0 z-20 h-16 transition-all duration-300 flex items-center justify-between px-6 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 no-print print:hidden ${
         sidebarCollapsed ? 'left-20' : 'left-64'
       }`}
     >

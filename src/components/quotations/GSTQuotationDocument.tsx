@@ -625,6 +625,7 @@ export const GSTQuotationDocument: React.FC<GSTQuotationDocumentProps> = ({
       {/* ------------------------------------------------------------- */}
       <div id="quotation-print-canvas" className="flex-1 overflow-y-auto overflow-x-auto p-4 sm:p-8 flex justify-center items-start bg-slate-200/90 dark:bg-slate-950/80 print:p-0 print:m-0 print:bg-white print:overflow-visible">
         <div
+          id="quotation-zoom-wrapper"
           style={{
             transform: zoom !== 100 ? `scale(${zoom / 100})` : 'none',
             transformOrigin: 'top center',
