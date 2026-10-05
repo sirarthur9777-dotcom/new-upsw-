@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Invoice, InvoiceItem, PaymentMode } from '../../types';
+import { DynamicUpiQr } from '../common/DynamicUpiQr';
 
 // Helper to clean floating-point artifacts for display (e.g., 15400.00000001 -> 15400)
 const cleanRate = (val: any): string | number => {
@@ -1248,6 +1249,34 @@ export const BillingView: React.FC = () => {
                       <span className="font-mono text-base sm:text-lg">
                         ₹{remainingBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </span>
+                    </div>
+
+                    {/* Live Dynamic UPI QR preview */}
+                    <div className="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700 flex items-center gap-3 bg-amber-500/5 dark:bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
+                      <DynamicUpiQr
+                        amount={remainingBalance > 0 ? remainingBalance : grandTotal}
+                        upiId={companySettings.upiId}
+                        payeeName={companySettings.companyName}
+                        note={`Invoice ${editingInvoiceId ? 'Update' : 'New'}`}
+                        size={56}
+                        imageClassName="w-14 h-14 bg-white p-0.5 rounded-lg border border-slate-300 dark:border-slate-600 shrink-0"
+                        showAmountText={false}
+                      />
+                      <div className="text-[11px] text-slate-600 dark:text-slate-300 space-y-0.5 flex-1 min-w-0">
+                        <div className="flex items-center gap-1 font-bold text-slate-900 dark:text-white">
+                          <span className="text-amber-500 text-xs">⚡</span>
+                          <span>Live Dynamic QR:</span>
+                          <span className="font-mono text-emerald-600 dark:text-emerald-400 font-extrabold">
+                            ₹{(remainingBalance > 0 ? remainingBalance : grandTotal).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-500 truncate font-mono">
+                          {companySettings.upiId || 'usatyam30-5@okicici'}
+                        </p>
+                        <p className="text-[9px] text-emerald-600 dark:text-emerald-400 font-medium">
+                          ✓ Auto-generates exact amount on bill print & PDF
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

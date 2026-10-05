@@ -22,12 +22,14 @@ import {
 } from 'lucide-react';
 import { useApp, formatINR } from '../../context/AppContext';
 import { Quotation, QuotationItem, SystemType, ProjectType } from '../../types';
+import { DynamicUpiQr } from '../common/DynamicUpiQr';
 
 export const QuotationView: React.FC = () => {
   const {
     quotations,
     customers,
     products,
+    companySettings,
     addQuotation,
     updateQuotation,
     deleteQuotation,
@@ -1036,6 +1038,34 @@ export const QuotationView: React.FC = () => {
                 <div className="flex justify-between font-extrabold text-amber-500 text-sm pt-2 border-t border-slate-200 dark:border-slate-700">
                   <span>Calculated Grand Total:</span>
                   <span className="text-base">₹{grandTotal.toLocaleString()}</span>
+                </div>
+
+                {/* Live Dynamic UPI QR preview */}
+                <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center gap-3 bg-amber-500/5 dark:bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
+                  <DynamicUpiQr
+                    amount={grandTotal}
+                    upiId={companySettings.upiId}
+                    payeeName={companySettings.companyName}
+                    note={`Quotation ${selectedQuotation?.quoteNumber || 'Estimate'}`}
+                    size={52}
+                    imageClassName="w-13 h-13 bg-white p-0.5 rounded-lg border border-slate-300 dark:border-slate-600 shrink-0"
+                    showAmountText={false}
+                  />
+                  <div className="text-[11px] text-slate-600 dark:text-slate-300 space-y-0.5 flex-1 min-w-0">
+                    <div className="flex items-center gap-1 font-bold text-slate-900 dark:text-white">
+                      <span className="text-amber-500 text-xs">⚡</span>
+                      <span>Live Dynamic Quote QR:</span>
+                      <span className="font-mono text-amber-500 font-extrabold">
+                        ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 truncate font-mono">
+                      {companySettings.upiId || 'usatyam30-5@okicici'}
+                    </p>
+                    <p className="text-[9px] text-emerald-600 dark:text-emerald-400 font-medium">
+                      ✓ Instant dynamic QR with exact total for PDF & Print
+                    </p>
+                  </div>
                 </div>
               </div>
 

@@ -23,6 +23,7 @@ import {
 import { Quotation, QuotationItem, CompanySettings, Customer } from '../../types';
 import { COMPANY_LOGO_DATA_URI } from '../../data/mockData';
 import { numberToWordsINR } from '../billing/GSTTaxInvoice';
+import { DynamicUpiQr } from '../common/DynamicUpiQr';
 
 interface GSTQuotationDocumentProps {
   quotation: Quotation;
@@ -123,15 +124,6 @@ export const GSTQuotationDocument: React.FC<GSTQuotationDocumentProps> = ({
       totalTax: taxAmount,
     });
   }
-
-  // QR Code URL: UPI payment QR
-  const upiQrCodeUrl =
-    companySettings.upiQrUrl ||
-    `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
-      `upi://pay?pa=${companySettings.upiId || 'kdsingh9777@gmail.com'}&pn=${encodeURIComponent(
-        companySettings.companyName || 'Upadhyay Brother Solar Works'
-      )}&am=${grandTotal}&cu=INR`
-    )}`;
 
   const logoUrl = companySettings.logoUrl || COMPANY_LOGO_DATA_URI;
 
@@ -1062,12 +1054,17 @@ export const GSTQuotationDocument: React.FC<GSTQuotationDocumentProps> = ({
           </div>
 
           {/* 7. BANK DETAILS & UPI QR CODE */}
-          <div className="quote-bank flex justify-between items-center px-3 py-1.5 border-b border-black text-[10px]">
+          <div className="quote-bank grid grid-cols-2 divide-x divide-black border-b border-black text-[10px]">
             {/* Left Bank Details */}
-            <div className="space-y-0.5">
+            <div className="px-3 py-1.5 space-y-0.5">
               <div className="font-bold text-[10.5px]">Bank Details</div>
               <div className="flex">
-                <span className="w-20 inline-block">Name</span>
+                <span className="w-20 inline-block">Bank</span>
+                <span className="mr-1">:</span>
+                <span className="font-medium">{companySettings.bankName || 'ICICI Bank'}</span>
+              </div>
+              <div className="flex">
+                <span className="w-20 inline-block">A/c Name</span>
                 <span className="mr-1">:</span>
                 <span className="font-medium">{companySettings.accountHolderName || companySettings.companyName || 'Upadhyay Brother Solar Works'}</span>
               </div>
@@ -1083,13 +1080,30 @@ export const GSTQuotationDocument: React.FC<GSTQuotationDocumentProps> = ({
               </div>
             </div>
 
-            {/* Right QR Code */}
-            <div className="shrink-0 flex items-center justify-center pr-2">
-              <img
-                src={upiQrCodeUrl}
-                alt="UPI Payment QR"
-                className="w-16 h-16 object-contain border border-black p-0.5 bg-white"
-              />
+            {/* Right Dynamic QR Code generated with exact quotation payable amount */}
+            <div className="px-3 py-1.5 flex items-center justify-between">
+              <div className="space-y-0.5 pr-2">
+                <div className="font-bold text-[10.5px]">Instant UPI Payment</div>
+                <div className="text-[9px] text-slate-700">Scan QR using any UPI app</div>
+                <div className="text-[8.5px] text-slate-600 font-mono">GPay / PhonePe / Paytm / BHIM</div>
+                {companySettings.upiId && (
+                  <div className="text-[9px] font-mono font-semibold text-black mt-0.5">
+                    UPI: {companySettings.upiId}
+                  </div>
+                )}
+              </div>
+              <div className="shrink-0 flex items-center justify-center">
+                <DynamicUpiQr
+                  amount={grandTotal}
+                  upiId={companySettings.upiId}
+                  payeeName={companySettings.companyName}
+                  note={`Quote ${quotation.quoteNumber || 'QUO'}`}
+                  size={64}
+                  imageClassName="w-16 h-16 object-contain border border-black p-0.5 bg-white"
+                  showAmountText={false}
+                  alt={`UPI Payment QR for ${quotation.quoteNumber || 'QUO'}`}
+                />
+              </div>
             </div>
           </div>
 

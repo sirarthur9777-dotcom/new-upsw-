@@ -76,35 +76,37 @@ export const Navbar: React.FC<NavbarProps> = ({ sidebarCollapsed }) => {
 
   return (
     <header
-      className={`fixed top-0 right-0 z-20 h-16 transition-all duration-300 flex items-center justify-between px-6 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 no-print print:hidden ${
+      className={`fixed top-0 right-0 z-20 h-16 transition-all duration-300 flex items-center justify-between px-6 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b-2 border-amber-300/70 dark:border-slate-800 shadow-[0_4px_20px_rgba(217,119,6,0.06)] no-print print:hidden ${
         sidebarCollapsed ? 'left-20' : 'left-64'
       }`}
     >
       {/* Title & Global Search Trigger */}
       <div className="flex items-center gap-6">
         <div>
-          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+          <h1 className="text-base sm:text-lg font-black text-slate-900 dark:text-white capitalize flex items-center gap-2">
             <span>{tabTitles[activeTab] || activeTab}</span>
             {isCloudSynced && (
-              <span className="hidden lg:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-                <CloudCheck className="w-3 h-3 text-emerald-500" />
+              <span className="hidden lg:inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
+                <CloudCheck className="w-3 h-3 text-emerald-600" />
                 <span>Cloud Synced</span>
               </span>
             )}
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
-            {companySettings.companyName} EPC Management System
+          <p className="text-xs text-amber-800/80 dark:text-slate-400 font-semibold hidden sm:flex items-center gap-1.5">
+            <span>{companySettings.companyName}</span>
+            <span>•</span>
+            <span className="text-slate-500">सोलर ईपीसी प्रबंधन</span>
           </p>
         </div>
 
-        {/* Global Search Input */}
+        {/* Global Search Input (3D Inset) */}
         <button
           onClick={() => setGlobalSearchOpen(true)}
-          className="hidden md:flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/70 text-slate-500 dark:text-slate-400 text-xs border border-slate-200/80 dark:border-slate-700/70 hover:border-slate-300 dark:hover:border-slate-600 transition w-64 shadow-2xs"
+          className="hidden md:flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-amber-50/70 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs border border-amber-200/80 dark:border-slate-700 hover:border-amber-400 dark:hover:border-slate-600 transition w-68 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)] cursor-pointer"
         >
-          <Search className="w-3.5 h-3.5 text-slate-400" />
-          <span className="truncate">Search customer, invoice, project...</span>
-          <kbd className="ml-auto px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-slate-700/80 border border-slate-200 dark:border-slate-600 rounded text-slate-500 dark:text-slate-300">
+          <Search className="w-3.5 h-3.5 text-amber-600 dark:text-slate-400" />
+          <span className="truncate">ग्राहक, इनवॉइस, कोटेशन खोजें...</span>
+          <kbd className="ml-auto px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-slate-700 border border-amber-200 dark:border-slate-600 rounded text-amber-900 dark:text-slate-300 font-bold shadow-2xs">
             ⌘K
           </kbd>
         </button>
@@ -112,41 +114,53 @@ export const Navbar: React.FC<NavbarProps> = ({ sidebarCollapsed }) => {
 
       {/* Right Controls */}
       <div className="flex items-center gap-2 sm:gap-2.5">
-        {/* Quick Action Button */}
+        {/* Quick Action Button (3D Pushable) */}
         <div className="relative">
           <button
             onClick={() => setQuickActionOpen(!quickActionOpen)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 font-bold text-xs transition shadow-xs"
+            className="btn-3d-amber flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition"
           >
             <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span className="hidden sm:inline">Quick Action</span>
+            <span className="hidden sm:inline">त्वरित कार्य (+ Quick)</span>
           </button>
 
           {quickActionOpen && (
-            <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-              <div className="px-3.5 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Create New Record
+            <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-2 border-amber-200 dark:border-slate-800 py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="px-3.5 py-1.5 text-[10px] font-black text-amber-800 dark:text-amber-400 uppercase tracking-wider">
+                नया रिकॉर्ड बनाएं (Create New)
               </div>
               <button
                 onClick={() => {
                   setActiveTab('billing');
                   setQuickActionOpen(false);
                 }}
-                className="w-full text-left px-3.5 py-2 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition"
+                className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition cursor-pointer"
               >
-                <div className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-2xs">
                   <FileText className="w-3.5 h-3.5" />
                 </div>
-                <span>New Tax Invoice</span>
+                <span>New Tax Invoice (जीएसटी बिल)</span>
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('quotation');
+                  setQuickActionOpen(false);
+                }}
+                className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition cursor-pointer"
+              >
+                <div className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shadow-2xs">
+                  <Sun className="w-3.5 h-3.5" />
+                </div>
+                <span>New Quotation (कोटेशन)</span>
               </button>
               <button
                 onClick={() => {
                   setActiveTab('projects');
                   setQuickActionOpen(false);
                 }}
-                className="w-full text-left px-3.5 py-2 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition"
+                className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition cursor-pointer"
               >
-                <div className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-lg bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center shadow-2xs">
                   <Sun className="w-3.5 h-3.5" />
                 </div>
                 <span>New Solar Project</span>
@@ -156,24 +170,24 @@ export const Navbar: React.FC<NavbarProps> = ({ sidebarCollapsed }) => {
                   setActiveTab('purchases');
                   setQuickActionOpen(false);
                 }}
-                className="w-full text-left px-3.5 py-2 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition"
+                className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition cursor-pointer"
               >
-                <div className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
                   <ShoppingCart className="w-3.5 h-3.5" />
                 </div>
-                <span>New Product Purchase</span>
+                <span>Product Purchase (खरीद)</span>
               </button>
               <button
                 onClick={() => {
                   setActiveTab('customers');
                   setQuickActionOpen(false);
                 }}
-                className="w-full text-left px-3.5 py-2 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition"
+                className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-slate-800/80 flex items-center gap-2.5 transition cursor-pointer"
               >
-                <div className="w-6 h-6 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-2xs">
                   <UserPlus className="w-3.5 h-3.5" />
                 </div>
-                <span>Add Customer</span>
+                <span>Add Customer (नया ग्राहक)</span>
               </button>
             </div>
           )}
@@ -182,7 +196,7 @@ export const Navbar: React.FC<NavbarProps> = ({ sidebarCollapsed }) => {
         {/* GEMINI LIVE VOICE API BUTTON */}
         <button
           onClick={() => setIsVoiceLiveActive(true)}
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/90 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200 text-xs font-semibold border border-slate-200/80 dark:border-slate-700/80 transition"
+          className="hidden sm:flex btn-3d-white items-center gap-1.5 px-3 py-1.5 rounded-xl text-slate-800 dark:text-slate-200 text-xs font-bold transition"
           title="Start Live Voice Conversation with Gemini 3.1 Flash Live API"
         >
           <Radio className="w-3.5 h-3.5 text-red-500 animate-pulse" />
@@ -192,26 +206,26 @@ export const Navbar: React.FC<NavbarProps> = ({ sidebarCollapsed }) => {
         {/* GEMINI AI COPILOT CHAT TRIGGER */}
         <button
           onClick={() => setIsAiAssistantOpen(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 dark:bg-amber-500/20 dark:hover:bg-amber-500/30 text-amber-800 dark:text-amber-300 text-xs font-bold border border-amber-500/40 transition"
-          title="Open SolarFlow AI Copilot (Multi-turn Chat & ERP Function Calling)"
+          className="btn-3d-white flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-amber-900 dark:text-amber-300 text-xs font-black transition"
+          title="Open SolarFlow AI Copilot"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+          <Sparkles className="w-3.5 h-3.5 text-amber-600" />
           <span className="hidden md:inline">AI Copilot</span>
         </button>
 
         {/* DARK / LIGHT MODE TOGGLE BUTTON */}
         <button
           onClick={toggleDarkMode}
-          className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+          className="p-2 rounded-xl text-slate-600 hover:text-amber-800 dark:text-slate-400 dark:hover:text-white bg-amber-50/80 hover:bg-amber-100 dark:bg-slate-800 border border-amber-200/70 dark:border-slate-700 shadow-2xs transition active:translate-y-0.5 cursor-pointer"
           title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         >
-          {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+          {isDarkMode ? <Sun className="w-4 h-4 text-amber-500 fill-amber-500" /> : <Moon className="w-4 h-4 text-indigo-600" />}
         </button>
 
         {/* Audit Log Trigger */}
         <button
           onClick={() => setAuditLogOpen(true)}
-          className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+          className="p-2 rounded-xl text-slate-600 hover:text-amber-800 dark:text-slate-400 dark:hover:text-white bg-amber-50/80 hover:bg-amber-100 dark:bg-slate-800 border border-amber-200/70 dark:border-slate-700 shadow-2xs transition active:translate-y-0.5 cursor-pointer"
           title="Audit Trail Logs"
         >
           <Shield className="w-4 h-4" />
@@ -221,7 +235,7 @@ export const Navbar: React.FC<NavbarProps> = ({ sidebarCollapsed }) => {
         <div className="relative">
           <button
             onClick={() => setNotifOpen(!notifOpen)}
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition relative"
+            className="p-2 rounded-xl text-slate-600 hover:text-amber-800 dark:text-slate-400 dark:hover:text-white bg-amber-50/80 hover:bg-amber-100 dark:bg-slate-800 border border-amber-200/70 dark:border-slate-700 shadow-2xs transition active:translate-y-0.5 cursor-pointer relative"
             title="Notifications"
           >
             <Bell className="w-4 h-4" />
