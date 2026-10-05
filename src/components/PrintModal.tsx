@@ -311,19 +311,9 @@ export const PrintModal: React.FC = () => {
                   </div>
 
                   <div className="pt-1.5 border-t border-slate-200 flex items-center gap-3">
-                    {companySettings.upiId || companySettings.upiQrUrl ? (
+                    {companySettings.upiQrUrl ? (
                       <img
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
-                          `upi://pay?pa=${(companySettings.upiId || 'usatyam30-5@okicici').trim()}&pn=${encodeURIComponent(
-                            (companySettings.companyName || 'Upadhyay Brother Solar Works').trim()
-                          )}&am=${
-                            typeof payload?.grandTotal === 'number'
-                              ? Number.isInteger(payload.grandTotal)
-                                ? payload.grandTotal.toString()
-                                : payload.grandTotal.toFixed(2)
-                              : String(payload?.grandTotal || 0)
-                          }&cu=INR`
-                        )}`}
+                        src={companySettings.upiQrUrl}
                         alt="UPI Payment QR Code"
                         className="w-16 h-16 print:w-14 print:h-14 border rounded-lg object-contain bg-white p-1 shrink-0 shadow-xs"
                       />

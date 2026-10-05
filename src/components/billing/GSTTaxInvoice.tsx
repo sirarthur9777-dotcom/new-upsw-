@@ -516,23 +516,14 @@ export const GSTTaxInvoice: React.FC<GSTTaxInvoiceProps> = ({
   const vehicleNo = invoice.vehicleNo || '';
   const grNo = invoice.grNo || '';
 
-  // Dynamic UPI Payment QR Code Generation
-  const merchantUpiId = (companySettings.upiId || 'usatyam30-5@okicici').trim();
-  const merchantName = (companySettings.companyName || 'Upadhyay Brother Solar Works').trim();
-  const upiAmount =
-    typeof finalGrandTotal === 'number'
-      ? Number.isInteger(finalGrandTotal)
-        ? finalGrandTotal.toString()
-        : finalGrandTotal.toFixed(2)
-      : String(finalGrandTotal || 0);
-
-  const dynamicUpiUri = `upi://pay?pa=${merchantUpiId}&pn=${encodeURIComponent(
-    merchantName
-  )}&am=${upiAmount}&cu=INR`;
-
-  const upiQrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
-    dynamicUpiUri
-  )}`;
+  // QR Code URL: UPI payment QR
+  const upiQrCodeUrl =
+    companySettings.upiQrUrl ||
+    `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
+      `upi://pay?pa=${companySettings.upiId || 'usatyam30-5@okicici'}&pn=${encodeURIComponent(
+        companySettings.companyName || 'Upadhyay Brother Solar Works'
+      )}&am=${finalGrandTotal}&cu=INR`
+    )}`;
 
   // Logo selection
   const logoUrl = companySettings.logoUrl || COMPANY_LOGO_DATA_URI;
