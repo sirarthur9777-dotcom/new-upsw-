@@ -1,17 +1,200 @@
 @import "tailwindcss";
 
+:root {
+  --neu-bg: #E9EFEA;
+  --neu-card: #FFFFFF;
+  --neu-surface: #FFFFFF;
+  --neu-surface-card: #FFFFFF;
+  --neu-surface-secondary: #F1F5F1;
+  --neu-surface-hover: #F8FAF8;
+  --neu-surface-inset: #F1F5F1;
+  --neu-surface-soft-green: #DCEBE0;
+  --neu-text-primary: #24372D;
+  --neu-text-secondary: #68786E;
+  --neu-text-muted: #87938B;
+  --neu-border: #D9E2DA;
+  --neu-accent: #25845A;
+  --neu-accent-hover: #1D7049;
+  --neu-accent-soft: #DCEBE0;
+  
+  --neu-success: #25845A;
+  --neu-warning: #D99A18;
+  --neu-error: #D83B3B;
+  --neu-info: #2878C7;
+  --neu-disabled: #E1E7E2;
+
+  --neu-raised: 0 4px 12px rgba(36, 55, 45, 0.07), 0 1px 3px rgba(36, 55, 45, 0.04);
+  --neu-raised-sm: 0 2px 6px rgba(36, 55, 45, 0.06), 0 1px 2px rgba(36, 55, 45, 0.03);
+  --neu-raised-lg: 0 8px 24px rgba(36, 55, 45, 0.08), 0 2px 6px rgba(36, 55, 45, 0.04);
+  --neu-inset: inset 2px 2px 5px rgba(36, 55, 45, 0.06), inset -2px -2px 5px rgba(255, 255, 255, 0.85);
+  --neu-inset-sm: inset 1.5px 1.5px 3.5px rgba(36, 55, 45, 0.05), inset -1.5px -1.5px 3.5px rgba(255, 255, 255, 0.85);
+  --neu-btn-shadow: 2px 2px 6px rgba(36, 55, 45, 0.06), -2px -2px 6px rgba(255, 255, 255, 0.85);
+}
+
+.dark {
+  --neu-bg: #121B15;
+  --neu-card: #1B2720;
+  --neu-surface: #1B2720;
+  --neu-surface-card: #1B2720;
+  --neu-surface-secondary: #16221B;
+  --neu-surface-hover: #223328;
+  --neu-surface-inset: #141D17;
+  --neu-surface-soft-green: rgba(37, 132, 90, 0.2);
+  --neu-text-primary: #E6EEE8;
+  --neu-text-secondary: #8E9F94;
+  --neu-text-muted: #6B7C72;
+  --neu-border: #223328;
+  --neu-accent: #2DA16E;
+  --neu-accent-hover: #36B47C;
+  --neu-accent-soft: rgba(37, 132, 90, 0.22);
+  
+  --neu-success: #2DA16E;
+  --neu-warning: #E5A31E;
+  --neu-error: #E04848;
+  --neu-info: #358AE0;
+  --neu-disabled: #1E2B22;
+
+  --neu-raised: 0 4px 12px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
+  --neu-raised-sm: 0 2px 6px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --neu-raised-lg: 0 8px 24px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+  --neu-inset: inset 2px 2px 5px rgba(0, 0, 0, 0.4), inset -1px -1px 3px rgba(255, 255, 255, 0.04);
+  --neu-inset-sm: inset 1.5px 1.5px 3.5px rgba(0, 0, 0, 0.35), inset -1px -1px 2px rgba(255, 255, 255, 0.04);
+  --neu-btn-shadow: 2px 2px 6px rgba(0, 0, 0, 0.35), -1px -1px 3px rgba(255, 255, 255, 0.04);
+}
+
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    @apply selection:bg-amber-500/25 selection:text-amber-700 dark:selection:text-amber-300 bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+    background-color: var(--neu-bg);
+    color: var(--neu-text-primary);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    letter-spacing: -0.015em;
+    color: var(--neu-text-primary);
   }
+}
+
+/* Neumorphic UI Utility Classes */
+.neu-card {
+  background-color: var(--neu-card);
+  box-shadow: var(--neu-raised);
+  border: 1px solid var(--neu-border);
+  border-radius: 1rem;
+}
+
+.neu-card-subtle {
+  background-color: var(--neu-surface-secondary);
+  border: 1px solid var(--neu-border);
+  border-radius: 0.875rem;
+}
+
+.neu-card-sm {
+  background-color: var(--neu-card);
+  box-shadow: var(--neu-raised-sm);
+  border: 1px solid var(--neu-border);
+  border-radius: 0.75rem;
+}
+
+.neu-card-inset {
+  background-color: var(--neu-surface-inset);
+  box-shadow: var(--neu-inset);
+  border: 1px solid var(--neu-border);
+  border-radius: 0.75rem;
+}
+
+.neu-btn {
+  background-color: var(--neu-card);
+  box-shadow: var(--neu-btn-shadow);
+  border: 1px solid var(--neu-border);
+  color: var(--neu-text-primary);
+  border-radius: 0.75rem;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neu-btn:hover {
+  background-color: var(--neu-surface-hover);
+  box-shadow: var(--neu-raised);
+  transform: translateY(-0.5px);
+}
+
+.neu-btn:active, .neu-btn.active {
+  box-shadow: var(--neu-inset-sm);
+  transform: translateY(0);
+}
+
+.neu-btn-primary {
+  background-color: var(--neu-accent);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(37, 132, 90, 0.25), 0 1px 3px rgba(37, 132, 90, 0.15);
+  border: 1px solid var(--neu-accent-hover);
+  border-radius: 0.75rem;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neu-btn-primary:hover {
+  background-color: var(--neu-accent-hover);
+  box-shadow: 0 6px 16px rgba(37, 132, 90, 0.35), 0 2px 4px rgba(37, 132, 90, 0.2);
+  transform: translateY(-0.5px);
+}
+
+.neu-btn-primary:active {
+  box-shadow: inset 1.5px 1.5px 3.5px rgba(16, 60, 40, 0.5);
+  transform: translateY(0);
+}
+
+.neu-input {
+  background-color: var(--neu-surface-inset);
+  box-shadow: var(--neu-inset-sm);
+  border: 1px solid var(--neu-border);
+  color: var(--neu-text-primary);
+  border-radius: 0.75rem;
+  transition: all 0.18s ease;
+}
+
+.neu-input:focus {
+  outline: none;
+  border-color: var(--neu-accent);
+  box-shadow: var(--neu-inset-sm), 0 0 0 2px rgba(37, 132, 90, 0.18);
+}
+
+.neu-select {
+  background-color: var(--neu-surface-inset);
+  box-shadow: var(--neu-inset-sm);
+  border: 1px solid var(--neu-border);
+  color: var(--neu-text-primary);
+  border-radius: 0.75rem;
+}
+
+.neu-badge-green {
+  background-color: var(--neu-surface-soft-green);
+  color: var(--neu-accent);
+  border: 1px solid rgba(37, 132, 90, 0.25);
+  border-radius: 9999px;
+}
+
+.neu-badge-amber {
+  background-color: rgba(217, 154, 24, 0.12);
+  color: var(--neu-warning);
+  border: 1px solid rgba(217, 154, 24, 0.25);
+  border-radius: 9999px;
+}
+
+.neu-badge-red {
+  background-color: rgba(216, 59, 59, 0.12);
+  color: var(--neu-error);
+  border: 1px solid rgba(216, 59, 59, 0.25);
+  border-radius: 9999px;
+}
+
+.neu-badge-blue {
+  background-color: rgba(40, 120, 199, 0.12);
+  color: var(--neu-info);
+  border: 1px solid rgba(40, 120, 199, 0.25);
+  border-radius: 9999px;
 }
 
 /* Custom Scrollbar */
@@ -25,12 +208,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.3);
+  background: rgba(114, 128, 120, 0.35);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.5);
+  background: rgba(114, 128, 120, 0.55);
 }
 
 /* ==========================================================================

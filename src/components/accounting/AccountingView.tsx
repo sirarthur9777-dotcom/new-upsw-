@@ -390,19 +390,19 @@ export const AccountingView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-6 animate-in fade-in duration-200">
       {/* View Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/20">
+            <div className="p-3 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[3px_3px_7px_rgba(175,188,177,0.5),-3px_-3px_7px_rgba(255,255,255,0.8)] dark:shadow-[3px_3px_7px_rgba(0,0,0,0.4),-2px_-2px_6px_rgba(255,255,255,0.03)] text-[#25845A] dark:text-[#4ADE80]">
               <Building2 className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-2xl font-black text-[#26372D] dark:text-[#E5ECE7] tracking-tight">
                 Accounting & GST Management
               </h1>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#728078] dark:text-[#98A79D] font-medium mt-0.5">
                 Connected Cash In / Cash Out system with real-time bank ledger & GST reconciliation
               </p>
             </div>
@@ -413,9 +413,9 @@ export const AccountingView: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             onClick={() => setTransferModalOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 transition shadow-sm"
+            className="flex items-center gap-2 px-3.5 py-2.5 text-xs font-bold rounded-xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[3px_3px_7px_rgba(175,188,177,0.5),-3px_-3px_7px_rgba(255,255,255,0.8)] dark:shadow-[3px_3px_7px_rgba(0,0,0,0.4),-2px_-2px_6px_rgba(255,255,255,0.03)] hover:shadow-[1px_1px_3px_rgba(175,188,177,0.5),-1px_-1px_3px_rgba(255,255,255,0.8)] active:shadow-[inset_2px_2px_4px_rgba(175,188,177,0.5),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-[#26372D] dark:text-[#E5ECE7] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 transition"
           >
-            <ArrowLeftRight className="w-4 h-4 text-blue-500" />
+            <ArrowLeftRight className="w-4 h-4 text-[#25845A] dark:text-[#4ADE80]" />
             <span>Contra Transfer</span>
           </button>
           <button
@@ -425,14 +425,14 @@ export const AccountingView: React.FC = () => {
               setDefaultCashOutAmount(undefined);
               setCashOutModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-600/30 transition"
+            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-rose-600 hover:bg-rose-700 text-white shadow-[3px_3px_8px_rgba(225,29,72,0.35)] transition"
           >
             <ArrowUpRight className="w-4 h-4" />
             <span>- Record Cash Out</span>
           </button>
           <button
             onClick={() => setCashInModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/30 transition"
+            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-[#25845A] hover:bg-[#1E6B49] text-white shadow-[3px_3px_8px_rgba(37,132,90,0.35)] transition"
           >
             <ArrowDownRight className="w-4 h-4" />
             <span>+ Record Cash In</span>
@@ -442,7 +442,7 @@ export const AccountingView: React.FC = () => {
 
       {/* Low Balance Alert Banner */}
       {lowBalanceAccounts.length > 0 && (
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3 text-amber-800 dark:text-amber-300 animate-pulse">
+        <div className="p-4 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[4px_4px_10px_rgba(175,188,177,0.45),-4px_-4px_10px_rgba(255,255,255,0.75)] border border-amber-500/40 flex items-center justify-between gap-3 text-amber-800 dark:text-amber-300">
           <div className="flex items-center gap-2.5">
             <AlertTriangle className="w-5 h-5 flex-shrink-0 text-amber-600 dark:text-amber-400" />
             <div className="text-xs">
@@ -462,32 +462,31 @@ export const AccountingView: React.FC = () => {
 
       {/* ─────────────────────────────────────────────────────────────
           1. PROMINENT CASH IN & CASH OUT TOP HERO SECTIONS
-          (As requested in user prompt)
          ───────────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* PROMINENT CASH IN CARD */}
         <div
           onClick={() => setActiveTab('cash-in')}
-          className="cursor-pointer relative overflow-hidden p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-500/40 dark:border-emerald-500/30 shadow-xl shadow-emerald-500/5 hover:border-emerald-500 transition group"
+          className="cursor-pointer relative overflow-hidden p-5 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-[#25845A]/30 hover:border-[#25845A] transition group"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="p-2.5 rounded-2xl bg-emerald-600 text-white shadow-md shadow-emerald-600/30 group-hover:scale-110 transition duration-200">
+              <div className="p-2.5 rounded-2xl bg-[#25845A] text-white shadow-md shadow-[#25845A]/30 group-hover:scale-110 transition duration-200">
                 <ArrowDownRight className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                <span className="text-xs font-black uppercase tracking-wider text-[#25845A] dark:text-[#4ADE80]">
                   CASH IN
                 </span>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">Total Money Inflow</p>
+                <p className="text-[11px] text-[#728078] dark:text-[#98A79D]">Total Money Inflow</p>
               </div>
             </div>
-            <span className="px-2.5 py-1 text-[10px] font-extrabold rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+            <span className="px-2.5 py-1 text-[10px] font-extrabold rounded-full bg-[#25845A]/10 text-[#25845A] dark:text-[#4ADE80] border border-[#25845A]/20">
               {filteredCashIn.length} txns
             </span>
           </div>
           <div className="space-y-1">
-            <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            <div className="text-2xl lg:text-3xl font-black text-[#26372D] dark:text-[#E5ECE7] tracking-tight">
               ₹{totalCashInAmount.toLocaleString('en-IN')}
             </div>
             {pendingCashInAmount > 0 && (
@@ -497,7 +496,7 @@ export const AccountingView: React.FC = () => {
               </p>
             )}
           </div>
-          <div className="mt-4 pt-3 border-t border-emerald-500/20 flex items-center justify-between text-xs text-emerald-700 dark:text-emerald-400 font-bold">
+          <div className="mt-4 pt-3 border-t border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 flex items-center justify-between text-xs text-[#25845A] dark:text-[#4ADE80] font-bold">
             <span>View Inward Ledger</span>
             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition" />
           </div>
@@ -506,7 +505,7 @@ export const AccountingView: React.FC = () => {
         {/* PROMINENT CASH OUT CARD */}
         <div
           onClick={() => setActiveTab('cash-out')}
-          className="cursor-pointer relative overflow-hidden p-5 rounded-3xl bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-transparent border-2 border-rose-500/40 dark:border-rose-500/30 shadow-xl shadow-rose-500/5 hover:border-rose-500 transition group"
+          className="cursor-pointer relative overflow-hidden p-5 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-rose-500/30 hover:border-rose-500 transition group"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
@@ -517,7 +516,7 @@ export const AccountingView: React.FC = () => {
                 <span className="text-xs font-black uppercase tracking-wider text-rose-700 dark:text-rose-400">
                   CASH OUT
                 </span>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">Total Money Outflow</p>
+                <p className="text-[11px] text-[#728078] dark:text-[#98A79D]">Total Money Outflow</p>
               </div>
             </div>
             <span className="px-2.5 py-1 text-[10px] font-extrabold rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
@@ -525,7 +524,7 @@ export const AccountingView: React.FC = () => {
             </span>
           </div>
           <div className="space-y-1">
-            <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            <div className="text-2xl lg:text-3xl font-black text-[#26372D] dark:text-[#E5ECE7] tracking-tight">
               ₹{totalCashOutAmount.toLocaleString('en-IN')}
             </div>
             {pendingCashOutAmount > 0 && (
@@ -535,36 +534,36 @@ export const AccountingView: React.FC = () => {
               </p>
             )}
           </div>
-          <div className="mt-4 pt-3 border-t border-rose-500/20 flex items-center justify-between text-xs text-rose-700 dark:text-rose-400 font-bold">
+          <div className="mt-4 pt-3 border-t border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 flex items-center justify-between text-xs text-rose-700 dark:text-rose-400 font-bold">
             <span>View Outward Ledger</span>
             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition" />
           </div>
         </div>
 
         {/* NET CASH FLOW CARD */}
-        <div className="relative overflow-hidden p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="relative overflow-hidden p-5 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <div
                 className={`p-2.5 rounded-2xl ${
                   netCashFlow >= 0
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
+                    ? 'bg-[#25845A] text-white shadow-md shadow-[#25845A]/30'
                     : 'bg-amber-600 text-white shadow-md shadow-amber-600/30'
                 }`}
               >
                 {netCashFlow >= 0 ? <TrendingUp className="w-6 h-6" /> : <TrendingDown className="w-6 h-6" />}
               </div>
               <div>
-                <span className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <span className="text-xs font-black uppercase tracking-wider text-[#26372D] dark:text-[#E5ECE7]">
                   NET CASH FLOW
                 </span>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">Cash In - Cash Out</p>
+                <p className="text-[11px] text-[#728078] dark:text-[#98A79D]">Cash In - Cash Out</p>
               </div>
             </div>
             <span
               className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${
                 netCashFlow >= 0
-                  ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
+                  ? 'bg-[#25845A]/15 text-[#25845A] dark:text-[#4ADE80]'
                   : 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
               }`}
             >
@@ -574,18 +573,18 @@ export const AccountingView: React.FC = () => {
           <div className="space-y-1">
             <div
               className={`text-2xl lg:text-3xl font-black tracking-tight ${
-                netCashFlow >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-amber-600 dark:text-amber-400'
+                netCashFlow >= 0 ? 'text-[#25845A] dark:text-[#4ADE80]' : 'text-amber-600 dark:text-amber-400'
               }`}
             >
               ₹{netCashFlow.toLocaleString('en-IN')}
             </div>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[#728078] dark:text-[#98A79D]">
               Operating cash balance during period
             </p>
           </div>
-          <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 flex justify-between">
+          <div className="mt-4 pt-3 border-t border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 text-xs text-[#728078] dark:text-[#98A79D] flex justify-between">
             <span>In/Out Ratio:</span>
-            <span className="font-bold text-slate-700 dark:text-slate-300">
+            <span className="font-bold text-[#26372D] dark:text-[#E5ECE7]">
               {totalCashOutAmount > 0
                 ? `${((totalCashInAmount / totalCashOutAmount) * 100).toFixed(0)}%`
                 : '100%'}
@@ -596,33 +595,33 @@ export const AccountingView: React.FC = () => {
         {/* TOTAL AVAILABLE BALANCE CARD */}
         <div
           onClick={() => setActiveTab('accounts')}
-          className="cursor-pointer relative overflow-hidden p-5 rounded-3xl bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-xl shadow-indigo-950/20 hover:scale-[1.01] transition"
+          className="cursor-pointer relative overflow-hidden p-5 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 hover:scale-[1.01] transition"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="p-2.5 rounded-2xl bg-white/10 text-indigo-300">
+              <div className="p-2.5 rounded-2xl bg-[#25845A]/15 text-[#25845A] dark:text-[#4ADE80]">
                 <Wallet className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs font-black uppercase tracking-wider text-indigo-300">
+                <span className="text-xs font-black uppercase tracking-wider text-[#25845A] dark:text-[#4ADE80]">
                   AVAILABLE FUNDS
                 </span>
-                <p className="text-[11px] text-slate-300">Bank + Cash on Hand</p>
+                <p className="text-[11px] text-[#728078] dark:text-[#98A79D]">Bank + Cash on Hand</p>
               </div>
             </div>
-            <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-white/10 text-emerald-300">
+            <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[#25845A]/20 text-[#25845A] dark:text-[#4ADE80]">
               Live
             </span>
           </div>
           <div className="space-y-1">
-            <div className="text-2xl lg:text-3xl font-black tracking-tight text-white">
+            <div className="text-2xl lg:text-3xl font-black tracking-tight text-[#26372D] dark:text-[#E5ECE7]">
               ₹{(totalAvailableCash || 0).toLocaleString('en-IN')}
             </div>
-            <p className="text-xs text-indigo-200">
+            <p className="text-xs text-[#728078] dark:text-[#98A79D]">
               Across {accounts.length} active registered accounts
             </p>
           </div>
-          <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-indigo-300 font-bold">
+          <div className="mt-4 pt-3 border-t border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 flex items-center justify-between text-xs text-[#25845A] dark:text-[#4ADE80] font-bold">
             <span>Manage Accounts</span>
             <ChevronRight className="w-4 h-4" />
           </div>
@@ -630,15 +629,15 @@ export const AccountingView: React.FC = () => {
       </div>
 
       {/* FILTER TOOLBAR */}
-      <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div className="p-4 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[4px_4px_10px_rgba(175,188,177,0.45),-4px_-4px_10px_rgba(255,255,255,0.75)] dark:shadow-[3px_3px_8px_rgba(0,0,0,0.4),-2px_-2px_6px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         {/* Navigation Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-3.5 py-2 text-xs font-bold rounded-xl whitespace-nowrap transition ${
               activeTab === 'overview'
-                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#25845A] text-white shadow-[2px_2px_5px_rgba(37,132,90,0.35)]'
+                : 'text-[#728078] dark:text-[#98A79D] hover:bg-[#DEE5DE] dark:hover:bg-[#2C3E33]'
             }`}
           >
             Overview & Analytics
@@ -647,13 +646,13 @@ export const AccountingView: React.FC = () => {
             onClick={() => setActiveTab('cash-in')}
             className={`px-3.5 py-2 text-xs font-bold rounded-xl whitespace-nowrap transition flex items-center gap-1.5 ${
               activeTab === 'cash-in'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'
+                ? 'bg-[#25845A] text-white shadow-[2px_2px_5px_rgba(37,132,90,0.35)]'
+                : 'text-[#25845A] dark:text-[#4ADE80] hover:bg-[#25845A]/10'
             }`}
           >
             <ArrowDownRight className="w-3.5 h-3.5" />
             <span>Cash In Ledger</span>
-            <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20">
+            <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-white/20">
               {filteredCashIn.length}
             </span>
           </button>
@@ -675,8 +674,8 @@ export const AccountingView: React.FC = () => {
             onClick={() => setActiveTab('accounts')}
             className={`px-3.5 py-2 text-xs font-bold rounded-xl whitespace-nowrap transition flex items-center gap-1.5 ${
               activeTab === 'accounts'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#26372D] text-white dark:bg-[#E5ECE7] dark:text-[#26372D] shadow-sm'
+                : 'text-[#728078] dark:text-[#98A79D] hover:bg-[#DEE5DE] dark:hover:bg-[#2C3E33]'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -687,7 +686,7 @@ export const AccountingView: React.FC = () => {
             className={`px-3.5 py-2 text-xs font-bold rounded-xl whitespace-nowrap transition flex items-center gap-1.5 ${
               activeTab === 'cheques'
                 ? 'bg-amber-600 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                : 'text-[#728078] dark:text-[#98A79D] hover:bg-[#DEE5DE] dark:hover:bg-[#2C3E33]'
             }`}
           >
             <AlertCircle className="w-3.5 h-3.5" />
@@ -702,8 +701,8 @@ export const AccountingView: React.FC = () => {
             onClick={() => setActiveTab('gst')}
             className={`px-3.5 py-2 text-xs font-bold rounded-xl whitespace-nowrap transition flex items-center gap-1.5 ${
               activeTab === 'gst'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#25845A] text-white shadow-sm'
+                : 'text-[#728078] dark:text-[#98A79D] hover:bg-[#DEE5DE] dark:hover:bg-[#2C3E33]'
             }`}
           >
             <Receipt className="w-3.5 h-3.5" />
@@ -715,13 +714,13 @@ export const AccountingView: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           {/* Search */}
           <div className="relative flex-1 sm:w-44">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#728078] dark:text-[#98A79D]" />
             <input
               type="text"
               placeholder="Search reference, party..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-[#E1E7E1] dark:bg-[#151D18] shadow-[inset_1px_1px_3px_rgba(175,188,177,0.4),inset_-1px_-1px_3px_rgba(255,255,255,0.7)] dark:shadow-[inset_1px_1px_3px_rgba(0,0,0,0.5)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 text-[#26372D] dark:text-[#E5ECE7] outline-none focus:ring-2 focus:ring-[#25845A]"
             />
           </div>
 
@@ -729,7 +728,7 @@ export const AccountingView: React.FC = () => {
           <select
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value as DateFilter)}
-            className="px-2.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none"
+            className="px-2.5 py-1.5 text-xs font-bold rounded-xl bg-[#E1E7E1] dark:bg-[#151D18] shadow-[inset_1px_1px_3px_rgba(175,188,177,0.35),inset_-1px_-1px_3px_rgba(255,255,255,0.6)] dark:shadow-[inset_1px_1px_3px_rgba(0,0,0,0.4)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 text-[#26372D] dark:text-[#E5ECE7] outline-none"
           >
             <option value="all">All Dates</option>
             <option value="today">Today</option>
@@ -743,7 +742,7 @@ export const AccountingView: React.FC = () => {
           <select
             value={selectedAccountId}
             onChange={(e) => setSelectedAccountId(e.target.value)}
-            className="px-2.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none max-w-[130px] truncate"
+            className="px-2.5 py-1.5 text-xs font-bold rounded-xl bg-[#E1E7E1] dark:bg-[#151D18] shadow-[inset_1px_1px_3px_rgba(175,188,177,0.35),inset_-1px_-1px_3px_rgba(255,255,255,0.6)] dark:shadow-[inset_1px_1px_3px_rgba(0,0,0,0.4)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 text-[#26372D] dark:text-[#E5ECE7] outline-none max-w-[130px] truncate"
           >
             <option value="all">All Accounts</option>
             {accounts.map((acc) => (

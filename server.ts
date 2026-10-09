@@ -45,7 +45,7 @@ app.post('/api/gemini/chat', async (req, res) => {
   try {
     const {
       messages = [],
-      model = 'gemini-3.5-flash',
+      model = 'gemini-3.8-flash',
       rolePersona = 'erp_assistant',
       erpState = {},
       apiKey,
@@ -106,7 +106,7 @@ CRITICAL GUIDELINES:
       });
     }
 
-    const selectedModel = model || 'gemini-3.5-flash';
+    const selectedModel = model || 'gemini-3.8-flash';
     const executedToolCalls: any[] = [];
     const actionsToApply: any[] = [];
 
@@ -172,10 +172,108 @@ CRITICAL GUIDELINES:
       model: selectedModel,
     });
   } catch (error: any) {
-    console.error('Gemini Chat API Error:', error);
+    console.warn('Gemini Chat API Warning/Error:', error?.message);
     res.status(500).json({
       error: error.message || 'Internal Server Error during Gemini conversation',
       text: `An error occurred while communicating with Gemini: ${error.message}`,
+    });
+  }
+});
+
+// Dedicated Voice-Turn endpoint (optimized for concise speech synthesis & audio ERP assistant)
+app.post('/api/gemini/voice-turn', async (req, res) => {
+  try {
+    const {
+      transcript = '',
+      erpState = {},
+      history = [],
+      apiKey,
+    } = req.body;
+
+    if (!transcript || !transcript.trim()) {
+      return res.json({
+        text: 'I am listening. Please ask about any customer, solar project, inventory stock, or billing status.',
+        actions: [],
+      });
+    }
+
+    const ai = getGeminiClient(apiKey);
+    if (!ai) {
+      return res.status(503).json({
+        error: 'Gemini API key is not configured. Please add one in ERP Settings.',
+        text: 'Gemini API key is not configured.',
+      });
+    }
+
+    const voiceSystemInstruction = `
+You are SolarFlow Voice, the real-time spoken solar operations assistant for Upadhyay Brother Solar Works (Jaunpur, Uttar Pradesh).
+You are answering verbally over audio.
+
+Guidelines:
+1. Speak concisely in 1 to 3 clear, natural spoken sentences. Avoid markdown tables, asterisks, or unpronounceable formatting.
+2. State rupee figures naturally in Indian currency (e.g. ₹50,000 as 50 thousand rupees).
+3. If the user asks for real data (customers, projects, inventory, dues, payments), call the corresponding tool first.
+4. If asked to record an action, execute the tool and verbally confirm completion.
+`;
+
+    const contents: any[] = [];
+    for (const h of history.slice(-4)) {
+      contents.push({
+        role: h.sender === 'user' ? 'user' : 'model',
+        parts: [{ text: h.text }],
+      });
+    }
+    contents.push({
+      role: 'user',
+      parts: [{ text: transcript }],
+    });
+
+    const executedToolCalls: any[] = [];
+    const actionsToApply: any[] = [];
+    let currentTurn = 0;
+    const maxTurns = 3;
+    let finalVoiceText = '';
+
+    while (currentTurn < maxTurns) {
+      currentTurn++;
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents,
+        config: {
+          systemInstruction: voiceSystemInstruction,
+          tools: [{ functionDeclarations: GEMINI_TOOL_DECLARATIONS }],
+        },
+      });
+
+      const functionCalls = response.functionCalls;
+      if (functionCalls && functionCalls.length > 0) {
+        contents.push(response.candidates?.[0]?.content);
+        const functionResponseParts: any[] = [];
+        for (const call of functionCalls) {
+          const { result, action } = executeToolCall(call.name, call.args || {}, erpState);
+          executedToolCalls.push({ name: call.name, args: call.args, result });
+          if (action) actionsToApply.push(action);
+          functionResponseParts.push({
+            functionResponse: { name: call.name, response: { output: result } },
+          });
+        }
+        contents.push({ role: 'user', parts: functionResponseParts });
+      } else {
+        finalVoiceText = response.text || '';
+        break;
+      }
+    }
+
+    res.json({
+      text: finalVoiceText,
+      toolCalls: executedToolCalls,
+      actions: actionsToApply,
+    });
+  } catch (error: any) {
+    console.warn('Voice Turn Warning:', error?.message);
+    res.status(500).json({
+      error: error.message,
+      text: "I couldn't process that request right now. Please try again.",
     });
   }
 });
@@ -186,15 +284,30 @@ const wss = new WebSocketServer({ server, path: '/live' });
 wss.on('connection', async (clientWs, request) => {
   console.log('Client connected to /live WebSocket');
 
+  // Guard client errors to prevent uncaught server exceptions
+  clientWs.on('error', (err) => {
+    console.warn('Live WebSocket client warning:', err.message);
+  });
+
+  const safeSend = (payload: any) => {
+    if (clientWs.readyState === 1 /* WebSocket.OPEN */) {
+      try {
+        clientWs.send(typeof payload === 'string' ? payload : JSON.stringify(payload));
+      } catch (err: any) {
+        console.warn('Failed to send to client WS:', err.message);
+      }
+    }
+  };
+
   const requestUrl = new URL(request.url || '/live', `http://${request.headers.host || 'localhost'}`);
   const apiKey = requestUrl.searchParams.get('apiKey')?.trim() || process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    clientWs.send(
-      JSON.stringify({
-        error: 'Gemini API key is not configured for Live Voice. Add it in ERP Settings or configure GEMINI_API_KEY on the server.',
-      })
-    );
-    clientWs.close();
+    safeSend({
+      error: 'Gemini API key is not configured for Live Voice. Add it in ERP Settings or configure GEMINI_API_KEY on the server.',
+    });
+    try {
+      clientWs.close();
+    } catch (_) {}
     return;
   }
 
@@ -209,7 +322,7 @@ wss.on('connection', async (clientWs, request) => {
 
   try {
     const session = await ai.live.connect({
-      model: 'gemini-3.1-flash-live-preview',
+      model: 'gemini-3.8-live',
       config: {
         responseModalities: [Modality.AUDIO],
         speechConfig: {
@@ -223,14 +336,14 @@ wss.on('connection', async (clientWs, request) => {
           const audio =
             message.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
           if (audio) {
-            clientWs.send(JSON.stringify({ audio }));
+            safeSend({ audio });
           }
           if (message.serverContent?.interrupted) {
-            clientWs.send(JSON.stringify({ interrupted: true }));
+            safeSend({ interrupted: true });
           }
         },
         onclose: () => {
-          clientWs.send(JSON.stringify({ status: 'closed' }));
+          safeSend({ status: 'closed' });
         },
       },
     });
@@ -251,7 +364,7 @@ wss.on('connection', async (clientWs, request) => {
           });
         }
       } catch (err) {
-        console.error('Error receiving client WS message:', err);
+        console.warn('Error parsing client WS message:', err);
       }
     });
 
@@ -262,13 +375,13 @@ wss.on('connection', async (clientWs, request) => {
       } catch (_) {}
     });
   } catch (error: any) {
-    console.error('Failed to initiate Gemini Live session:', error);
-    clientWs.send(
-      JSON.stringify({
-        error: `Failed to connect to Live API: ${error.message}`,
-      })
-    );
-    clientWs.close();
+    console.warn('Failed to initiate Gemini Live session:', error?.message);
+    safeSend({
+      error: `Failed to connect to Live API: ${error.message}`,
+    });
+    try {
+      clientWs.close();
+    } catch (_) {}
   }
 });
 

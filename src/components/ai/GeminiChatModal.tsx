@@ -61,13 +61,13 @@ I have direct access to our live ERP database and can answer queries or execute 
 
 How may I assist you today?`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        modelUsed: 'gemini-3.5-flash',
+        modelUsed: 'gemini-3.8-flash',
       },
     ];
   });
 
   const [inputPrompt, setInputPrompt] = useState('');
-  const [selectedModel, setSelectedModel] = useState<string>('gemini-3.5-flash');
+  const [selectedModel, setSelectedModel] = useState<string>('gemini-3.8-flash');
   const [rolePersona, setRolePersona] = useState<string>('erp_assistant');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -124,7 +124,7 @@ How may I assist you today?`,
         recognitionRef.current.start();
         setIsListening(true);
       } catch (err) {
-        console.error('Mic start error:', err);
+        console.warn('Mic start warning:', err);
         setIsListening(false);
       }
     }
@@ -190,7 +190,7 @@ How may I assist you today?`,
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err: any) {
-      console.error('Chat error:', err);
+      console.warn('Chat request warning:', err?.message);
       setErrorMessage(err.message || 'Error executing request.');
       const errorMessage: ChatMessage = {
         id: `err-${Date.now()}`,
@@ -314,7 +314,7 @@ How may I assist you today?`,
               onChange={(e) => setSelectedModel(e.target.value)}
               className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs focus:ring-2 focus:ring-amber-500 outline-hidden font-medium"
             >
-              <option value="gemini-3.5-flash">gemini-3.5-flash (General Tasks - Recommended)</option>
+              <option value="gemini-3.8-flash">gemini-3.8-flash (General Tasks - Recommended)</option>
               <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview (Complex Reasoning)</option>
               <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Ultra-Fast)</option>
             </select>

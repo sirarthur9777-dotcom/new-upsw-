@@ -103,15 +103,17 @@ export const PurchaseView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-6 animate-in fade-in duration-200">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <ShoppingCart className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <h2 className="text-xl font-black text-[#26372D] dark:text-[#E5ECE7] tracking-tight flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[3px_3px_7px_rgba(175,188,177,0.5),-3px_-3px_7px_rgba(255,255,255,0.8)] dark:shadow-[3px_3px_7px_rgba(0,0,0,0.4),-2px_-2px_6px_rgba(255,255,255,0.03)] text-[#25845A] dark:text-[#4ADE80]">
+              <ShoppingCart className="w-5 h-5" />
+            </span>
             <span>Product Purchases & Stock Inward (GRN)</span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-[#728078] dark:text-[#98A79D] mt-1 font-medium">
             Procurement management directly linked with single-source inventory stock and vendor billing
           </p>
         </div>
@@ -119,16 +121,16 @@ export const PurchaseView: React.FC = () => {
         <div className="flex items-center gap-2.5 flex-wrap">
           <button
             onClick={() => setActiveTab('distributors')}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold transition"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[3px_3px_7px_rgba(175,188,177,0.5),-3px_-3px_7px_rgba(255,255,255,0.8)] dark:shadow-[3px_3px_7px_rgba(0,0,0,0.4),-2px_-2px_6px_rgba(255,255,255,0.03)] hover:shadow-[1px_1px_3px_rgba(175,188,177,0.5),-1px_-1px_3px_rgba(255,255,255,0.8)] active:shadow-[inset_2px_2px_4px_rgba(175,188,177,0.5),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-[#26372D] dark:text-[#E5ECE7] text-xs font-bold transition border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50"
           >
-            <Building2 className="w-4 h-4 text-slate-500" />
+            <Building2 className="w-4 h-4 text-[#728078] dark:text-[#98A79D]" />
             <span>Distributors ({distributors.length})</span>
           </button>
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold transition"
+            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[3px_3px_7px_rgba(175,188,177,0.5),-3px_-3px_7px_rgba(255,255,255,0.8)] dark:shadow-[3px_3px_7px_rgba(0,0,0,0.4),-2px_-2px_6px_rgba(255,255,255,0.03)] hover:shadow-[1px_1px_3px_rgba(175,188,177,0.5),-1px_-1px_3px_rgba(255,255,255,0.8)] active:shadow-[inset_2px_2px_4px_rgba(175,188,177,0.5),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-[#26372D] dark:text-[#E5ECE7] text-xs font-bold transition border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50"
           >
-            <Download className="w-4 h-4 text-slate-500" />
+            <Download className="w-4 h-4 text-[#728078] dark:text-[#98A79D]" />
             <span>Export CSV</span>
           </button>
           <button
@@ -136,7 +138,7 @@ export const PurchaseView: React.FC = () => {
               setEditingPurchase(null);
               setModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-md shadow-blue-600/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#25845A] hover:bg-[#1E6B49] text-white text-xs font-bold transition shadow-[4px_4px_10px_rgba(37,132,90,0.35),-2px_-2px_6px_rgba(255,255,255,0.5)] active:scale-[0.98]"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>+ New Purchase</span>
@@ -146,24 +148,24 @@ export const PurchaseView: React.FC = () => {
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="p-4 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Purchases Value</span>
-            <span className="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+            <span className="text-xs font-bold text-[#728078] dark:text-[#98A79D]">Total Purchases Value</span>
+            <span className="p-2 rounded-xl bg-[#25845A]/10 text-[#25845A] dark:text-[#4ADE80]">
               <TrendingUp className="w-4 h-4" />
             </span>
           </div>
-          <p className="text-2xl font-black text-slate-900 dark:text-white mt-2">
+          <p className="text-2xl font-black text-[#26372D] dark:text-[#E5ECE7] mt-2">
             {formatINR(stats.totalValue)}
           </p>
-          <p className="text-[11px] text-slate-500 mt-0.5 font-medium">
+          <p className="text-[11px] text-[#728078] dark:text-[#98A79D] mt-0.5 font-medium">
             {stats.totalCount} Purchase Bills Recorded
           </p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="p-4 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Paid to Vendors</span>
+            <span className="text-xs font-bold text-[#728078] dark:text-[#98A79D]">Paid to Vendors</span>
             <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <CreditCard className="w-4 h-4" />
             </span>
@@ -171,14 +173,14 @@ export const PurchaseView: React.FC = () => {
           <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-2">
             {formatINR(stats.totalPaid)}
           </p>
-          <p className="text-[11px] text-emerald-600/80 mt-0.5 font-medium">
+          <p className="text-[11px] text-emerald-700 dark:text-emerald-400 mt-0.5 font-medium">
             Settled Supplier Payments
           </p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="p-4 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Outstanding Payables</span>
+            <span className="text-xs font-bold text-[#728078] dark:text-[#98A79D]">Outstanding Payables</span>
             <span className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
               <Clock className="w-4 h-4" />
             </span>
@@ -186,48 +188,48 @@ export const PurchaseView: React.FC = () => {
           <p className="text-2xl font-black text-amber-600 dark:text-amber-400 mt-2">
             {formatINR(stats.totalDue)}
           </p>
-          <p className="text-[11px] text-amber-600/80 mt-0.5 font-medium">
+          <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-0.5 font-medium">
             Pending Vendor Balances
           </p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="p-4 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[5px_5px_12px_rgba(175,188,177,0.45),-5px_-5px_12px_rgba(255,255,255,0.75)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-3px_-3px_8px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Stock Receiving Rate</span>
-            <span className="p-2 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+            <span className="text-xs font-bold text-[#728078] dark:text-[#98A79D]">Stock Receiving Rate</span>
+            <span className="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
               <Package className="w-4 h-4" />
             </span>
           </div>
-          <p className="text-2xl font-black text-slate-900 dark:text-white mt-2">
+          <p className="text-2xl font-black text-[#26372D] dark:text-[#E5ECE7] mt-2">
             {stats.receivedCount} / {stats.totalCount}
           </p>
-          <p className="text-[11px] text-indigo-600 dark:text-indigo-400 mt-0.5 font-medium">
+          <p className="text-[11px] text-[#25845A] dark:text-[#4ADE80] mt-0.5 font-medium">
             Goods Fully Received & Inwarded
           </p>
         </div>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-3 shadow-xs">
+      <div className="p-4 rounded-2xl bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[4px_4px_10px_rgba(175,188,177,0.45),-4px_-4px_10px_rgba(255,255,255,0.75)] dark:shadow-[3px_3px_8px_rgba(0,0,0,0.4),-2px_-2px_6px_rgba(255,255,255,0.03)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-3 text-[#728078] dark:text-[#98A79D]" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by PO, vendor invoice, supplier, product..."
-            className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full pl-9 pr-3 py-2 bg-[#E1E7E1] dark:bg-[#151D18] shadow-[inset_2px_2px_4px_rgba(175,188,177,0.4),inset_-2px_-2px_4px_rgba(255,255,255,0.7)] dark:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5),inset_-1px_-1px_3px_rgba(255,255,255,0.02)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 rounded-xl text-xs text-[#26372D] dark:text-[#E5ECE7] placeholder-[#728078]/70 dark:placeholder-[#98A79D]/60 focus:ring-2 focus:ring-[#25845A] outline-none"
           />
         </div>
 
         <div className="flex items-center gap-2.5 w-full md:w-auto flex-wrap">
           {/* Status Filter */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Status:</span>
+            <span className="text-xs font-bold text-[#728078] dark:text-[#98A79D]">Status:</span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              className="px-2.5 py-1.5 bg-[#E1E7E1] dark:bg-[#151D18] shadow-[inset_1px_1px_3px_rgba(175,188,177,0.35),inset_-1px_-1px_3px_rgba(255,255,255,0.6)] dark:shadow-[inset_1px_1px_3px_rgba(0,0,0,0.4)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 rounded-xl text-xs text-[#26372D] dark:text-[#E5ECE7] focus:ring-2 focus:ring-[#25845A] outline-none font-medium"
             >
               <option value="ALL">All Status</option>
               <option value="Received">Received</option>
@@ -239,11 +241,11 @@ export const PurchaseView: React.FC = () => {
 
           {/* Payment Filter */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Payment:</span>
+            <span className="text-xs font-bold text-[#728078] dark:text-[#98A79D]">Payment:</span>
             <select
               value={paymentFilter}
               onChange={(e) => setPaymentFilter(e.target.value as any)}
-              className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              className="px-2.5 py-1.5 bg-[#E1E7E1] dark:bg-[#151D18] shadow-[inset_1px_1px_3px_rgba(175,188,177,0.35),inset_-1px_-1px_3px_rgba(255,255,255,0.6)] dark:shadow-[inset_1px_1px_3px_rgba(0,0,0,0.4)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 rounded-xl text-xs text-[#26372D] dark:text-[#E5ECE7] focus:ring-2 focus:ring-[#25845A] outline-none font-medium"
             >
               <option value="ALL">All Payment</option>
               <option value="Paid">Paid</option>
@@ -254,11 +256,11 @@ export const PurchaseView: React.FC = () => {
 
           {/* Distributor Filter */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Vendor:</span>
+            <span className="text-xs font-bold text-[#728078] dark:text-[#98A79D]">Vendor:</span>
             <select
               value={distributorFilter}
               onChange={(e) => setDistributorFilter(e.target.value)}
-              className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none max-w-[160px] truncate"
+              className="px-2.5 py-1.5 bg-[#E1E7E1] dark:bg-[#151D18] shadow-[inset_1px_1px_3px_rgba(175,188,177,0.35),inset_-1px_-1px_3px_rgba(255,255,255,0.6)] dark:shadow-[inset_1px_1px_3px_rgba(0,0,0,0.4)] border border-[#D5DDD6]/60 dark:border-[#2C3E33]/50 rounded-xl text-xs text-[#26372D] dark:text-[#E5ECE7] focus:ring-2 focus:ring-[#25845A] outline-none font-medium max-w-[160px] truncate"
             >
               <option value="ALL">All Vendors</option>
               {distributors.map((d) => (
@@ -272,10 +274,10 @@ export const PurchaseView: React.FC = () => {
       </div>
 
       {/* Purchases Data Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs overflow-hidden">
+      <div className="bg-[#E9EEE9] dark:bg-[#1C2620] rounded-2xl border border-[#D5DDD6]/70 dark:border-[#2C3E33]/60 shadow-[6px_6px_14px_rgba(175,188,177,0.45),-6px_-6px_14px_rgba(255,255,255,0.7)] dark:shadow-[5px_5px_12px_rgba(0,0,0,0.5),-4px_-4px_10px_rgba(255,255,255,0.03)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 font-bold">
+            <thead className="bg-[#DEE5DE]/80 dark:bg-[#161F1A]/80 text-[#728078] dark:text-[#98A79D] border-b border-[#D5DDD6] dark:border-[#2C3E33] font-bold">
               <tr>
                 <th className="px-4 py-3.5">PO & Invoice No</th>
                 <th className="px-4 py-3.5">Distributor / Supplier</th>
@@ -287,12 +289,12 @@ export const PurchaseView: React.FC = () => {
                 <th className="px-4 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200">
+            <tbody className="divide-y divide-[#D5DDD6]/50 dark:divide-[#2C3E33]/40 text-[#26372D] dark:text-[#E5ECE7]">
               {filteredPurchases.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="text-center py-12 text-slate-400">
-                    <ShoppingCart className="w-10 h-10 mx-auto text-slate-300 dark:text-slate-600 mb-2" />
-                    <p className="font-semibold">No purchase bills found</p>
+                  <td colSpan={8} className="text-center py-12 text-[#728078] dark:text-[#98A79D]">
+                    <ShoppingCart className="w-10 h-10 mx-auto text-[#728078]/40 dark:text-[#98A79D]/30 mb-2" />
+                    <p className="font-bold">No purchase bills found</p>
                     <p className="text-[11px] mt-0.5">Click "+ New Purchase" to inward stock from distributors.</p>
                   </td>
                 </tr>
@@ -303,10 +305,10 @@ export const PurchaseView: React.FC = () => {
                   const percentReceived = totalOrdered > 0 ? Math.round((totalReceived / totalOrdered) * 100) : 100;
 
                   return (
-                    <tr key={p.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
+                    <tr key={p.id} className="hover:bg-[#DEE5DE]/40 dark:hover:bg-[#222E26]/40 transition">
                       <td className="px-4 py-3">
-                        <span className="font-bold text-slate-900 dark:text-white block">{p.id}</span>
-                        <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                        <span className="font-bold text-[#26372D] dark:text-[#E5ECE7] block">{p.id}</span>
+                        <div className="flex items-center gap-1.5 text-[11px] text-[#728078] dark:text-[#98A79D] mt-0.5">
                           <span className="font-mono">{p.invoiceNumber}</span>
                           <span>•</span>
                           <span>{p.purchaseDate}</span>
@@ -314,33 +316,33 @@ export const PurchaseView: React.FC = () => {
                       </td>
 
                       <td className="px-4 py-3">
-                        <span className="font-bold text-slate-900 dark:text-white block">
+                        <span className="font-bold text-[#26372D] dark:text-[#E5ECE7] block">
                           {p.distributorName}
                         </span>
-                        <span className="text-[11px] text-slate-500 font-mono block">
+                        <span className="text-[11px] text-[#728078] dark:text-[#98A79D] font-mono block">
                           {p.distributorGst || 'Unregistered'}
                         </span>
                       </td>
 
                       <td className="px-4 py-3">
-                        <div className="max-w-xs truncate font-medium text-slate-800 dark:text-slate-200">
+                        <div className="max-w-xs truncate font-medium text-[#26372D] dark:text-[#E5ECE7]">
                           {p.items?.map((item) => `${item.productName} (${item.receivedQuantity || item.orderedQuantity})`).join(', ')}
                         </div>
-                        <span className="text-[10px] text-slate-400">
+                        <span className="text-[10px] text-[#728078] dark:text-[#98A79D]">
                           {p.items?.length || 0} product line{p.items?.length !== 1 ? 's' : ''}
                         </span>
                       </td>
 
                       <td className="px-4 py-3 text-center">
                         <div className="inline-flex flex-col items-center">
-                          <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200">
+                          <span className="text-[11px] font-bold text-[#26372D] dark:text-[#E5ECE7]">
                             {totalReceived} / {totalOrdered}
                           </span>
-                          <div className="w-16 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden mt-1">
+                          <div className="w-16 h-1.5 bg-[#D5DDD6] dark:bg-[#2C3E33] rounded-full overflow-hidden mt-1 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.15)]">
                             <div
                               className={`h-full rounded-full ${
                                 percentReceived === 100
-                                  ? 'bg-emerald-500'
+                                  ? 'bg-[#25845A]'
                                   : percentReceived > 0
                                   ? 'bg-blue-500'
                                   : 'bg-amber-500'
@@ -352,7 +354,7 @@ export const PurchaseView: React.FC = () => {
                       </td>
 
                       <td className="px-4 py-3 text-right">
-                        <span className="font-black text-slate-900 dark:text-white block">
+                        <span className="font-black text-[#26372D] dark:text-[#E5ECE7] block">
                           {formatINR(p.grandTotal)}
                         </span>
                         {p.dueAmount > 0 ? (
@@ -360,7 +362,7 @@ export const PurchaseView: React.FC = () => {
                             Due: {formatINR(p.dueAmount)}
                           </span>
                         ) : (
-                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold block">
+                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold block">
                             Fully Settled
                           </span>
                         )}
@@ -370,10 +372,10 @@ export const PurchaseView: React.FC = () => {
                         <span
                           className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                             p.paymentStatus === 'Paid'
-                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                              ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30'
                               : p.paymentStatus === 'Partial'
-                              ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
-                              : 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20'
+                              ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30'
+                              : 'bg-red-500/15 text-red-700 dark:text-red-400 border border-red-500/30'
                           }`}
                         >
                           {p.paymentStatus}
@@ -384,12 +386,12 @@ export const PurchaseView: React.FC = () => {
                         <span
                           className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                             p.status === 'Received'
-                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                              ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30'
                               : p.status === 'Partial'
-                              ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'
+                              ? 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/30'
                               : p.status === 'Ordered'
-                              ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20'
-                              : 'bg-slate-500/10 text-slate-500 border border-slate-500/20'
+                              ? 'bg-purple-500/15 text-purple-700 dark:text-purple-400 border border-purple-500/30'
+                              : 'bg-slate-500/15 text-slate-700 dark:text-slate-400 border border-slate-500/30'
                           }`}
                         >
                           {p.status}
@@ -397,18 +399,18 @@ export const PurchaseView: React.FC = () => {
                       </td>
 
                       <td className="px-4 py-3 text-right">
-                        <div className="flex items-center justify-end gap-1">
+                        <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setSelectedPurchase(p)}
                             title="View Purchase Detail"
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#728078] dark:text-[#98A79D] hover:text-[#25845A] dark:hover:text-[#4ADE80] bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[2px_2px_5px_rgba(175,188,177,0.4),-2px_-2px_5px_rgba(255,255,255,0.7)] dark:shadow-[2px_2px_4px_rgba(0,0,0,0.4)] active:shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] transition"
                           >
                             <Eye className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => setPrintPurchase(p)}
                             title="Print Purchase Bill / GRN"
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#728078] dark:text-[#98A79D] hover:text-[#25845A] dark:hover:text-[#4ADE80] bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[2px_2px_5px_rgba(175,188,177,0.4),-2px_-2px_5px_rgba(255,255,255,0.7)] dark:shadow-[2px_2px_4px_rgba(0,0,0,0.4)] active:shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] transition"
                           >
                             <Printer className="w-3.5 h-3.5" />
                           </button>
@@ -418,14 +420,14 @@ export const PurchaseView: React.FC = () => {
                               setModalOpen(true);
                             }}
                             title="Edit Purchase"
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-amber-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#728078] dark:text-[#98A79D] hover:text-amber-600 bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[2px_2px_5px_rgba(175,188,177,0.4),-2px_-2px_5px_rgba(255,255,255,0.7)] dark:shadow-[2px_2px_4px_rgba(0,0,0,0.4)] active:shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] transition"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => setDeleteConfirmId(p.id)}
                             title="Delete Purchase"
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#728078] dark:text-[#98A79D] hover:text-red-600 bg-[#E9EEE9] dark:bg-[#1C2620] shadow-[2px_2px_5px_rgba(175,188,177,0.4),-2px_-2px_5px_rgba(255,255,255,0.7)] dark:shadow-[2px_2px_4px_rgba(0,0,0,0.4)] active:shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)] transition"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -442,19 +444,19 @@ export const PurchaseView: React.FC = () => {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#26372D]/60 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-md bg-[#E9EEE9] dark:bg-[#1C2620] rounded-2xl p-6 border border-[#D5DDD6] dark:border-[#2C3E33] shadow-[10px_10px_25px_rgba(0,0,0,0.25)] space-y-4">
             <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
               <AlertCircle className="w-6 h-6" />
               <h3 className="text-base font-bold">Delete Purchase Bill?</h3>
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="text-xs text-[#26372D] dark:text-[#E5ECE7] leading-relaxed">
               Are you sure you want to delete this purchase bill? The received items will be deducted from your Inventory stock automatically.
             </p>
             <div className="flex items-center justify-end gap-2.5 pt-2">
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="px-4 py-2 text-xs font-semibold rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="px-4 py-2 text-xs font-bold rounded-xl text-[#728078] dark:text-[#98A79D] hover:bg-[#DEE5DE] dark:hover:bg-[#2C3E33] transition"
               >
                 Cancel
               </button>

@@ -91,7 +91,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 font-sans selection:bg-amber-500/30 selection:text-amber-800 dark:selection:text-amber-300">
+      <div className="min-h-screen bg-[#E9EFEA] dark:bg-[#121B15] text-[#24372D] dark:text-[#E6EEE8] transition-colors duration-200 font-sans selection:bg-[#25845A]/25 selection:text-[#25845A]">
         {/* Persistent Navigation */}
         <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
         <Navbar sidebarCollapsed={sidebarCollapsed} />

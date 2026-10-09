@@ -355,19 +355,19 @@ export const QuotationView: React.FC = () => {
   const pendingCount = quotations.filter((q) => q.status === 'Sent' || q.status === 'Draft').length;
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-6 animate-in fade-in duration-200">
       {/* Toast Notification */}
       {toastMessage && (
         <div
-          className={`fixed bottom-5 right-5 z-50 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border font-medium text-xs text-white animate-in slide-in-from-bottom-5 ${
+          className={`fixed bottom-5 right-5 z-50 px-4 py-3 rounded-2xl shadow-[6px_6px_16px_rgba(175,192,178,0.8),-4px_-4px_12px_rgba(255,255,255,0.95)] flex items-center gap-3 font-bold text-xs animate-in slide-in-from-bottom-5 ${
             toastType === 'success'
-              ? 'bg-emerald-600 border-emerald-500'
+              ? 'bg-[#E9EEE9] dark:bg-[#1B2720] border border-[#25845A]/40 text-[#25845A] dark:text-[#38B57D]'
               : toastType === 'error'
-              ? 'bg-red-600 border-red-500'
-              : 'bg-slate-800 border-slate-700'
+              ? 'bg-[#E9EEE9] dark:bg-[#1B2720] border border-rose-500/40 text-rose-600 dark:text-rose-400'
+              : 'bg-[#E9EEE9] dark:bg-[#1B2720] border border-[#728078]/40 text-[#26372D] dark:text-[#E5ECE7]'
           }`}
         >
-          <CheckCircle2 className="w-4 h-4 text-white" />
+          <CheckCircle2 className="w-4 h-4 text-[#25845A]" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -375,24 +375,24 @@ export const QuotationView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Solar Quotation Management</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <h2 className="text-xl font-black text-[#24372D] dark:text-white tracking-tight">Solar Quotation Management</h2>
+          <p className="text-xs text-[#68786E] dark:text-[#8E9F94]">
             Generate, customize, track, and convert solar system estimates into official invoices
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FFFFFF] dark:bg-[#1B2720] text-[#24372D] dark:text-[#E6EEE8] text-xs font-bold border border-[#D9E2DA] dark:border-[#223328] shadow-[2px_2px_6px_rgba(36,55,45,0.06),-2px_-2px_6px_rgba(255,255,255,0.85)] hover:bg-[#F8FAF8] transition"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-4 h-4 text-[#25845A]" />
             <span>Export CSV</span>
           </button>
 
           <button
             onClick={openCreateModal}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-md shadow-amber-500/20"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25845A] hover:bg-[#1D7049] text-white font-bold text-xs transition shadow-[0_4px_12px_rgba(37,132,90,0.25)] border border-[#1D7049] active:translate-y-0"
           >
             <Plus className="w-4 h-4" />
             <span>+ Create New Quotation</span>
@@ -402,47 +402,55 @@ export const QuotationView: React.FC = () => {
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-1">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Quotations</p>
+        <div className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#1B2720] border border-[#D9E2DA] dark:border-[#223328] shadow-[0_4px_12px_rgba(36,55,45,0.07),0_1px_3px_rgba(36,55,45,0.04)] space-y-1">
+          <p className="text-[11px] font-bold text-[#87938B] dark:text-[#6B7C72] uppercase tracking-wider">Total Quotations</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white">{quotations.length}</h3>
-            <FileSpreadsheet className="w-5 h-5 text-amber-500" />
+            <h3 className="text-2xl font-black text-[#24372D] dark:text-white tabular-nums">{quotations.length}</h3>
+            <div className="w-8 h-8 rounded-xl bg-[#DCEBE0] text-[#25845A] flex items-center justify-center">
+              <FileSpreadsheet className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-[10px] text-slate-400">Lifetime quotes generated</p>
+          <p className="text-[10px] text-[#68786E]">Lifetime quotes generated</p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-1">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Pending / Sent</p>
+        <div className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#1B2720] border border-[#D9E2DA] dark:border-[#223328] shadow-[0_4px_12px_rgba(36,55,45,0.07),0_1px_3px_rgba(36,55,45,0.04)] space-y-1">
+          <p className="text-[11px] font-bold text-[#87938B] dark:text-[#6B7C72] uppercase tracking-wider">Pending / Sent</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-black text-amber-500">{pendingCount}</h3>
-            <Clock className="w-5 h-5 text-amber-500" />
+            <h3 className="text-2xl font-black text-[#D99A18] tabular-nums">{pendingCount}</h3>
+            <div className="w-8 h-8 rounded-xl bg-[#D99A18]/15 text-[#D99A18] flex items-center justify-center">
+              <Clock className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-[10px] text-slate-400">Awaiting customer approval</p>
+          <p className="text-[10px] text-[#68786E]">Awaiting customer approval</p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-1">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Converted to Invoice</p>
+        <div className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#1B2720] border border-[#D9E2DA] dark:border-[#223328] shadow-[0_4px_12px_rgba(36,55,45,0.07),0_1px_3px_rgba(36,55,45,0.04)] space-y-1">
+          <p className="text-[11px] font-bold text-[#87938B] dark:text-[#6B7C72] uppercase tracking-wider">Converted to Invoice</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-black text-emerald-500">{convertedCount}</h3>
-            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+            <h3 className="text-2xl font-black text-[#25845A] dark:text-[#2DA16E] tabular-nums">{convertedCount}</h3>
+            <div className="w-8 h-8 rounded-xl bg-[#DCEBE0] text-[#25845A] dark:text-[#2DA16E] flex items-center justify-center">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-[10px] text-slate-400">Successfully closed orders</p>
+          <p className="text-[10px] text-[#68786E]">Successfully closed orders</p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-1">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Quoted Value</p>
+        <div className="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#1B2720] border border-[#D9E2DA] dark:border-[#223328] shadow-[0_4px_12px_rgba(36,55,45,0.07),0_1px_3px_rgba(36,55,45,0.04)] space-y-1">
+          <p className="text-[11px] font-bold text-[#87938B] dark:text-[#6B7C72] uppercase tracking-wider">Total Quoted Value</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-xl font-black text-slate-900 dark:text-white">₹{totalValuation.toLocaleString()}</h3>
-            <FileText className="w-5 h-5 text-blue-500" />
+            <h3 className="text-xl font-black text-[#24372D] dark:text-white tabular-nums">₹{totalValuation.toLocaleString()}</h3>
+            <div className="w-8 h-8 rounded-xl bg-[#DCEBE0] text-[#25845A] flex items-center justify-center">
+              <FileText className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-[10px] text-slate-400">Combined estimates value</p>
+          <p className="text-[10px] text-[#68786E]">Combined estimates value</p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="p-3 sm:p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#1B2720] border border-[#D9E2DA] dark:border-[#223328] shadow-[0_4px_12px_rgba(36,55,45,0.07),0_1px_3px_rgba(36,55,45,0.04)] flex flex-col md:flex-row gap-3 items-center justify-between">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+          <Search className="w-4 h-4 text-[#25845A] absolute left-3 top-2.5" />
           <input
             type="text"
             value={searchTerm}
@@ -451,11 +459,11 @@ export const QuotationView: React.FC = () => {
               setCurrentPage(1);
             }}
             placeholder="Search Quote ID, Customer Name, Mobile..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-amber-500"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#F1F5F1] dark:bg-[#121A15] text-[#24372D] dark:text-[#E6EEE8] text-xs shadow-[inset_1.5px_1.5px_3.5px_rgba(36,55,45,0.05),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.85)] border border-[#D9E2DA] dark:border-[#223328] focus:border-[#25845A] focus:outline-none transition"
           />
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto">
+        <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
           {['ALL', 'Draft', 'Sent', 'Approved', 'Converted'].map((st) => (
             <button
               key={st}
@@ -463,10 +471,10 @@ export const QuotationView: React.FC = () => {
                 setStatusFilter(st);
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
                 statusFilter === st
-                  ? 'bg-amber-500 text-slate-950 font-bold'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-[#25845A] text-white shadow-[0_2px_6px_rgba(37,132,90,0.3)]'
+                  : 'bg-[#F1F5F1] dark:bg-[#152019] text-[#68786E] dark:text-[#8E9F94] border border-[#D9E2DA] dark:border-[#223328] hover:bg-[#E9EFEA]'
               }`}
             >
               {st}
@@ -476,11 +484,11 @@ export const QuotationView: React.FC = () => {
       </div>
 
       {/* Table Section */}
-      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm">
+      <div className="rounded-2xl bg-[#FFFFFF] dark:bg-[#1B2720] border border-[#D9E2DA] dark:border-[#223328] shadow-[0_4px_12px_rgba(36,55,45,0.07),0_1px_3px_rgba(36,55,45,0.04)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+              <tr className="bg-[#F1F5F1] dark:bg-[#152019] text-[#68786E] dark:text-[#8E9F94] font-bold uppercase tracking-wider border-b border-[#D9E2DA] dark:border-[#223328]">
                 <th className="p-4">Quotation ID</th>
                 <th className="p-4">Date</th>
                 <th className="p-4">Customer Name</th>
@@ -492,10 +500,10 @@ export const QuotationView: React.FC = () => {
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
+            <tbody className="divide-y divide-[#D9E2DA] dark:divide-[#223328]">
               {paginatedQuotations.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="text-center py-12 text-slate-400">
+                  <td colSpan={9} className="text-center py-12 text-[#87938B]">
                     No quotations found matching criteria.
                   </td>
                 </tr>
@@ -507,42 +515,42 @@ export const QuotationView: React.FC = () => {
                   return (
                     <tr
                       key={q.id}
-                      className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition"
+                      className="hover:bg-[#F8FAF8] dark:hover:bg-[#202E25]/50 transition"
                     >
-                      <td className="p-4 font-mono font-bold text-amber-500">{q.quoteNumber}</td>
-                      <td className="p-4 text-slate-500 dark:text-slate-400 whitespace-nowrap">{q.createdAt}</td>
-                      <td className="p-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                      <td className="p-4 font-mono font-bold text-[#25845A] dark:text-[#2DA16E]">{q.quoteNumber}</td>
+                      <td className="p-4 text-[#87938B] whitespace-nowrap">{q.createdAt}</td>
+                      <td className="p-4 font-bold text-[#24372D] dark:text-white whitespace-nowrap">
                         {q.customerName}
                       </td>
-                      <td className="p-4 text-slate-600 dark:text-slate-400 font-mono whitespace-nowrap">
+                      <td className="p-4 text-[#68786E] dark:text-[#8E9F94] font-mono whitespace-nowrap">
                         {q.customerMobile}
                       </td>
-                      <td className="p-4 max-w-xs truncate text-slate-600 dark:text-slate-300">
+                      <td className="p-4 max-w-xs truncate text-[#68786E] dark:text-[#8E9F94]">
                         <span>{firstItem}</span>
                         {extraItemsCount > 0 && (
-                          <span className="ml-1 text-[10px] text-amber-500 font-semibold">
+                          <span className="ml-1 text-[10px] text-[#25845A] font-bold">
                             +{extraItemsCount} more
                           </span>
                         )}
                       </td>
                       <td className="p-4 text-center whitespace-nowrap">
-                        <span className="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 font-semibold text-slate-700 dark:text-slate-300">
+                        <span className="px-2.5 py-1 rounded-xl bg-[#F1F5F1] dark:bg-[#141E17] font-bold text-[#24372D] dark:text-[#E6EEE8] border border-[#D9E2DA] dark:border-[#223328]">
                           {q.capacityKW} KW ({q.systemType})
                         </span>
                       </td>
-                      <td className="p-4 text-right font-extrabold text-slate-900 dark:text-white whitespace-nowrap text-sm">
+                      <td className="p-4 text-right font-black text-[#24372D] dark:text-white whitespace-nowrap text-sm tabular-nums">
                         ₹{q.grandTotal.toLocaleString()}
                       </td>
                       <td className="p-4 text-center whitespace-nowrap">
                         <span
-                          className={`px-2.5 py-1 text-[10px] font-extrabold rounded-full ${
+                          className={`px-2.5 py-1 text-[10px] font-bold rounded-full ${
                             q.status === 'Converted'
-                              ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
+                              ? 'bg-[#DCEBE0] text-[#25845A] border border-[#25845A]/30'
                               : q.status === 'Approved'
-                              ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20'
+                              ? 'bg-[#25845A]/15 text-[#25845A] border border-[#25845A]/30'
                               : q.status === 'Sent'
-                              ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
-                              : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
+                              ? 'bg-[#D99A18]/15 text-[#D99A18] border border-[#D99A18]/30'
+                              : 'bg-[#68786E]/15 text-[#68786E] border border-[#68786E]/30'
                           }`}
                         >
                           {q.status}
@@ -552,7 +560,7 @@ export const QuotationView: React.FC = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => triggerPrint('quotation', q)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#68786E] hover:text-[#25845A] bg-[#FFFFFF] dark:bg-[#1A261F] border border-[#D9E2DA] dark:border-[#223328] shadow-[1px_1px_3px_rgba(36,55,45,0.06),-1px_-1px_3px_rgba(255,255,255,0.85)] transition"
                             title="Preview / Print A4 Quotation"
                           >
                             <Eye className="w-4 h-4" />
@@ -567,7 +575,7 @@ export const QuotationView: React.FC = () => {
                               });
                               showToast(`Quotation duplicated as ${newQ.quoteNumber}`, 'success');
                             }}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#68786E] hover:text-[#25845A] bg-[#FFFFFF] dark:bg-[#1A261F] border border-[#D9E2DA] dark:border-[#223328] shadow-[1px_1px_3px_rgba(36,55,45,0.06),-1px_-1px_3px_rgba(255,255,255,0.85)] transition"
                             title="Duplicate Quotation"
                           >
                             <Copy className="w-4 h-4" />
@@ -575,7 +583,7 @@ export const QuotationView: React.FC = () => {
 
                           <button
                             onClick={() => triggerPrint('quotation', q)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#68786E] hover:text-[#25845A] bg-[#FFFFFF] dark:bg-[#1A261F] border border-[#D9E2DA] dark:border-[#223328] shadow-[1px_1px_3px_rgba(36,55,45,0.06),-1px_-1px_3px_rgba(255,255,255,0.85)] transition"
                             title="Print Quotation"
                           >
                             <Printer className="w-4 h-4" />
@@ -583,7 +591,7 @@ export const QuotationView: React.FC = () => {
 
                           <button
                             onClick={() => openEditModal(q)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#68786E] hover:text-[#D99A18] bg-[#FFFFFF] dark:bg-[#1A261F] border border-[#D9E2DA] dark:border-[#223328] shadow-[1px_1px_3px_rgba(36,55,45,0.06),-1px_-1px_3px_rgba(255,255,255,0.85)] transition"
                             title="Edit Quotation"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -592,7 +600,7 @@ export const QuotationView: React.FC = () => {
                           {q.status !== 'Converted' && (
                             <button
                               onClick={() => handleConvert(q)}
-                              className="px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-slate-950 font-bold text-[11px] transition flex items-center gap-1"
+                              className="px-2.5 py-1 rounded-xl bg-[#25845A] hover:bg-[#1E6E4A] text-white font-bold text-[11px] transition flex items-center gap-1 shadow-[2px_2px_5px_rgba(37,132,90,0.3)]"
                               title="Convert to Invoice"
                             >
                               <span>Convert</span>
@@ -605,7 +613,7 @@ export const QuotationView: React.FC = () => {
                               setSelectedQuotation(q);
                               setDeleteModalOpen(true);
                             }}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            className="p-1.5 rounded-lg text-[#728078] hover:text-rose-600 bg-[#E9EEE9] dark:bg-[#1A261F] shadow-[1.5px_1.5px_3.5px_rgba(175,192,178,0.5),-1.5px_-1.5px_3.5px_rgba(255,255,255,0.8)] transition"
                             title="Delete Quotation"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -622,8 +630,8 @@ export const QuotationView: React.FC = () => {
 
         {/* Pagination Controls */}
         {totalPages > 1 && (
-          <div className="px-4 py-3 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
-            <span className="text-slate-500 dark:text-slate-400">
+          <div className="px-4 py-3 bg-[#E1E8E1]/60 dark:bg-[#141E17]/60 border-t border-[#D8E3DA] dark:border-[#223328] flex items-center justify-between text-xs">
+            <span className="text-[#728078] dark:text-[#8E9F95]">
               Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
               {Math.min(currentPage * itemsPerPage, filteredQuotations.length)} of {filteredQuotations.length}{' '}
               quotations
@@ -633,17 +641,17 @@ export const QuotationView: React.FC = () => {
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] shadow-[1.5px_1.5px_3px_rgba(175,192,178,0.5),-1.5px_-1.5px_3px_rgba(255,255,255,0.8)] disabled:opacity-40 hover:bg-[#EDF2ED] transition text-[#26372D] dark:text-white"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <span className="font-bold text-slate-900 dark:text-white">
+              <span className="font-bold text-[#26372D] dark:text-white">
                 Page {currentPage} of {totalPages}
               </span>
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-1.5 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] shadow-[1.5px_1.5px_3px_rgba(175,192,178,0.5),-1.5px_-1.5px_3px_rgba(255,255,255,0.8)] disabled:opacity-40 hover:bg-[#EDF2ED] transition text-[#26372D] dark:text-white"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -654,58 +662,58 @@ export const QuotationView: React.FC = () => {
 
       {/* VIEW DETAILS MODAL */}
       {viewModalOpen && selectedQuotation && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in overflow-y-auto">
-          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-6">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in overflow-y-auto">
+          <div className="w-full max-w-2xl bg-[#E9EEE9] dark:bg-[#1B2720] rounded-3xl shadow-[10px_10px_26px_rgba(175,192,178,0.8),-10px_-10px_26px_rgba(255,255,255,0.95)] dark:shadow-[10px_10px_26px_rgba(10,15,12,0.9)] border border-white/80 dark:border-white/10 overflow-hidden my-6">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#D8E3DA] dark:border-[#223328] bg-[#E1E8E1]/60 dark:bg-[#141E17]/60">
               <div>
-                <span className="font-mono text-xs font-bold text-amber-500">{selectedQuotation.quoteNumber}</span>
-                <h3 className="font-bold text-slate-900 dark:text-white text-base">
+                <span className="font-mono text-xs font-bold text-[#25845A] dark:text-[#38B57D]">{selectedQuotation.quoteNumber}</span>
+                <h3 className="font-bold text-[#26372D] dark:text-white text-base">
                   Quotation Details - {selectedQuotation.customerName}
                 </h3>
               </div>
-              <button onClick={() => setViewModalOpen(false)} className="p-1 text-slate-400 hover:text-white">
+              <button onClick={() => setViewModalOpen(false)} className="p-1 text-[#728078] hover:text-[#26372D] dark:hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-6 space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60">
+              <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-[#E1E8E1]/60 dark:bg-[#141E17]/60 shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-none">
                 <div>
-                  <p className="text-slate-400">Customer Mobile:</p>
-                  <p className="font-bold text-slate-900 dark:text-white">{selectedQuotation.customerMobile}</p>
-                  <p className="text-slate-400 mt-2">Email:</p>
-                  <p className="font-semibold text-slate-800 dark:text-slate-200">{selectedQuotation.customerEmail}</p>
+                  <p className="text-[#728078]">Customer Mobile:</p>
+                  <p className="font-bold text-[#26372D] dark:text-white">{selectedQuotation.customerMobile}</p>
+                  <p className="text-[#728078] mt-2">Email:</p>
+                  <p className="font-semibold text-[#4A5D51] dark:text-[#A1B2A8]">{selectedQuotation.customerEmail}</p>
                 </div>
                 <div>
-                  <p className="text-slate-400">Plant System:</p>
-                  <p className="font-bold text-slate-900 dark:text-white">
+                  <p className="text-[#728078]">Plant System:</p>
+                  <p className="font-bold text-[#26372D] dark:text-white">
                     {selectedQuotation.capacityKW} KW {selectedQuotation.systemType} ({selectedQuotation.projectType})
                   </p>
-                  <p className="text-slate-400 mt-2">Valid Until:</p>
-                  <p className="font-semibold text-amber-500">{selectedQuotation.validUntil}</p>
+                  <p className="text-[#728078] mt-2">Valid Until:</p>
+                  <p className="font-semibold text-[#25845A] dark:text-[#38B57D]">{selectedQuotation.validUntil}</p>
                 </div>
               </div>
 
               {/* Items List */}
               <div className="space-y-2">
-                <h4 className="font-bold text-slate-900 dark:text-white">Line Items Breakdown</h4>
-                <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                <h4 className="font-bold text-[#26372D] dark:text-white">Line Items Breakdown</h4>
+                <div className="border border-[#D8E3DA] dark:border-[#223328] rounded-2xl overflow-hidden">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
-                      <tr className="bg-slate-100 dark:bg-slate-800/80 text-slate-500 font-semibold border-b">
+                      <tr className="bg-[#E1E8E1]/70 dark:bg-[#141E17] text-[#728078] dark:text-[#8E9F95] font-semibold border-b border-[#D8E3DA] dark:border-[#223328]">
                         <th className="p-3">Description</th>
                         <th className="p-3 text-center">Qty</th>
                         <th className="p-3 text-right">Rate (₹)</th>
                         <th className="p-3 text-right">Amount (₹)</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    <tbody className="divide-y divide-[#D8E3DA]/80 dark:divide-[#223328]">
                       {selectedQuotation.items.map((it, idx) => (
                         <tr key={idx}>
-                          <td className="p-3 font-medium text-slate-800 dark:text-slate-200">{it.description}</td>
-                          <td className="p-3 text-center">{it.qty} {it.unit}</td>
-                          <td className="p-3 text-right">₹{it.rate.toLocaleString()}</td>
-                          <td className="p-3 text-right font-bold text-slate-900 dark:text-white">
+                          <td className="p-3 font-medium text-[#26372D] dark:text-white">{it.description}</td>
+                          <td className="p-3 text-center text-[#4A5D51] dark:text-[#A1B2A8]">{it.qty} {it.unit}</td>
+                          <td className="p-3 text-right text-[#4A5D51] dark:text-[#A1B2A8]">₹{it.rate.toLocaleString()}</td>
+                          <td className="p-3 text-right font-bold text-[#26372D] dark:text-white">
                             ₹{it.amount.toLocaleString()}
                           </td>
                         </tr>
@@ -716,36 +724,36 @@ export const QuotationView: React.FC = () => {
               </div>
 
               {/* Total Summary Box */}
-              <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl space-y-2 text-xs">
-                <div className="flex justify-between text-slate-500">
+              <div className="p-4 bg-[#E1E8E1]/60 dark:bg-[#121A15]/80 rounded-2xl space-y-2 text-xs shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-none">
+                <div className="flex justify-between text-[#728078]">
                   <span>Subtotal Material Cost:</span>
-                  <span>₹{selectedQuotation.estimatedCost.toLocaleString()}</span>
+                  <span className="font-mono text-[#26372D] dark:text-white font-bold">₹{selectedQuotation.estimatedCost.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-slate-500">
+                <div className="flex justify-between text-[#728078]">
                   <span>GST Tax (12%):</span>
-                  <span>₹{selectedQuotation.taxAmount.toLocaleString()}</span>
+                  <span className="font-mono text-[#26372D] dark:text-white font-bold">₹{selectedQuotation.taxAmount.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between font-extrabold text-slate-900 dark:text-white text-sm pt-2 border-t border-slate-200 dark:border-slate-700">
+                <div className="flex justify-between font-black text-[#26372D] dark:text-white text-sm pt-2 border-t border-[#D8E3DA] dark:border-[#223328]">
                   <span>Grand Total:</span>
-                  <span className="text-amber-500 text-base">₹{selectedQuotation.grandTotal.toLocaleString()}</span>
+                  <span className="text-[#25845A] dark:text-[#38B57D] text-base font-mono">₹{selectedQuotation.grandTotal.toLocaleString()}</span>
                 </div>
               </div>
 
               {selectedQuotation.termsAndConditions && (
                 <div>
-                  <h4 className="font-bold text-slate-900 dark:text-white mb-1">Terms & Conditions</h4>
-                  <p className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+                  <h4 className="font-bold text-[#26372D] dark:text-white mb-1">Terms & Conditions</h4>
+                  <p className="p-3 rounded-2xl bg-[#E1E8E1]/60 dark:bg-[#141E17] text-[#4A5D51] dark:text-[#A1B2A8] leading-relaxed whitespace-pre-line shadow-[inset_1.5px_1.5px_3px_rgba(170,188,173,0.6)]">
                     {selectedQuotation.termsAndConditions}
                   </p>
                 </div>
               )}
 
-              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+              <div className="pt-4 border-t border-[#D8E3DA] dark:border-[#223328] flex justify-between items-center">
                 <button
                   onClick={() => triggerPrint('quotation', selectedQuotation)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold flex items-center gap-2"
+                  className="px-4 py-2 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] text-[#26372D] dark:text-white font-bold flex items-center gap-2 shadow-[2px_2px_5px_rgba(175,192,178,0.5),-2px_-2px_5px_rgba(255,255,255,0.8)]"
                 >
-                  <Printer className="w-4 h-4" />
+                  <Printer className="w-4 h-4 text-[#25845A]" />
                   <span>Print A4 Quote</span>
                 </button>
 
@@ -753,7 +761,7 @@ export const QuotationView: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setViewModalOpen(false)}
-                    className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold"
+                    className="px-4 py-2 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] text-[#4A5D51] dark:text-[#A1B2A8] font-bold shadow-[2px_2px_5px_rgba(175,192,178,0.5),-2px_-2px_5px_rgba(255,255,255,0.8)]"
                   >
                     Close
                   </button>
@@ -764,7 +772,7 @@ export const QuotationView: React.FC = () => {
                         handleConvert(selectedQuotation);
                         setViewModalOpen(false);
                       }}
-                      className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold flex items-center gap-1.5"
+                      className="px-5 py-2 rounded-xl bg-[#25845A] hover:bg-[#1E6E4A] text-white font-bold flex items-center gap-1.5 shadow-[3px_3px_8px_rgba(37,132,90,0.35)]"
                     >
                       <span>Convert to Invoice</span>
                       <ArrowRight className="w-4 h-4" />
@@ -779,10 +787,10 @@ export const QuotationView: React.FC = () => {
 
       {/* CREATE / EDIT MODAL */}
       {(addModalOpen || editModalOpen) && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in overflow-y-auto">
-          <div className="w-full max-w-3xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-6">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
-              <h3 className="text-base font-bold text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in overflow-y-auto">
+          <div className="w-full max-w-3xl bg-[#E9EEE9] dark:bg-[#1B2720] rounded-3xl shadow-[10px_10px_26px_rgba(175,192,178,0.8),-10px_-10px_26px_rgba(255,255,255,0.95)] dark:shadow-[10px_10px_26px_rgba(10,15,12,0.9)] border border-white/80 dark:border-white/10 overflow-hidden my-6">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#D8E3DA] dark:border-[#223328] bg-[#E1E8E1]/60 dark:bg-[#141E17]/60">
+              <h3 className="text-base font-bold text-[#26372D] dark:text-white">
                 {addModalOpen ? 'Create Solar System Quotation' : `Edit Quotation ${selectedQuotation?.quoteNumber}`}
               </h3>
               <button
@@ -790,7 +798,7 @@ export const QuotationView: React.FC = () => {
                   setAddModalOpen(false);
                   setEditModalOpen(false);
                 }}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200"
+                className="p-1.5 rounded-lg text-[#728078] hover:text-[#26372D] dark:hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -802,13 +810,13 @@ export const QuotationView: React.FC = () => {
             >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="sm:col-span-2">
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                  <label className="block font-bold text-[#26372D] dark:text-[#E5ECE7] mb-1">
                     Select Customer *
                   </label>
                   <select
                     value={selectedCustomerId}
                     onChange={(e) => setSelectedCustomerId(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
+                    className="w-full px-3 py-2 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] border border-transparent focus:border-[#25845A] focus:outline-none"
                   >
                     {customers.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -819,7 +827,7 @@ export const QuotationView: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                  <label className="block font-bold text-[#26372D] dark:text-[#E5ECE7] mb-1">
                     Plant Capacity (KW)
                   </label>
                   <input
@@ -828,18 +836,18 @@ export const QuotationView: React.FC = () => {
                     required
                     value={capacityKW}
                     onChange={(e) => setCapacityKW(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-bold text-amber-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#25845A] dark:text-[#38B57D] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] border border-transparent focus:border-[#25845A] focus:outline-none font-bold"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">System Type</label>
+                  <label className="block font-bold text-[#26372D] dark:text-[#E5ECE7] mb-1">System Type</label>
                   <select
                     value={systemType}
                     onChange={(e) => setSystemType(e.target.value as SystemType)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
+                    className="w-full px-3 py-2 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] border border-transparent focus:border-[#25845A] focus:outline-none"
                   >
                     <option value="On Grid">On Grid</option>
                     <option value="Off Grid">Off Grid</option>
@@ -848,21 +856,21 @@ export const QuotationView: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">Validity (Days)</label>
+                  <label className="block font-bold text-[#26372D] dark:text-[#E5ECE7] mb-1">Validity (Days)</label>
                   <input
                     type="number"
                     value={validityDays}
                     onChange={(e) => setValidityDays(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
+                    className="w-full px-3 py-2 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] border border-transparent focus:border-[#25845A] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">Quotation Status</label>
+                  <label className="block font-bold text-[#26372D] dark:text-[#E5ECE7] mb-1">Quotation Status</label>
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-bold"
+                    className="w-full px-3 py-2 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] border border-transparent focus:border-[#25845A] focus:outline-none font-bold"
                   >
                     <option value="Draft">Draft</option>
                     <option value="Sent">Sent</option>
@@ -875,11 +883,11 @@ export const QuotationView: React.FC = () => {
               {/* Line Items Builder */}
               <div className="space-y-3 pt-2">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-slate-900 dark:text-white">Line Items & Materials</h4>
+                  <h4 className="font-bold text-[#26372D] dark:text-white">Line Items & Materials</h4>
                   <button
                     type="button"
                     onClick={() => handleAddItemRow()}
-                    className="px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 font-bold text-xs flex items-center gap-1.5 transition"
+                    className="px-3 py-1.5 rounded-xl bg-[#25845A] hover:bg-[#1E6E4A] text-white font-bold text-xs flex items-center gap-1.5 transition shadow-[2px_2px_5px_rgba(37,132,90,0.3)]"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add Item</span>
@@ -902,17 +910,17 @@ export const QuotationView: React.FC = () => {
                   {formItems.map((item, idx) => (
                     <div
                       key={idx}
-                      className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-2.5 shadow-sm"
+                      className="p-3.5 rounded-2xl bg-[#E1E8E1]/40 dark:bg-[#141E17]/60 border border-white/60 dark:border-white/5 space-y-2.5 shadow-sm"
                     >
                       {/* SKU Quick Select Bar */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-200/60 dark:border-slate-700/60">
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-[#D8E3DA] dark:border-[#223328]">
                         <div className="flex items-center gap-2 flex-1 min-w-[200px]">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                            <Layers className="w-3 h-3 text-amber-500" />
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#728078] flex items-center gap-1">
+                            <Layers className="w-3 h-3 text-[#25845A]" />
                             <span>Select Product:</span>
                           </span>
                           <select
-                            className="flex-1 max-w-sm px-2.5 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500"
+                            className="flex-1 max-w-sm px-2.5 py-1 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] border border-transparent focus:border-[#25845A] text-xs font-semibold text-[#26372D] dark:text-white focus:outline-none"
                             onChange={(e) => handleSelectProductForItem(idx, e.target.value)}
                             defaultValue=""
                           >
@@ -928,18 +936,18 @@ export const QuotationView: React.FC = () => {
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] text-slate-400">Unit:</span>
+                          <span className="text-[10px] text-[#728078]">Unit:</span>
                           <input
                             type="text"
                             placeholder="Unit"
                             value={item.unit || 'Nos'}
                             onChange={(e) => handleItemChange(idx, 'unit', e.target.value)}
-                            className="w-16 px-2 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-semibold text-center"
+                            className="w-16 px-2 py-1 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1px_1px_2.5px_rgba(170,188,173,0.6)] border border-transparent focus:border-[#25845A] text-xs font-semibold text-center focus:outline-none"
                           />
                           <button
                             type="button"
                             onClick={() => handleRemoveItemRow(idx)}
-                            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition"
+                            className="p-1.5 text-rose-500 hover:text-rose-600 rounded-lg transition"
                             title="Delete Item Row"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -950,7 +958,7 @@ export const QuotationView: React.FC = () => {
                       {/* Line Item Inputs */}
                       <div className="grid grid-cols-12 gap-2 items-center">
                         <div className="col-span-12 sm:col-span-5">
-                          <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">
+                          <label className="block text-[10px] font-semibold text-[#728078] mb-0.5">
                             Item Description / Model *
                           </label>
                           <input
@@ -960,11 +968,11 @@ export const QuotationView: React.FC = () => {
                             placeholder="Type to search or enter description"
                             value={item.description}
                             onChange={(e) => handleItemChange(idx, 'description', e.target.value)}
-                            className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:border-amber-500"
+                            className="w-full px-3 py-1.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3px_rgba(170,188,173,0.6)] border border-transparent focus:border-[#25845A] text-xs font-medium focus:outline-none"
                           />
                         </div>
                         <div className="col-span-4 sm:col-span-2">
-                          <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">
+                          <label className="block text-[10px] font-semibold text-[#728078] mb-0.5">
                             Quantity
                           </label>
                           <input
@@ -974,12 +982,12 @@ export const QuotationView: React.FC = () => {
                             placeholder="Qty"
                             value={item.qty}
                             onChange={(e) => handleItemChange(idx, 'qty', Number(e.target.value))}
-                            className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-bold text-center focus:outline-none focus:border-amber-500"
+                            className="w-full px-2.5 py-1.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3px_rgba(170,188,173,0.6)] border border-transparent focus:border-[#25845A] text-xs font-bold text-center focus:outline-none"
                           />
                         </div>
                         <div className="col-span-4 sm:col-span-2">
-                          <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">
-                            Rate (₹) <span className="text-amber-500 font-normal">(Auto)</span>
+                          <label className="block text-[10px] font-semibold text-[#728078] mb-0.5">
+                            Rate (₹) <span className="text-[#25845A] font-normal">(Auto)</span>
                           </label>
                           <input
                             type="number"
@@ -987,26 +995,26 @@ export const QuotationView: React.FC = () => {
                             placeholder="Rate (₹)"
                             value={item.rate}
                             onChange={(e) => handleItemChange(idx, 'rate', Number(e.target.value))}
-                            className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-amber-600 dark:text-amber-400 text-xs font-bold text-right focus:outline-none focus:border-amber-500"
+                            className="w-full px-2.5 py-1.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#25845A] dark:text-[#38B57D] shadow-[inset_1.5px_1.5px_3px_rgba(170,188,173,0.6)] border border-transparent focus:border-[#25845A] text-xs font-bold text-right focus:outline-none"
                           />
                         </div>
                         <div className="col-span-4 sm:col-span-3 text-right">
-                          <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">
+                          <label className="block text-[10px] font-semibold text-[#728078] mb-0.5">
                             Line Amount
                           </label>
-                          <div className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 font-extrabold text-slate-900 dark:text-white text-xs text-right">
+                          <div className="px-3 py-1.5 rounded-xl bg-[#25845A]/12 border border-[#25845A]/25 font-black text-[#25845A] dark:text-[#38B57D] text-xs text-right tabular-nums">
                             ₹{item.amount?.toLocaleString()}
                           </div>
                         </div>
                       </div>
 
-                      {/* Product Serial Number(s) - same UX as Create Modern Tax Invoice */}
-                      <div className="pt-2.5 border-t border-slate-200/80 dark:border-slate-700/60">
+                      {/* Product Serial Number(s) */}
+                      <div className="pt-2.5 border-t border-[#D8E3DA] dark:border-[#223328]">
                         <div className="flex items-center justify-between mb-1.5 gap-2">
-                          <label className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
+                          <label className="text-[11px] font-bold text-[#728078] tracking-wider uppercase">
                             SERIAL NUMBER(S)
                           </label>
-                          <span className="text-[11px] text-slate-500 text-right">
+                          <span className="text-[11px] text-[#728078] text-right">
                             Single or multiple (comma / line break separated)
                           </span>
                         </div>
@@ -1015,7 +1023,7 @@ export const QuotationView: React.FC = () => {
                           value={item.serialNumbers || ''}
                           onChange={(e) => handleItemChange(idx, 'serialNumbers', e.target.value)}
                           placeholder="e.g. SN001234, SN001235, SN001236"
-                          className="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-mono placeholder:font-sans placeholder:text-slate-400 focus:outline-none focus:border-amber-500 min-h-[38px] resize-y shadow-xs"
+                          className="w-full px-3 py-2 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] border border-transparent focus:border-[#25845A] text-xs sm:text-sm font-mono placeholder:font-sans placeholder:text-[#728078] focus:outline-none min-h-[38px] resize-y"
                         />
                       </div>
                     </div>
@@ -1024,47 +1032,47 @@ export const QuotationView: React.FC = () => {
               </div>
 
               {/* Automatic Calculation Summary */}
-              <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl space-y-2">
-                <div className="flex justify-between font-medium text-slate-500">
+              <div className="p-4 bg-[#E1E8E1]/60 dark:bg-[#121A15]/80 rounded-2xl space-y-2 shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-none">
+                <div className="flex justify-between font-medium text-[#728078]">
                   <span>Subtotal Material:</span>
-                  <span>₹{estimatedCost.toLocaleString()}</span>
+                  <span className="font-mono text-[#26372D] dark:text-white font-bold">₹{estimatedCost.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between font-medium text-slate-500">
+                <div className="flex justify-between font-medium text-[#728078]">
                   <span>Estimated Tax (12% GST):</span>
-                  <span>₹{taxAmount.toLocaleString()}</span>
+                  <span className="font-mono text-[#26372D] dark:text-white font-bold">₹{taxAmount.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between font-extrabold text-amber-500 text-sm pt-2 border-t border-slate-200 dark:border-slate-700">
+                <div className="flex justify-between font-black text-[#26372D] dark:text-white text-sm pt-2 border-t border-[#D8E3DA] dark:border-[#223328]">
                   <span>Calculated Grand Total:</span>
-                  <span className="text-base">₹{grandTotal.toLocaleString()}</span>
+                  <span className="text-base text-[#25845A] dark:text-[#38B57D] font-mono">₹{grandTotal.toLocaleString()}</span>
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                <label className="block font-bold text-[#26372D] dark:text-[#E5ECE7] mb-1">
                   Terms & Conditions
                 </label>
                 <textarea
                   rows={2}
                   value={terms}
                   onChange={(e) => setTerms(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700"
+                  className="w-full px-3 py-2 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] text-[#26372D] dark:text-white shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] border border-transparent focus:border-[#25845A] focus:outline-none"
                 />
               </div>
 
-              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-3">
+              <div className="pt-4 border-t border-[#D8E3DA] dark:border-[#223328] flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => {
                     setAddModalOpen(false);
                     setEditModalOpen(false);
                   }}
-                  className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold"
+                  className="px-4 py-2 rounded-xl bg-[#E9EEE9] hover:bg-[#EDF2ED] dark:bg-[#1A261F] text-[#4A5D51] dark:text-[#A1B2A8] font-bold shadow-[2px_2px_5px_rgba(175,192,178,0.5),-2px_-2px_5px_rgba(255,255,255,0.8)]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-500/20"
+                  className="px-5 py-2 rounded-xl bg-[#25845A] hover:bg-[#1E6E4A] text-white font-bold shadow-[3px_3px_8px_rgba(37,132,90,0.35)]"
                 >
                   {addModalOpen ? 'Save Quotation' : 'Update Quotation'}
                 </button>
@@ -1076,34 +1084,34 @@ export const QuotationView: React.FC = () => {
 
       {/* CONFIRMATION DELETE DIALOG */}
       {deleteModalOpen && selectedQuotation && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden p-6 space-y-4">
-            <div className="flex items-center gap-3 text-red-500">
-              <div className="p-3 rounded-full bg-red-500/10">
-                <AlertTriangle className="w-6 h-6 text-red-500" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-md bg-[#E9EEE9] dark:bg-[#1B2720] rounded-3xl shadow-[10px_10px_26px_rgba(175,192,178,0.8),-10px_-10px_26px_rgba(255,255,255,0.95)] dark:shadow-[10px_10px_26px_rgba(10,15,12,0.9)] border border-white/80 dark:border-white/10 overflow-hidden p-6 space-y-4">
+            <div className="flex items-center gap-3 text-rose-600 dark:text-rose-400">
+              <div className="p-3 rounded-2xl bg-rose-500/10 shadow-[inset_1px_1px_3px_rgba(225,29,72,0.2)]">
+                <AlertTriangle className="w-6 h-6 text-rose-600" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-base">Delete Quotation</h3>
-                <p className="text-xs text-slate-400">This action cannot be undone.</p>
+                <h3 className="font-bold text-[#26372D] dark:text-white text-base">Delete Quotation</h3>
+                <p className="text-xs text-[#728078]">This action cannot be undone.</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-600 dark:text-slate-300">
-              Are you sure you want to delete quotation <strong className="font-mono text-amber-500">{selectedQuotation.quoteNumber}</strong> for customer <strong className="text-slate-900 dark:text-white">{selectedQuotation.customerName}</strong>?
+            <p className="text-xs text-[#4A5D51] dark:text-[#A1B2A8]">
+              Are you sure you want to delete quotation <strong className="font-mono text-[#25845A]">{selectedQuotation.quoteNumber}</strong> for customer <strong className="text-[#26372D] dark:text-white">{selectedQuotation.customerName}</strong>?
             </p>
 
             <div className="pt-2 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setDeleteModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs"
+                className="px-4 py-2 rounded-xl bg-[#E9EEE9] hover:bg-[#EDF2ED] dark:bg-[#1A261F] text-[#4A5D51] dark:text-[#A1B2A8] font-bold text-xs shadow-[2px_2px_5px_rgba(175,192,178,0.5),-2px_-2px_5px_rgba(255,255,255,0.8)]"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleDeleteConfirm}
-                className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md"
+                className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-[2px_2px_6px_rgba(225,29,72,0.4)]"
               >
                 Confirm Delete
               </button>

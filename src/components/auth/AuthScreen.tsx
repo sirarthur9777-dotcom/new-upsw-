@@ -240,18 +240,11 @@ export const AuthScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-950 text-slate-100 flex items-center justify-center p-4 md:p-8 font-sans relative overflow-hidden selection:bg-blue-600 selection:text-white">
-      {/* Background Animated Ambient Lights */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none"></div>
-
+    <div className="min-h-screen w-full bg-[#E9EEE9] dark:bg-[#16211A] text-[#26372D] dark:text-[#E5ECE7] flex items-center justify-center p-4 md:p-8 font-sans relative overflow-hidden selection:bg-[#25845A]/25 selection:text-[#25845A]">
       {/* Main Container Card */}
-      <div className="w-full max-w-5xl bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-800 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative z-10 my-auto">
-        {/* LEFT COLUMN: SOLAR ENTERPRISE BRANDING (7 COLS ON DESKTOP) */}
-        <div className="lg:col-span-5 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-950 p-8 lg:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800/80 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-
+      <div className="w-full max-w-5xl bg-[#E9EEE9] dark:bg-[#1B2720] rounded-3xl border border-white/80 dark:border-white/10 shadow-[10px_10px_26px_rgba(175,192,178,0.75),-10px_-10px_26px_rgba(255,255,255,0.95)] dark:shadow-[10px_10px_26px_rgba(10,15,12,0.85),-6px_-6px_18px_rgba(38,54,44,0.4)] overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative z-10 my-auto">
+        {/* LEFT COLUMN: SOLAR ENTERPRISE BRANDING (5 COLS ON DESKTOP) */}
+        <div className="lg:col-span-5 bg-[#E1E8E1] dark:bg-[#141E17] p-8 lg:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[#D5E1D7] dark:border-[#223328] relative overflow-hidden">
           {/* Top Brand Header */}
           <div className="space-y-6 relative z-10">
             <div className="flex items-center gap-3">
@@ -259,99 +252,97 @@ export const AuthScreen: React.FC = () => {
                 <img
                   src={companySettings.logoUrl}
                   alt="Upadhyay Brother Solar Works"
-                  className="w-14 h-14 rounded-2xl object-contain bg-white p-1 shadow-lg shadow-amber-500/20 shrink-0 border border-slate-700"
+                  className="w-14 h-14 rounded-2xl object-contain bg-[#E9EEE9] p-1.5 shadow-[3px_3px_8px_rgba(175,192,178,0.7),-3px_-3px_8px_rgba(255,255,255,0.9)] dark:shadow-[3px_3px_8px_rgba(10,15,12,0.8)] shrink-0 border border-white/80 dark:border-white/10"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 p-0.5 shadow-lg shadow-amber-500/20 flex items-center justify-center shrink-0">
-                  <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-                    <Sun className="w-6 h-6 text-amber-400" />
-                  </div>
+                <div className="w-12 h-12 rounded-2xl bg-[#25845A] shadow-[3px_3px_8px_rgba(37,132,90,0.4),-2px_-2px_6px_rgba(255,255,255,0.8)] flex items-center justify-center shrink-0 text-white font-bold">
+                  <Sun className="w-6 h-6 text-white" />
                 </div>
               )}
               <div>
-                <h1 className="text-lg font-black tracking-tight text-white leading-tight">
+                <h1 className="text-base font-black tracking-tight text-[#26372D] dark:text-white leading-tight">
                   {companySettings.companyName}
                 </h1>
-                <p className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+                <p className="text-[10px] font-bold text-[#25845A] dark:text-[#38B57D] uppercase tracking-wider">
                   Babhanauli Damrua, Jaunpur
                 </p>
-                <p className="text-[10px] text-slate-400 font-mono">
-                  GSTIN: {companySettings.gstNumber} | {companySettings.phone}
+                <p className="text-[10px] text-[#728078] dark:text-[#8E9F95] font-mono">
+                  GSTIN: {companySettings.gstNumber} · {companySettings.phone}
                 </p>
               </div>
             </div>
 
-            <div className="space-y-3 pt-2">
-              <h2 className="text-2xl lg:text-3xl font-black text-white leading-tight">
-                Empowering Clean Energy <span className="text-blue-400">Operations</span>
+            <div className="space-y-2 pt-2">
+              <h2 className="text-2xl lg:text-3xl font-black text-[#26372D] dark:text-white leading-tight">
+                Empowering Clean Energy <span className="text-[#25845A] dark:text-[#38B57D]">Operations</span>
               </h2>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Streamline customer CRM, project management, GST billing, inventory, and cloud analytics in one secure portal.
+              <p className="text-xs text-[#728078] dark:text-[#8E9F95] leading-relaxed">
+                Streamline customer CRM, solar projects, GST billing, inventory, and cloud analytics in one secure portal.
               </p>
             </div>
           </div>
 
           {/* Key Feature Highlights */}
           <div className="my-8 space-y-3 relative z-10">
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-800/40 border border-slate-800/80 backdrop-blur-sm">
-              <div className="p-2 rounded-xl bg-blue-500/20 text-blue-400 shrink-0">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#E9EEE9] dark:bg-[#1A261F] border border-white/70 dark:border-white/10 shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] dark:shadow-[2px_2px_5px_rgba(10,15,12,0.7)]">
+              <div className="p-2 rounded-xl bg-[#25845A]/15 text-[#25845A] shrink-0">
                 <Zap className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-200">Realtime GST Billing & Invoicing</p>
-                <p className="text-[10px] text-slate-400">Automated CGST/SGST calculations and QR payments</p>
+                <p className="text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Realtime GST Billing & Invoicing</p>
+                <p className="text-[10px] text-[#728078] dark:text-[#8E9F95]">Automated CGST/SGST calculations and QR payments</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-800/40 border border-slate-800/80 backdrop-blur-sm">
-              <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#E9EEE9] dark:bg-[#1A261F] border border-white/70 dark:border-white/10 shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] dark:shadow-[2px_2px_5px_rgba(10,15,12,0.7)]">
+              <div className="p-2 rounded-xl bg-[#D97706]/15 text-[#D97706] shrink-0">
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-200">Cloud Data Encryption & Sync</p>
-                <p className="text-[10px] text-slate-400">Firebase Firestore persistent cloud infrastructure</p>
+                <p className="text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Cloud Data Encryption & Sync</p>
+                <p className="text-[10px] text-[#728078] dark:text-[#8E9F95]">Firebase Firestore persistent cloud infrastructure</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-800/40 border border-slate-800/80 backdrop-blur-sm">
-              <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#E9EEE9] dark:bg-[#1A261F] border border-white/70 dark:border-white/10 shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] dark:shadow-[2px_2px_5px_rgba(10,15,12,0.7)]">
+              <div className="p-2 rounded-xl bg-[#25845A]/15 text-[#25845A] shrink-0">
                 <Globe className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-200">Govt. Subsidy & Project Tracker</p>
-                <p className="text-[10px] text-slate-400">Complete end-to-end solar installation lifecycle</p>
+                <p className="text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Govt. Subsidy & Project Tracker</p>
+                <p className="text-[10px] text-[#728078] dark:text-[#8E9F95]">Complete end-to-end solar installation lifecycle</p>
               </div>
             </div>
           </div>
 
           {/* Bottom Security Assurance */}
-          <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 relative z-10">
-            <span className="flex items-center gap-1.5">
-              <Award className="w-3.5 h-3.5 text-amber-400" />
-              <span>ISO 27001 Certified Security</span>
+          <div className="pt-4 border-t border-[#D5E1D7] dark:border-[#223328] flex items-center justify-between text-[11px] text-[#728078] dark:text-[#8E9F95] relative z-10">
+            <span className="flex items-center gap-1.5 font-semibold">
+              <Award className="w-3.5 h-3.5 text-[#25845A]" />
+              <span>Enterprise Grade Security</span>
             </span>
-            <span className="font-mono text-[10px] text-blue-400">v2.4 Production</span>
+            <span className="font-mono text-[10px] text-[#25845A] dark:text-[#38B57D] font-bold">Cloud Connected</span>
           </div>
         </div>
 
         {/* RIGHT COLUMN: AUTHENTICATION FORM (7 COLS ON DESKTOP) */}
-        <div className="lg:col-span-7 p-8 lg:p-12 flex flex-col justify-center bg-slate-900/90">
+        <div className="lg:col-span-7 p-8 lg:p-12 flex flex-col justify-center bg-[#E9EEE9] dark:bg-[#1B2720]">
           <div className="max-w-md mx-auto w-full space-y-6">
             {/* Tab Switcher Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-black text-white tracking-tight">
+                <h3 className="text-2xl font-black text-[#26372D] dark:text-white tracking-tight">
                   {isSignUp ? 'Create Your Account' : 'Welcome Back'}
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-[#728078] dark:text-[#8E9F95] mt-1">
                   {isSignUp
-                    ? 'Fill in details below to register for Solarix Enterprise'
-                    : 'Enter your account credentials to access dashboard'}
+                    ? 'Fill in details below to register for Solar ERP'
+                    : 'Enter your credentials to access the ERP dashboard'}
                 </p>
               </div>
 
-              {/* Toggle Pills */}
-              <div className="p-1 bg-slate-800 rounded-2xl flex border border-slate-700/80 shrink-0">
+              {/* Toggle Segmented Switch */}
+              <div className="p-1 bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] rounded-2xl flex border border-white/40 dark:border-white/5 shrink-0">
                 <button
                   type="button"
                   onClick={() => {
@@ -361,8 +352,8 @@ export const AuthScreen: React.FC = () => {
                   }}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                     !isSignUp
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#E9EEE9] dark:bg-[#1B2720] text-[#25845A] dark:text-[#38B57D] shadow-[2px_2px_5px_rgba(175,192,178,0.7),-2px_-2px_5px_rgba(255,255,255,0.95)]'
+                      : 'text-[#728078] hover:text-[#26372D]'
                   }`}
                 >
                   Sign In
@@ -376,8 +367,8 @@ export const AuthScreen: React.FC = () => {
                   }}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                     isSignUp
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#E9EEE9] dark:bg-[#1B2720] text-[#25845A] dark:text-[#38B57D] shadow-[2px_2px_5px_rgba(175,192,178,0.7),-2px_-2px_5px_rgba(255,255,255,0.95)]'
+                      : 'text-[#728078] hover:text-[#26372D]'
                   }`}
                 >
                   Sign Up
@@ -385,19 +376,19 @@ export const AuthScreen: React.FC = () => {
               </div>
             </div>
 
-            {/* Error Message Toast Alert */}
+            {/* Error Message Alert */}
             {errorMsg && (
-              <div className="p-3.5 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-start gap-2.5 animate-in fade-in">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
-                <span className="font-medium leading-snug">{errorMsg}</span>
+              <div className="p-3.5 rounded-2xl bg-[#DC2626]/12 border border-[#DC2626]/30 text-[#DC2626] text-xs flex items-start gap-2.5 animate-in fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-[#DC2626]" />
+                <span className="font-semibold leading-snug">{errorMsg}</span>
               </div>
             )}
 
-            {/* Success Message Toast Alert */}
+            {/* Success Message Alert */}
             {successMsg && (
-              <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-start gap-2.5 animate-in fade-in">
-                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
-                <span className="font-medium leading-snug">{successMsg}</span>
+              <div className="p-3.5 rounded-2xl bg-[#25845A]/12 border border-[#25845A]/30 text-[#25845A] dark:text-[#38B57D] text-xs flex items-start gap-2.5 animate-in fade-in">
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-[#25845A]" />
+                <span className="font-semibold leading-snug">{successMsg}</span>
               </div>
             )}
 
@@ -406,16 +397,16 @@ export const AuthScreen: React.FC = () => {
               {/* Full Name Field (Sign Up Only) */}
               {isSignUp && (
                 <div className="space-y-1.5 animate-in fade-in duration-200">
-                  <label className="block text-xs font-bold text-slate-300">Full Name</label>
+                  <label className="block text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Full Name</label>
                   <div className="relative">
-                    <UserIcon className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <UserIcon className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#728078]" />
                     <input
                       type="text"
                       required
                       placeholder="e.g. Rahul Sharma"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700/80 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-[#E5ECE7] text-xs placeholder:text-[#8E9F95] focus:outline-none transition"
                     />
                   </div>
                 </div>
@@ -423,16 +414,16 @@ export const AuthScreen: React.FC = () => {
 
               {/* Email Address Field */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-300">Email Address</label>
+                <label className="block text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Email Address</label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#728078]" />
                   <input
                     type="email"
                     required
                     placeholder="name@company.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700/80 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-[#E5ECE7] text-xs placeholder:text-[#8E9F95] focus:outline-none transition"
                   />
                 </div>
               </div>
@@ -440,7 +431,7 @@ export const AuthScreen: React.FC = () => {
               {/* Password Field */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="block text-xs font-bold text-slate-300">Password</label>
+                  <label className="block text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Password</label>
                   {!isSignUp && (
                     <button
                       type="button"
@@ -449,53 +440,53 @@ export const AuthScreen: React.FC = () => {
                         setResetStatus(null);
                         setForgotModalOpen(true);
                       }}
-                      className="text-[11px] text-blue-400 hover:text-blue-300 font-semibold transition"
+                      className="text-[11px] text-[#25845A] dark:text-[#38B57D] hover:underline font-bold transition"
                     >
                       Forgot Password?
                     </button>
                   )}
                 </div>
                 <div className="relative">
-                  <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#728078]" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700/80 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-[#E5ECE7] text-xs placeholder:text-[#8E9F95] focus:outline-none transition"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#728078] hover:text-[#26372D] transition"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
                 {isSignUp && (
-                  <p className="text-[10px] text-slate-500">Minimum 6 characters requirement.</p>
+                  <p className="text-[10px] text-[#728078]">Minimum 6 characters requirement.</p>
                 )}
               </div>
 
               {/* Confirm Password Field (Sign Up Only) */}
               {isSignUp && (
                 <div className="space-y-1.5 animate-in fade-in duration-200">
-                  <label className="block text-xs font-bold text-slate-300">Confirm Password</label>
+                  <label className="block text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Confirm Password</label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#728078]" />
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
                       required
                       placeholder="••••••••"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700/80 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                      className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-[#E5ECE7] text-xs placeholder:text-[#8E9F95] focus:outline-none transition"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#728078] hover:text-[#26372D] transition"
                     >
                       {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -510,13 +501,13 @@ export const AuthScreen: React.FC = () => {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded bg-slate-800 border-slate-700 text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-900 cursor-pointer"
+                    className="w-4 h-4 rounded text-[#25845A] focus:ring-[#25845A] cursor-pointer"
                   />
-                  <span className="text-xs text-slate-300 group-hover:text-white transition">
+                  <span className="text-xs text-[#4A5D51] dark:text-[#A1B2A8] group-hover:text-[#26372D] font-medium transition">
                     Remember Me
                   </span>
                 </label>
-                <span className="text-[10px] text-slate-500">
+                <span className="text-[10px] text-[#728078]">
                   {rememberMe ? 'Keeps session saved' : 'Require login on close'}
                 </span>
               </div>
@@ -525,7 +516,7 @@ export const AuthScreen: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-[#25845A] hover:bg-[#1E6E4A] text-white font-bold text-xs transition shadow-[3px_3px_8px_rgba(37,132,90,0.35),-2px_-2px_6px_rgba(255,255,255,0.6)] active:shadow-[inset_2px_2px_4px_rgba(16,60,40,0.5)] flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -541,13 +532,13 @@ export const AuthScreen: React.FC = () => {
               </button>
             </form>
 
-            {/* OR Divider */}
+            {/* Divider */}
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-800"></div>
+                <div className="w-full border-t border-[#D5E1D7] dark:border-[#223328]"></div>
               </div>
-              <div className="relative flex justify-center text-[11px] uppercase">
-                <span className="bg-slate-900 px-3 text-slate-500 font-bold">Or Continue With</span>
+              <div className="relative flex justify-center text-[10px] uppercase">
+                <span className="bg-[#E9EEE9] dark:bg-[#1B2720] px-3 text-[#728078] font-bold">Or Continue With</span>
               </div>
             </div>
 
@@ -556,7 +547,7 @@ export const AuthScreen: React.FC = () => {
               type="button"
               onClick={handleGoogleAuth}
               disabled={loading}
-              className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-200 font-bold text-xs border border-slate-700/80 transition flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] hover:bg-[#EDF2ED] text-[#26372D] dark:text-[#E5ECE7] font-bold text-xs shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] dark:shadow-[2px_2px_5px_rgba(10,15,12,0.7),-1px_-1px_3px_rgba(38,54,44,0.3)] border border-white/60 dark:border-white/10 transition flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -583,15 +574,15 @@ export const AuthScreen: React.FC = () => {
             <button
               type="button"
               onClick={() => loginAsDemo('admin@solarix.com', 'Solar Admin (Demo)')}
-              className="w-full py-2.5 px-4 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold text-xs border border-amber-500/30 transition flex items-center justify-center gap-2 cursor-pointer mt-2"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] text-[#25845A] dark:text-[#38B57D] font-bold text-xs shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] dark:shadow-[2px_2px_5px_rgba(10,15,12,0.7),-1px_-1px_3px_rgba(38,54,44,0.3)] border border-white/60 dark:border-white/10 transition flex items-center justify-center gap-2 cursor-pointer mt-2"
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
+              <Sparkles className="w-4 h-4 text-[#25845A]" />
               <span>Instant Demo Admin Access</span>
             </button>
 
             {/* Bottom Account Switch Link */}
             <div className="text-center pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#728078] dark:text-[#8E9F95]">
                 {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
                 <button
                   type="button"
@@ -600,7 +591,7 @@ export const AuthScreen: React.FC = () => {
                     setErrorMsg('');
                     setSuccessMsg('');
                   }}
-                  className="text-blue-400 hover:text-blue-300 font-bold hover:underline transition ml-1"
+                  className="text-[#25845A] dark:text-[#38B57D] font-bold hover:underline transition ml-1"
                 >
                   {isSignUp ? 'Sign In' : 'Sign Up'}
                 </button>
@@ -612,24 +603,24 @@ export const AuthScreen: React.FC = () => {
 
       {/* FORGOT PASSWORD MODAL */}
       {forgotModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-md bg-[#E9EEE9] dark:bg-[#1B2720] border border-white/80 dark:border-white/10 rounded-3xl shadow-[10px_10px_26px_rgba(175,192,178,0.8),-10px_-10px_26px_rgba(255,255,255,0.95)] dark:shadow-[10px_10px_26px_rgba(10,15,12,0.9)] p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#D5E1D7] dark:border-[#223328]">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-blue-600/20 text-blue-400">
+                <div className="p-2 rounded-xl bg-[#25845A]/15 text-[#25845A]">
                   <Mail className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-bold text-white">Reset Password</h3>
+                <h3 className="text-base font-bold text-[#26372D] dark:text-white">Reset Password</h3>
               </div>
               <button
                 onClick={() => setForgotModalOpen(false)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-1.5 rounded-xl text-[#728078] hover:text-[#26372D] transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-[#728078] dark:text-[#8E9F95] leading-relaxed">
               Enter the email address associated with your Solarix account. We will send you a secure link to reset your password.
             </p>
 
@@ -637,8 +628,8 @@ export const AuthScreen: React.FC = () => {
               <div
                 className={`p-3 rounded-xl text-xs ${
                   resetStatus.type === 'success'
-                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                    : 'bg-red-500/10 text-red-400 border border-red-500/30'
+                    ? 'bg-[#25845A]/12 text-[#25845A] border border-[#25845A]/30'
+                    : 'bg-[#DC2626]/12 text-[#DC2626] border border-[#DC2626]/30'
                 }`}
               >
                 {resetStatus.msg}
@@ -647,14 +638,14 @@ export const AuthScreen: React.FC = () => {
 
             <form onSubmit={handleSendResetLink} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-300">Email Address</label>
+                <label className="block text-xs font-bold text-[#26372D] dark:text-[#E5ECE7]">Email Address</label>
                 <input
                   type="email"
                   required
                   placeholder="name@company.com"
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-[#E5ECE7] text-xs placeholder:text-[#8E9F95] focus:outline-none"
                 />
               </div>
 
@@ -662,14 +653,14 @@ export const AuthScreen: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setForgotModalOpen(false)}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] text-[#4A5D51] dark:text-[#A1B2A8] font-bold text-xs shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={resetLoading}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-[#25845A] hover:bg-[#1E6E4A] text-white font-bold text-xs transition shadow-[3px_3px_8px_rgba(37,132,90,0.35)] flex items-center justify-center gap-2"
                 >
                   {resetLoading ? (
                     <Sun className="w-4 h-4 animate-spin" />

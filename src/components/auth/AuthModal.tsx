@@ -126,26 +126,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-md bg-[#E9EEE9] dark:bg-[#1B2720] rounded-3xl shadow-[10px_10px_26px_rgba(175,192,178,0.8),-10px_-10px_26px_rgba(255,255,255,0.95)] dark:shadow-[10px_10px_26px_rgba(10,15,12,0.9)] border border-white/80 dark:border-white/10 overflow-hidden">
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-blue-600 text-white shadow-md shadow-blue-500/20">
-              <Sun className="w-5 h-5 animate-spin-slow" />
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#D8E3DA] dark:border-[#223328] bg-[#E1E8E1]/60 dark:bg-[#141E17]/60">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-[#25845A] text-white shadow-[2px_2px_5px_rgba(37,132,90,0.35)]">
+              <Sun className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white">
+              <h3 className="text-base font-bold text-[#26372D] dark:text-white">
                 {user ? 'Account & Cloud Sync' : isSignUp ? `Create Account - ${companySettings.companyName}` : `Sign In - ${companySettings.companyName}`}
               </h3>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              <p className="text-[11px] text-[#728078] dark:text-[#8E9F95]">
                 {user ? 'Connected to Firebase Cloud DB' : 'Access your ERP & CRM from anywhere online'}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            className="p-1.5 rounded-xl text-[#728078] hover:text-[#26372D] hover:bg-[#DEE6DF] dark:hover:bg-[#223328] transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -155,12 +155,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           {user ? (
             /* Logged In User State */
             <div className="space-y-6 text-center">
-              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 p-1 shadow-lg shadow-blue-500/20">
-                <div className="w-full h-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden">
+              <div className="w-20 h-20 mx-auto rounded-full bg-[#E9EEE9] dark:bg-[#1A261F] shadow-[4px_4px_10px_rgba(175,192,178,0.7),-4px_-4px_10px_rgba(255,255,255,0.95)] p-1 flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-[#25845A] flex items-center justify-center overflow-hidden">
                   {user.photoURL ? (
                     <img src={user.photoURL} alt={user.displayName || 'User'} className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-2xl font-black text-blue-600">
+                    <span className="text-2xl font-black text-white">
                       {(user.displayName || user.email || 'S')[0].toUpperCase()}
                     </span>
                   )}
@@ -168,26 +168,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               </div>
 
               <div>
-                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">
+                <h4 className="text-lg font-extrabold text-[#26372D] dark:text-white">
                   {user.displayName || 'Solar Business Administrator'}
                 </h4>
-                <p className="text-xs text-slate-500 font-medium">{user.email}</p>
-                <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-500/20">
+                <p className="text-xs text-[#728078] dark:text-[#8E9F95] font-medium">{user.email}</p>
+                <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#25845A]/12 text-[#25845A] dark:text-[#38B57D] text-xs font-bold border border-[#25845A]/25">
                   <CloudCheck className="w-4 h-4" />
                   <span>Real-time Firebase Cloud Storage Active</span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-center gap-3">
+              <div className="pt-4 border-t border-[#D8E3DA] dark:border-[#223328] flex justify-center gap-3">
                 <button
                   onClick={onClose}
-                  className="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs hover:bg-slate-200 transition"
+                  className="px-5 py-2.5 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] text-[#26372D] dark:text-[#E5ECE7] font-bold text-xs shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] hover:bg-[#EDF2ED] transition"
                 >
                   Continue to ERP
                 </button>
                 <button
                   onClick={handleSignOut}
-                  className="px-5 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-bold text-xs flex items-center gap-1.5 transition"
+                  className="px-5 py-2.5 rounded-xl bg-[#DC2626]/12 hover:bg-[#DC2626]/20 text-[#DC2626] font-bold text-xs flex items-center gap-1.5 transition border border-[#DC2626]/25"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out</span>
@@ -197,8 +197,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           ) : (
             /* Auth Form (Sign In / Sign Up) */
             <div className="space-y-5 text-xs">
-              {/* Toggle Switch */}
-              <div className="grid grid-cols-2 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold">
+              {/* Segmented Switch */}
+              <div className="grid grid-cols-2 p-1 rounded-2xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] text-[#728078] font-bold">
                 <button
                   type="button"
                   onClick={() => {
@@ -206,7 +206,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                     setErrorMsg('');
                   }}
                   className={`py-2 rounded-xl text-center transition ${
-                    !isSignUp ? 'bg-white dark:bg-slate-900 text-blue-600 shadow-sm' : 'hover:text-slate-900 dark:hover:text-white'
+                    !isSignUp ? 'bg-[#E9EEE9] dark:bg-[#1B2720] text-[#25845A] dark:text-[#38B57D] shadow-[2px_2px_5px_rgba(175,192,178,0.7),-2px_-2px_5px_rgba(255,255,255,0.95)]' : 'hover:text-[#26372D]'
                   }`}
                 >
                   Sign In
@@ -218,7 +218,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                     setErrorMsg('');
                   }}
                   className={`py-2 rounded-xl text-center transition ${
-                    isSignUp ? 'bg-white dark:bg-slate-900 text-blue-600 shadow-sm' : 'hover:text-slate-900 dark:hover:text-white'
+                    isSignUp ? 'bg-[#E9EEE9] dark:bg-[#1B2720] text-[#25845A] dark:text-[#38B57D] shadow-[2px_2px_5px_rgba(175,192,178,0.7),-2px_-2px_5px_rgba(255,255,255,0.95)]' : 'hover:text-[#26372D]'
                   }`}
                 >
                   Create Account
@@ -227,14 +227,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
               {/* Status Messages */}
               {errorMsg && (
-                <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 flex items-start gap-2">
+                <div className="p-3 rounded-2xl bg-[#DC2626]/12 border border-[#DC2626]/30 text-[#DC2626] flex items-start gap-2">
                   <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <span>{errorMsg}</span>
+                  <span className="font-semibold">{errorMsg}</span>
                 </div>
               )}
 
               {successMsg && (
-                <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center gap-2 font-bold">
+                <div className="p-3 rounded-2xl bg-[#25845A]/12 border border-[#25845A]/30 text-[#25845A] dark:text-[#38B57D] flex items-center gap-2 font-bold">
                   <CheckCircle2 className="w-4 h-4" />
                   <span>{successMsg}</span>
                 </div>
@@ -245,7 +245,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 type="button"
                 onClick={handleGoogleAuth}
                 disabled={loading}
-                className="w-full py-3 px-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-800 dark:text-white font-bold flex items-center justify-center gap-3 transition shadow-sm hover:shadow"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#E9EEE9] dark:bg-[#1A261F] hover:bg-[#EDF2ED] text-[#26372D] dark:text-[#E5ECE7] font-bold text-xs shadow-[2.5px_2.5px_6px_rgba(175,192,178,0.6),-2.5px_-2.5px_6px_rgba(255,255,255,0.9)] dark:shadow-[2px_2px_5px_rgba(10,15,12,0.7),-1px_-1px_3px_rgba(38,54,44,0.3)] border border-white/60 dark:border-white/10 flex items-center justify-center gap-3 transition"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -269,8 +269,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               </button>
 
               <div className="relative flex items-center justify-center my-2">
-                <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
-                <span className="bg-white dark:bg-slate-900 px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider absolute">
+                <div className="border-t border-[#D8E3DA] dark:border-[#223328] w-full" />
+                <span className="bg-[#E9EEE9] dark:bg-[#1B2720] px-3 text-[10px] font-bold text-[#728078] uppercase tracking-wider absolute">
                   or email login
                 </span>
               </div>
@@ -279,47 +279,47 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <form onSubmit={handleEmailAuth} className="space-y-3">
                 {isSignUp && (
                   <div>
-                    <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-300">Full Name / Business Name</label>
+                    <label className="block font-semibold mb-1 text-[#26372D] dark:text-[#E5ECE7]">Full Name / Business Name</label>
                     <div className="relative">
-                      <UserIcon className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                      <UserIcon className="w-4 h-4 text-[#728078] absolute left-3 top-3" />
                       <input
                         type="text"
                         required
                         value={displayName}
                         onChange={(e) => setDisplayName(e.target.value)}
                         placeholder="e.g. Solar Pro Solutions"
-                        className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-600 font-medium"
+                        className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-white focus:outline-none font-medium"
                       />
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-300">Email Address *</label>
+                  <label className="block font-semibold mb-1 text-[#26372D] dark:text-[#E5ECE7]">Email Address *</label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <Mail className="w-4 h-4 text-[#728078] absolute left-3 top-3" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="admin@solarix.com"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-600 font-medium"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-white focus:outline-none font-medium"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-300">Password *</label>
+                  <label className="block font-semibold mb-1 text-[#26372D] dark:text-[#E5ECE7]">Password *</label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <Lock className="w-4 h-4 text-[#728078] absolute left-3 top-3" />
                     <input
                       type="password"
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-600 font-medium"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#E1E8E1] dark:bg-[#121A15] shadow-[inset_1.5px_1.5px_3.5px_rgba(170,188,173,0.7),inset_-1.5px_-1.5px_3.5px_rgba(255,255,255,0.9)] dark:shadow-[inset_1.5px_1.5px_3.5px_rgba(9,14,11,0.85)] border border-transparent focus:border-[#25845A] text-[#26372D] dark:text-white focus:outline-none font-medium"
                     />
                   </div>
                 </div>
@@ -327,14 +327,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-lg shadow-blue-600/25 mt-2"
+                  className="w-full py-3 rounded-2xl bg-[#25845A] hover:bg-[#1E6E4A] text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-[3px_3px_8px_rgba(37,132,90,0.35)] mt-2"
                 >
                   {loading ? (
                     <span className="inline-block animate-pulse">Authenticating...</span>
                   ) : isSignUp ? (
                     <>
                       <UserPlus className="w-4 h-4" />
-                      <span>Create Free Account</span>
+                      <span>Create Account</span>
                     </>
                   ) : (
                     <>
